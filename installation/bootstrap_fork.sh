@@ -28,6 +28,14 @@ playwright install chromium
 # 5. ffprobe is required by utils/utilsCameraPy3.py before WHAM runs
 command -v ffprobe >/dev/null || sudo apt-get install -y ffmpeg
 
+# 5b (optional). pytorch3d for WHAM's mesh-overlay renderer (visualize=True).
+#    Needs a CUDA toolchain matching torch (cu118); the conda one works even when
+#    the system nvcc is newer. ~10 min build on 8 cores. Tag is lowercase v0.7.5.
+#    conda install -y -c "nvidia/label/cuda-11.8.0" cuda-toolkit
+#    CUDA_HOME=$CONDA_PREFIX PATH=$CONDA_PREFIX/bin:$PATH MAX_JOBS=8 FORCE_CUDA=1 \
+#      TORCH_CUDA_ARCH_LIST="8.6" pip install --no-build-isolation \
+#      "git+https://github.com/facebookresearch/pytorch3d.git@v0.7.5"
+
 # 6. utils/opensim/defaults.py expects the SMPLX->SMPL transfer matrix at
 #    WHAM/dataset/model_transfer/smplx_to_smpl.pkl; fetch_demo_data.sh delivers the
 #    same file as WHAM/dataset/body_models/smplx2smpl.pkl (dict with 'matrix' (6890,10475)).
