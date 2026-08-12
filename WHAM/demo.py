@@ -317,9 +317,15 @@ def run(cfg,
 
     # Visualize
     if visualize:
-        from lib.vis.run_vis import run_vis_on_demo
-        with torch.no_grad():
-            run_vis_on_demo(cfg, video, results, output_pth, network.smpl, vis_global=run_global)
+        try:
+            from lib.vis.run_vis import run_vis_on_demo
+        except ModuleNotFoundError as e:
+            # pytorch3d is an optional visualization dependency (see INSTALL_SLIM.md);
+            # the mesh-overlay video is skipped without it, everything else proceeds.
+            logger.warning(f"Skipping WHAM overlay visualization ({e}).")
+        else:
+            with torch.no_grad():
+                run_vis_on_demo(cfg, video, results, output_pth, network.smpl, vis_global=run_global)
 
 
 def main_wham(
