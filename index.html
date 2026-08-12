@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OpenCap Monocular — Soccer Kick Report</title>
+<style>
+  :root {
+    color-scheme: dark;
+    --page: #0d0d0d;
+    --surface-1: #1a1a19;
+    --text-primary: #ffffff;
+    --text-secondary: #c3c2b7;
+    --muted: #898781;
+    --grid: #2c2c2a;
+    --baseline: #383835;
+    --border: rgba(255,255,255,0.10);
+    --series-1: #3987e5;   /* right leg / primary */
+    --series-2: #d95926;   /* left leg */
+    --good: #0ca30c;
+    --warning: #fab219;
+  }
+  * { margin: 0; box-sizing: border-box; }
+  body {
+    background: var(--page);
+    color: var(--text-primary);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    line-height: 1.55;
+  }
+  .wrap { max-width: 1060px; margin: 0 auto; padding: 40px 24px 80px; }
+  header h1 { font-size: 1.7rem; letter-spacing: -0.02em; }
+  header .sub { color: var(--text-secondary); margin-top: 6px; max-width: 72ch; }
+  .meta { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 14px; color: var(--muted); font-size: 0.85rem; }
+  .meta a { color: var(--series-1); text-decoration: none; }
+  .meta a:hover { text-decoration: underline; }
+  h2 { font-size: 1.15rem; margin: 44px 0 6px; letter-spacing: -0.01em; }
+  h2 + p.lead { color: var(--text-secondary); margin-bottom: 16px; max-width: 78ch; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; }
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-top: 18px; }
+  .tile { background: var(--surface-1); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+  .tile .v { font-size: 1.65rem; font-weight: 650; letter-spacing: -0.02em; }
+  .tile .k { color: var(--muted); font-size: 0.8rem; margin-top: 2px; }
+  .tile .n { color: var(--text-secondary); font-size: 0.78rem; margin-top: 6px; }
+  table { border-collapse: collapse; width: 100%; font-size: 0.88rem; }
+  th { text-align: left; color: var(--muted); font-weight: 500; padding: 6px 10px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 7px 10px; border-bottom: 1px solid var(--grid); color: var(--text-secondary); }
+  td:first-child { color: var(--text-primary); }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 860px) { .grid2, .grid3 { grid-template-columns: 1fr; } }
+  video { width: 100%; border-radius: 8px; background: #000; display: block; }
+  .vidcap { color: var(--muted); font-size: 0.8rem; margin-top: 8px; }
+  .legend { display: flex; gap: 18px; align-items: center; font-size: 0.82rem; color: var(--text-secondary); margin: 4px 0 2px; }
+  .legend .sw { display: inline-block; width: 14px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: 6px; }
+  svg text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+  .tooltip {
+    position: fixed; pointer-events: none; z-index: 10; display: none;
+    background: #242423; border: 1px solid var(--border); border-radius: 6px;
+    padding: 6px 9px; font-size: 0.78rem; color: var(--text-primary);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.5); white-space: nowrap;
+  }
+  .tooltip .t { color: var(--muted); }
+  ul.fixes { margin: 10px 0 0 18px; color: var(--text-secondary); }
+  ul.fixes li { margin-bottom: 8px; }
+  ul.fixes code, p code, td code { background: #242423; border-radius: 4px; padding: 1px 5px; font-size: 0.84em; }
+  .dl { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+  .dl a {
+    color: var(--text-primary); text-decoration: none; font-size: 0.83rem;
+    border: 1px solid var(--border); border-radius: 999px; padding: 6px 14px; background: var(--surface-1);
+  }
+  .dl a:hover { border-color: var(--series-1); }
+  .dl a span { color: var(--muted); }
+  footer { margin-top: 56px; color: var(--muted); font-size: 0.8rem; border-top: 1px solid var(--grid); padding-top: 16px; }
+  .warn { color: var(--warning); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>OpenCap Monocular — Soccer Free-Kick Kinematics Report</h1>
+  <p class="sub">End-to-end validation of the <a style="color:var(--series-1);text-decoration:none" href="https://github.com/vxbrandon/opencap-monocular">vxbrandon/opencap-monocular</a> fork:
+  a single 5-second smartphone clip of a right-footed free kick, processed to full-body 3D kinematics
+  (WHAM → camera/pose optimization → OpenSim scaling + inverse kinematics) on an AWS g5.2xlarge (NVIDIA A10G).</p>
+  <div class="meta">
+    <span>2026-08-12</span>
+    <span><a href="https://github.com/vxbrandon/opencap-monocular">github.com/vxbrandon/opencap-monocular</a></span>
+    <span>upstream: <a href="https://github.com/utahmobl/opencap-monocular">utahmobl/opencap-monocular</a></span>
+    <span>input: 734×1074 @ 52.7 fps, 5.02 s, 264 frames</span>
+  </div>
+</header>
+
+<div class="tiles">
+  <div class="tile"><div class="v">104.9 s</div><div class="k">pipeline latency</div><div class="n">5.02 s clip → ~21× real-time</div></div>
+  <div class="tile"><div class="v">202</div><div class="k">frames with full-body pose</div><div class="n">of 264 (subject enters at f62)</div></div>
+  <div class="tile"><div class="v">1977°/s</div><div class="k">peak knee extension velocity</div><div class="n">kicking (right) leg</div></div>
+  <div class="tile"><div class="v">1.07 cm</div><div class="k">IK RMS marker error</div><div class="n">mean over trial (p95 1.41 cm)</div></div>
+</div>
+
+<h2>Latency</h2>
+<p class="lead">Wall-clock per stage for the standalone pipeline (<code>run_mono_standalone.py</code>), single warm A10G GPU.
+2D detection + ViTPose wholebody + WHAM world-frame lifting dominates at 83% of pipeline time.</p>
+<div class="card">
+  <div id="latency-chart"></div>
+  <table style="margin-top:14px">
+    <thead><tr><th>Stage</th><th class="num">seconds</th><th class="num">share</th><th>What runs</th></tr></thead>
+    <tbody>
+      <tr><td>Model load (one-time)</td><td class="num">17.9</td><td class="num">—</td><td>WHAM network + ViTPose+ huge wholebody + YOLOv8x onto GPU</td></tr>
+      <tr><td>WHAM stage</td><td class="num">86.8</td><td class="num">82.7%</td><td>YOLO detect → ViTPose 2D (133 kpt) → feature extraction → WHAM 3D + SMPLify refit</td></tr>
+      <tr><td>Optimization + OpenSim</td><td class="num">18.0</td><td class="num">17.1%</td><td>camera/pose optimization (75 iters) → model scaling → inverse kinematics</td></tr>
+      <tr><td>Visualizer JSON</td><td class="num">0.2</td><td class="num">0.2%</td><td><code>mono.json</code> for the OpenCap viewer</td></tr>
+      <tr><td><b style="color:var(--text-primary)">Pipeline total</b></td><td class="num"><b>104.9</b></td><td class="num">100%</td><td>excludes one-time model load; 0.52 s per processed frame</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h2>Kinematics — joint angles (OpenSim IK)</h2>
+<p class="lead">Sagittal-plane angles from the scaled LaiUhlrich2022 model, right (kicking) vs left (support) leg.
+The kick reads clearly: deep right-knee flexion to 127° in the backswing, then extension at ~1977°/s through ball contact,
+with hip flexion range 104° on the kicking side.</p>
+<div class="legend">
+  <span><span class="sw" style="background:var(--series-1)"></span>Right (kicking)</span>
+  <span><span class="sw" style="background:var(--series-2)"></span>Left (support)</span>
+</div>
+<div class="grid3">
+  <div class="card" style="padding:12px"><div id="chart-knee"></div></div>
+  <div class="card" style="padding:12px"><div id="chart-hip"></div></div>
+  <div class="card" style="padding:12px"><div id="chart-ankle"></div></div>
+</div>
+<div class="card" style="margin-top:16px">
+  <table>
+    <thead><tr><th>Coordinate</th><th class="num">min °</th><th class="num">max °</th><th class="num">range °</th><th class="num">peak |ω| °/s</th></tr></thead>
+    <tbody>
+      <tr><td>Knee flexion — right (kicking)</td><td class="num">12.0</td><td class="num">127.0</td><td class="num">114.9</td><td class="num">1976.5</td></tr>
+      <tr><td>Knee flexion — left (support)</td><td class="num">9.3</td><td class="num">85.1</td><td class="num">75.7</td><td class="num">638.7</td></tr>
+      <tr><td>Hip flexion — right</td><td class="num">−18.7</td><td class="num">85.4</td><td class="num">104.1</td><td class="num">588.4</td></tr>
+      <tr><td>Hip flexion — left</td><td class="num">−16.9</td><td class="num">38.1</td><td class="num">55.0</td><td class="num">281.4</td></tr>
+      <tr><td>Ankle angle — right</td><td class="num">−9.2</td><td class="num">22.8</td><td class="num">32.1</td><td class="num">505.0</td></tr>
+      <tr><td>Ankle angle — left</td><td class="num">−0.6</td><td class="num">26.1</td><td class="num">26.7</td><td class="num">269.2</td></tr>
+      <tr><td>Pelvis tilt</td><td class="num">−6.0</td><td class="num">8.0</td><td class="num">14.0</td><td class="num">77.6</td></tr>
+      <tr><td>Lumbar extension</td><td class="num">−29.2</td><td class="num">−7.9</td><td class="num">21.2</td><td class="num">175.0</td></tr>
+    </tbody>
+  </table>
+  <p style="color:var(--muted);font-size:0.8rem;margin-top:10px">Peak knee extension velocity of ~1980°/s sits inside the 1200–2200°/s range reported for adult instep kicks.
+  <span class="warn">Known artifact:</span> left-arm flexion shows an angle-wrap discontinuity (−379°) in a brief occluded stretch; excluded above.</p>
+</div>
+
+<h2>Video results</h2>
+<div class="grid2" style="margin-top:16px">
+  <div>
+    <video controls muted playsinline preload="metadata" src="assets/keypoints_overlay.mp4"></video>
+    <p class="vidcap">2D wholebody keypoints (ViTPose+ huge, 133 kpt) tracked on the original clip — 202/264 frames annotated.</p>
+  </div>
+  <div>
+    <video controls muted playsinline loop preload="metadata" src="assets/skeleton_3d.mp4"></video>
+    <p class="vidcap">Optimized 3D marker skeleton (63-marker TRC, hip-centered camera). Full interactive mesh: load <code>mono.json</code> at <a style="color:var(--series-1)" href="https://visualizer.opencap.ai">visualizer.opencap.ai</a>.</p>
+  </div>
+</div>
+
+<h2>Readiness — what it took to run a fresh clone</h2>
+<p class="lead">The fork is now turn-key: six gaps were found on a clean <code>INSTALL_SLIM.md</code> install and fixed in
+<code>installation/bootstrap_fork.sh</code> + <code>installation/FORK_SETUP_NOTES.md</code> (commit <code>5bd4b88</code>).</p>
+<div class="card">
+  <ul class="fixes">
+    <li>ViTPose submodule asserts <code>mmcv ≤ 1.5.0</code> against the documented <code>mmcv-full 1.7.2</code> → version gate relaxed post-install.</li>
+    <li><code>WHAM/demo.py</code> loads <code>vitpose+_huge_wholebody/wholebody.pth</code>, which <code>fetch_demo_data.sh</code> never downloads → sourced from the easy_ViTPose HF mirror (2.5 GB).</li>
+    <li>SMPL body models require interactive MPI-license credentials → non-interactive research mirrors documented (non-commercial use).</li>
+    <li><code>opencap-visualizer</code> + Playwright Chromium missing from <code>requirements_slim.txt</code> → installed; note: its remote-viewer recording currently fails against the deployed app (camera API mismatch), so the videos above are rendered directly from pipeline outputs.</li>
+    <li><code>ffprobe</code> is a hard prerequisite before WHAM (video rotation probe) → <code>apt install ffmpeg</code>.</li>
+    <li><code>utils/opensim/defaults.py</code> expects <code>model_transfer/smplx_to_smpl.pkl</code>; the fetch script delivers the same matrix as <code>body_models/smplx2smpl.pkl</code> → symlinked.</li>
+  </ul>
+  <p style="color:var(--muted);font-size:0.8rem;margin-top:12px">Also observed upstream: <code>output_trimmed.mp4</code> is written empty (0 bytes) and the viewer-video step is hardcoded off (<code>viz = False</code> in <code>run_mono_standalone.py</code>).</p>
+</div>
+
+<h2>Run environment &amp; cost</h2>
+<div class="card">
+  <table>
+    <tbody>
+      <tr><td>Instance</td><td>AWS g5.2xlarge (8 vCPU, 32 GB, NVIDIA A10G 24 GB), us-east-1, Deep Learning Base GPU AMI (Ubuntu 22.04)</td></tr>
+      <tr><td>Stack</td><td>Python 3.9 · torch 2.1.2+cu118 · mmcv-full 1.7.2 · mmpose 0.24.0 (ViTPose) · OpenSim 4.4 · numpy 1.21.6</td></tr>
+      <tr><td>Subject metadata</td><td>1.75 m / 70 kg / male (defaults — subject unknown); generic intrinsics fx=fy=1290 for the 734×1074 portrait crop</td></tr>
+      <tr><td>GPU lifetime</td><td>07:03–08:40 UTC (1 h 37 m, terminated after artifact download) ≈ <b style="color:var(--text-primary)">$1.96</b> on-demand</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h2>Artifacts</h2>
+<div class="dl">
+  <a href="assets/soccer_kick_5.mot" download>IK joint angles <span>.mot 115 KB</span></a>
+  <a href="assets/soccer_kick_5.trc" download>3D markers <span>.trc 393 KB</span></a>
+  <a href="assets/LaiUhlrich2022_scaled.osim" download>Scaled model <span>.osim 862 KB</span></a>
+  <a href="assets/mono.json" download>Viewer JSON <span>501 KB</span></a>
+  <a href="assets/soccer_kick_5_ik_marker_errors.sto" download>IK marker errors <span>.sto 14 KB</span></a>
+  <a href="assets/objective_function_plot.png">Optimization objective <span>.png</span></a>
+</div>
+
+<footer>
+  Generated 2026-08-12 by Claude Code · fork <a style="color:var(--series-1);text-decoration:none" href="https://github.com/vxbrandon/opencap-monocular">vxbrandon/opencap-monocular</a> ·
+  pipeline: WHAM · ViTPose · SMPL (non-commercial research use) · OpenSim · upstream by the Utah MoBL / OpenCap teams.
+</footer>
+</div>
+
+<div class="tooltip" id="tt"></div>
+
+<script>
+const S1 = "#3987e5", S2 = "#d95926";
+const MUTED = "#898781", GRID = "#2c2c2a", BASE = "#383835", INK = "#c3c2b7";
+const tt = document.getElementById("tt");
+function showTT(html, x, y) {
+  tt.innerHTML = html; tt.style.display = "block";
+  const r = tt.getBoundingClientRect();
+  tt.style.left = Math.min(x + 14, innerWidth - r.width - 8) + "px";
+  tt.style.top = Math.max(8, y - r.height - 12) + "px";
+}
+function hideTT() { tt.style.display = "none"; }
+
+/* ---------- latency bars ---------- */
+(function () {
+  const rows = [
+    { l: "WHAM (detect + 2D pose + 3D lift + SMPLify)", v: 86.8 },
+    { l: "Optimization + OpenSim scale/IK", v: 18.0 },
+    { l: "Model load (one-time)", v: 17.9 },
+    { l: "Visualizer JSON", v: 0.2 },
+  ];
+  const W = 960, RH = 34, PAD_L = 8, PAD_R = 60, H = rows.length * RH + 26;
+  const max = 90, iw = W - PAD_L - PAD_R;
+  let s = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto" role="img" aria-label="Latency by stage">`;
+  [0, 30, 60, 90].forEach(g => {
+    const x = PAD_L + g / max * iw;
+    s += `<line x1="${x}" y1="0" x2="${x}" y2="${H - 22}" stroke="${g ? GRID : BASE}" stroke-width="1"/>`;
+    s += `<text x="${x}" y="${H - 8}" fill="${MUTED}" font-size="11" text-anchor="middle">${g}s</text>`;
+  });
+  rows.forEach((r, i) => {
+    const y = i * RH + 6, bw = Math.max(2, r.v / max * iw), bh = 14;
+    s += `<rect class="lbar" data-i="${i}" x="${PAD_L}" y="${y + 12}" width="${bw}" height="${bh}" rx="4" fill="${S1}"/>`;
+    s += `<text x="${PAD_L}" y="${y + 8}" fill="${INK}" font-size="11.5">${r.l}</text>`;
+    s += `<text x="${PAD_L + bw + 8}" y="${y + 23}" fill="#ffffff" font-size="11.5" font-weight="600">${r.v}s</text>`;
+  });
+  s += "</svg>";
+  const el = document.getElementById("latency-chart");
+  el.innerHTML = s;
+  el.querySelectorAll(".lbar").forEach(b => {
+    b.addEventListener("mousemove", e => {
+      const r = rows[+b.dataset.i];
+      showTT(`${r.l}<br><b>${r.v} s</b> <span class="t">· ${(r.v / 122.9 * 100).toFixed(1)}% of total wall</span>`, e.clientX, e.clientY);
+    });
+    b.addEventListener("mouseleave", hideTT);
+  });
+})();
+
+/* ---------- joint-angle small multiples ---------- */
+fetch("assets/joint_series.json").then(r => r.json()).then(D => {
+  const t0 = D.t[0];
+  const T = D.t.map(x => x - t0);
+  const panels = [
+    { id: "chart-knee", title: "Knee flexion (°)", r: "knee_angle_r", l: "knee_angle_l" },
+    { id: "chart-hip", title: "Hip flexion (°)", r: "hip_flexion_r", l: "hip_flexion_l" },
+    { id: "chart-ankle", title: "Ankle angle (°)", r: "ankle_angle_r", l: "ankle_angle_l" },
+  ];
+  panels.forEach(p => {
+    const A = D[p.r], B = D[p.l];
+    const W = 330, H = 220, ML = 34, MR = 10, MT = 26, MB = 22;
+    const iw = W - ML - MR, ih = H - MT - MB;
+    const lo = Math.floor(Math.min(...A, ...B) / 20) * 20;
+    const hi = Math.ceil(Math.max(...A, ...B) / 20) * 20;
+    const X = i => ML + T[i] / T[T.length - 1] * iw;
+    const Y = v => MT + (hi - v) / (hi - lo) * ih;
+    let s = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto" role="img" aria-label="${p.title}">`;
+    s += `<text x="${ML}" y="15" fill="#ffffff" font-size="12" font-weight="600">${p.title}</text>`;
+    for (let g = lo; g <= hi; g += 40) {
+      s += `<line x1="${ML}" y1="${Y(g)}" x2="${W - MR}" y2="${Y(g)}" stroke="${GRID}" stroke-width="1"/>`;
+      s += `<text x="${ML - 5}" y="${Y(g) + 4}" fill="${MUTED}" font-size="10" text-anchor="end">${g}</text>`;
+    }
+    s += `<line x1="${ML}" y1="${MT + ih}" x2="${W - MR}" y2="${MT + ih}" stroke="${BASE}"/>`;
+    [0, 1, 2, 3].forEach(sec => {
+      const x = ML + sec / T[T.length - 1] * iw;
+      if (x <= W - MR) s += `<text x="${x}" y="${H - 6}" fill="${MUTED}" font-size="10" text-anchor="middle">${sec}s</text>`;
+    });
+    const path = arr => arr.map((v, i) => `${i ? "L" : "M"}${X(i).toFixed(1)},${Y(v).toFixed(1)}`).join("");
+    s += `<path d="${path(B)}" fill="none" stroke="${S2}" stroke-width="2"/>`;
+    s += `<path d="${path(A)}" fill="none" stroke="${S1}" stroke-width="2"/>`;
+    s += `<text x="${W - MR}" y="${Y(A[A.length - 1]) - 6}" fill="${S1}" font-size="10" text-anchor="end">R</text>`;
+    s += `<text x="${W - MR}" y="${Y(B[B.length - 1]) + 12}" fill="${S2}" font-size="10" text-anchor="end">L</text>`;
+    s += `<line id="${p.id}-x" y1="${MT}" y2="${MT + ih}" stroke="${MUTED}" stroke-width="1" opacity="0"/>`;
+    s += `<rect id="${p.id}-hit" x="${ML}" y="${MT}" width="${iw}" height="${ih}" fill="transparent"/>`;
+    s += "</svg>";
+    const el = document.getElementById(p.id);
+    el.innerHTML = s;
+    const svg = el.querySelector("svg"), hit = el.querySelector(`[id="${p.id}-hit"]`), xl = el.querySelector(`[id="${p.id}-x"]`);
+    hit.addEventListener("mousemove", e => {
+      const pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY;
+      const loc = pt.matrixTransform(svg.getScreenCTM().inverse());
+      const frac = Math.min(1, Math.max(0, (loc.x - ML) / iw));
+      const i = Math.round(frac * (T.length - 1));
+      xl.setAttribute("x1", X(i)); xl.setAttribute("x2", X(i)); xl.setAttribute("opacity", "0.5");
+      showTT(`<span class="t">t = ${T[i].toFixed(2)}s</span><br>` +
+        `<span style="color:${S1}">R</span> ${A[i].toFixed(1)}°&nbsp;&nbsp;<span style="color:${S2}">L</span> ${B[i].toFixed(1)}°`,
+        e.clientX, e.clientY);
+    });
+    hit.addEventListener("mouseleave", () => { xl.setAttribute("opacity", "0"); hideTT(); });
+  });
+});
+</script>
+</body>
+</html>
