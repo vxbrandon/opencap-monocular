@@ -181,6 +181,47 @@ The full per-frame SMPL parameters and key-pose OBJ meshes are downloadable belo
   </div>
 </div>
 
+<h2>GVHMR trial — the WHAM successor, measured on this clip</h2>
+<p class="lead">Following a 26-method survey of 2024–2026 monocular HMR research, <a style="color:var(--series-1)" href="https://github.com/zju3dv/GVHMR">GVHMR</a>
+(SIGGRAPH Asia 2024) was trialed on the same clip. It beats WHAM on every published world metric (foot-skate 3.5 vs 4.4 mm,
+trajectory error 2.0% vs 6.0%) — and on this A10G its <b style="color:var(--text-primary)">model stage ran in 0.63 s</b> vs WHAM's ~47 s
+(SMPLify included), with 39.3 s of shared preprocessing (YOLO + ViTPose + features) now clearly the bottleneck. It also tracked
+all 264 frames (WHAM: 202).</p>
+<div class="card">
+  <table>
+    <thead><tr><th>Stage</th><th class="num">WHAM path</th><th class="num">GVHMR path</th></tr></thead>
+    <tbody>
+      <tr><td>Preprocessing (detect + 2D pose + features)</td><td class="num">~40 s</td><td class="num">39.3 s</td></tr>
+      <tr><td>Motion model (3D lift, world frame)</td><td class="num">~47 s (incl. SMPLify refit)</td><td class="num"><b style="color:var(--text-primary)">0.63 s</b></td></tr>
+      <tr><td>Frames with pose</td><td class="num">202 / 264</td><td class="num">264 / 264</td></tr>
+    </tbody>
+  </table>
+</div>
+<div class="grid2" style="margin-top:16px">
+  <div>
+    <video controls muted playsinline preload="metadata" src="assets/wham_vs_gvhmr.mp4"></video>
+    <p class="vidcap">Side by side on the strike: WHAM/opencap-monocular overlay (left) vs GVHMR in-camera overlay (right).</p>
+  </div>
+  <div>
+    <video controls muted playsinline loop preload="metadata" src="assets/2_global.mp4"></video>
+    <p class="vidcap">GVHMR world-frame (gravity-view) motion. Full overlay: <a style="color:var(--series-1)" href="assets/1_incam.mp4">1_incam.mp4</a> · raw SMPL-X params: <a style="color:var(--series-1)" href="assets/hmr4d_results.pt">hmr4d_results.pt</a>.</p>
+  </div>
+</div>
+
+<h2>Stryke hero renders (heroshoot)</h2>
+<p class="lead">Styled render stage prototyped from GVHMR's world-frame SMPL-X output — the look intended for the
+stryke/heroshoot product: studio-dark arena, key + rim lighting, supersampled. Two v1 styles:</p>
+<div class="grid2" style="margin-top:16px">
+  <div>
+    <video controls muted playsinline loop preload="metadata" src="assets/stryke_mesh.mp4"></video>
+    <p class="vidcap">Solid body mesh — pearl-blue metallic material, orbit camera.</p>
+  </div>
+  <div>
+    <video controls muted playsinline loop preload="metadata" src="assets/stryke_hologram.mp4"></video>
+    <p class="vidcap">Hologram — translucent ghost body + glowing 22-joint skeleton.</p>
+  </div>
+</div>
+
 <h2>Readiness — what it took to run a fresh clone</h2>
 <p class="lead">The fork is now turn-key: six gaps were found on a clean <code>INSTALL_SLIM.md</code> install and fixed in
 <code>installation/bootstrap_fork.sh</code> + <code>installation/FORK_SETUP_NOTES.md</code> (commit <code>5bd4b88</code>).</p>
