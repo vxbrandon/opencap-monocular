@@ -68,6 +68,19 @@ Ubuntu images (incl. the AWS Deep Learning Base GPU AMI) don't ship it:
 sudo apt-get install -y ffmpeg
 ```
 
+## 6. SMPLX→SMPL transfer matrix path mismatch
+
+`utils/opensim/defaults.py` reads `WHAM/dataset/model_transfer/smplx_to_smpl.pkl`, but
+`fetch_demo_data.sh`'s auxiliary `body_models.tar.gz` delivers the identical file (dict with
+`matrix` of shape `(6890, 10475)`) as `WHAM/dataset/body_models/smplx2smpl.pkl`. Without the
+link, `smpl_to_trc` crashes after WHAM completes:
+
+```bash
+mkdir -p WHAM/dataset/model_transfer
+ln -s "$(pwd)/WHAM/dataset/body_models/smplx2smpl.pkl" \
+      WHAM/dataset/model_transfer/smplx_to_smpl.pkl
+```
+
 ---
 
 `installation/bootstrap_fork.sh` applies all of these in one shot after the standard

@@ -28,4 +28,11 @@ playwright install chromium
 # 5. ffprobe is required by utils/utilsCameraPy3.py before WHAM runs
 command -v ffprobe >/dev/null || sudo apt-get install -y ffmpeg
 
+# 6. utils/opensim/defaults.py expects the SMPLX->SMPL transfer matrix at
+#    WHAM/dataset/model_transfer/smplx_to_smpl.pkl; fetch_demo_data.sh delivers the
+#    same file as WHAM/dataset/body_models/smplx2smpl.pkl (dict with 'matrix' (6890,10475)).
+mkdir -p WHAM/dataset/model_transfer
+[ -e WHAM/dataset/model_transfer/smplx_to_smpl.pkl ] || \
+  ln -s "$(pwd)/WHAM/dataset/body_models/smplx2smpl.pkl" WHAM/dataset/model_transfer/smplx_to_smpl.pkl
+
 echo "bootstrap_fork.sh: all fixes applied."
