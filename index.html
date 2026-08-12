@@ -146,6 +146,29 @@ with hip flexion range 104° on the kicking side.</p>
   <span class="warn">Known artifact:</span> left-arm flexion shows an angle-wrap discontinuity (−379°) in a brief occluded stretch; excluded above.</p>
 </div>
 
+<h2>Body mesh &amp; skeleton</h2>
+<p class="lead">SMPL body mesh recovered by WHAM, rendered two ways: composited onto the original footage
+(official WHAM renderer, pytorch3d), and as a world-frame mesh + 24-joint skeleton with an orbiting camera.
+The full per-frame SMPL parameters and key-pose OBJ meshes are downloadable below.</p>
+<div class="grid2" style="margin-top:16px">
+  <div>
+    <video controls muted playsinline preload="metadata" src="assets/mesh_overlay_wham.mp4"></video>
+    <p class="vidcap">SMPL body mesh overlaid on the clip — WHAM's pytorch3d renderer, camera-frame fit.</p>
+  </div>
+  <div>
+    <video controls muted playsinline loop preload="metadata" src="assets/mesh_skeleton_3d.mp4"></video>
+    <p class="vidcap">World-frame body mesh (left) and 24-joint SMPL skeleton (right), synced orbiting camera.</p>
+  </div>
+</div>
+<div class="dl" style="margin-top:14px">
+  <a href="assets/smpl_params.npz" download>SMPL parameters <span>.npz 15 MB — pose/betas/trans + camera-frame vertices, 202 frames</span></a>
+  <a href="assets/keyframes/frame_0062_t0.00s.obj" download>Mesh OBJ — start <span>t0.00</span></a>
+  <a href="assets/keyframes/frame_0132_t1.32s.obj" download>OBJ — run-up <span>t1.32</span></a>
+  <a href="assets/keyframes/frame_0163_t1.91s.obj" download>OBJ — backswing <span>t1.91</span></a>
+  <a href="assets/keyframes/frame_0193_t2.47s.obj" download>OBJ — strike <span>t2.47</span></a>
+  <a href="assets/keyframes/frame_0263_t3.79s.obj" download>OBJ — follow-through <span>t3.79</span></a>
+</div>
+
 <h2>Video results</h2>
 <div class="grid2" style="margin-top:16px">
   <div>
@@ -167,6 +190,7 @@ with hip flexion range 104° on the kicking side.</p>
     <li><code>WHAM/demo.py</code> loads <code>vitpose+_huge_wholebody/wholebody.pth</code>, which <code>fetch_demo_data.sh</code> never downloads → sourced from the easy_ViTPose HF mirror (2.5 GB).</li>
     <li>SMPL body models require interactive MPI-license credentials → non-interactive research mirrors documented (non-commercial use).</li>
     <li><code>opencap-visualizer</code> + Playwright Chromium missing from <code>requirements_slim.txt</code> → installed; note: its remote-viewer recording currently fails against the deployed app (camera API mismatch), so the videos above are rendered directly from pipeline outputs.</li>
+    <li>pytorch3d (needed for WHAM's mesh-overlay renderer, dropped by INSTALL_SLIM) builds cleanly from source with a conda CUDA 11.8 toolchain: <code>conda install -c nvidia/label/cuda-11.8.0 cuda-toolkit</code>, then <code>CUDA_HOME=$CONDA_PREFIX pip install git+…pytorch3d.git@v0.7.5</code> (~10 min on 8 cores).</li>
     <li><code>ffprobe</code> is a hard prerequisite before WHAM (video rotation probe) → <code>apt install ffmpeg</code>.</li>
     <li><code>utils/opensim/defaults.py</code> expects <code>model_transfer/smplx_to_smpl.pkl</code>; the fetch script delivers the same matrix as <code>body_models/smplx2smpl.pkl</code> → symlinked.</li>
   </ul>
@@ -180,7 +204,7 @@ with hip flexion range 104° on the kicking side.</p>
       <tr><td>Instance</td><td>AWS g5.2xlarge (8 vCPU, 32 GB, NVIDIA A10G 24 GB), us-east-1, Deep Learning Base GPU AMI (Ubuntu 22.04)</td></tr>
       <tr><td>Stack</td><td>Python 3.9 · torch 2.1.2+cu118 · mmcv-full 1.7.2 · mmpose 0.24.0 (ViTPose) · OpenSim 4.4 · numpy 1.21.6</td></tr>
       <tr><td>Subject metadata</td><td>1.75 m / 70 kg / male (defaults — subject unknown); generic intrinsics fx=fy=1290 for the 734×1074 portrait crop</td></tr>
-      <tr><td>GPU lifetime</td><td>07:03–08:40 UTC (1 h 37 m, terminated after artifact download) ≈ <b style="color:var(--text-primary)">$1.96</b> on-demand</td></tr>
+      <tr><td>GPU lifetime</td><td>Run 1 (kinematics): 07:03–08:40 UTC ≈ $1.96 · Run 2 (mesh renders, scripted setup): 10:54–11:18 UTC ≈ $0.50 → <b style="color:var(--text-primary)">≈ $2.46</b> total on-demand</td></tr>
     </tbody>
   </table>
 </div>
