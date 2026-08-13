@@ -226,6 +226,31 @@ stryke/heroshoot product: studio-dark arena, key + rim lighting, supersampled. T
   </div>
 </div>
 
+<h2>Ball flight — metric 3D trajectory from the same clip</h2>
+<p class="lead">Prototype (2026-08-14): three competing 2D ball trackers (frame-differencing, Hough/white-mask, optical flow)
+were fused into one track (37 observations, frames 72–111, camera pan stabilized), then a physics-constrained fit —
+gravity as the metric ruler, launch point on the ground at the known contact frame, GVHMR body scale as cross-check —
+recovered the 3D flight. The fitted lateral curve (−5.1 m/s²) matches the clip's own caption: a topspin practice shot.</p>
+<div class="tiles">
+  <div class="tile"><div class="v">33.9 km/h</div><div class="k">launch speed</div><div class="n">uncertainty band 25–43 km/h</div></div>
+  <div class="tile"><div class="v">25.3°</div><div class="k">launch elevation</div><div class="n">azimuth 10.9° right</div></div>
+  <div class="tile"><div class="v">0.94 m</div><div class="k">apex height</div><div class="n">over ~10 m of flight in 0.76 s</div></div>
+  <div class="tile"><div class="v">12.9 px</div><div class="k">fit RMS reprojection</div><div class="n">37 tracked points, 3-tracker fusion</div></div>
+</div>
+<div class="grid2" style="margin-top:16px">
+  <div>
+    <img src="assets/trajectory_overlay.png" style="width:100%;border-radius:8px" alt="Fitted trajectory reprojected on footage">
+    <p class="vidcap">Fitted 3D trajectory reprojected onto the footage (orange) vs the fused 2D track (green dots).</p>
+  </div>
+  <div>
+    <img src="assets/trajectory_3d.png" style="width:100%;border-radius:8px;background:#fff" alt="Metric 3D trajectory plot">
+    <p class="vidcap">Metric world-frame flight: launch point, apex, kicker skeleton as scale reference. <a style="color:var(--series-1)" href="assets/trajectory3d.json">trajectory3d.json</a></p>
+  </div>
+</div>
+<p style="color:var(--muted);font-size:0.8rem;margin-top:10px">Honest caveats: single static uncalibrated camera → the ±9 km/h band comes from intrinsics ±15% and camera-tilt ±5° sweeps;
+the ball-to-foot speed ratio (0.46) is low versus solid instep strikes (1.1–1.4), consistent with a lofted topspin flick but also a reminder that
+foot-peak speed and ball speed carry independent errors. Recording at 240 fps slo-mo would collapse most of the tracking uncertainty.</p>
+
 <h2>Readiness — what it took to run a fresh clone</h2>
 <p class="lead">The fork is now turn-key: six gaps were found on a clean <code>INSTALL_SLIM.md</code> install and fixed in
 <code>installation/bootstrap_fork.sh</code> + <code>installation/FORK_SETUP_NOTES.md</code> (commit <code>5bd4b88</code>).</p>
