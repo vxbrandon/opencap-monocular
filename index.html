@@ -230,12 +230,14 @@ stryke/heroshoot product: studio-dark arena, key + rim lighting, supersampled. T
 <p class="lead">Prototype (2026-08-14): three competing 2D ball trackers (frame-differencing, Hough/white-mask, optical flow)
 were fused into one track (37 observations, frames 72–111, camera pan stabilized), then a physics-constrained fit —
 gravity as the metric ruler, launch point on the ground at the known contact frame, GVHMR body scale as cross-check —
-recovered the 3D flight. The fitted lateral curve (−5.1 m/s²) matches the clip's own caption: a topspin practice shot.</p>
+recovered the 3D flight. A pure ballistic model left a 65 px S-shaped residual; adding spin terms resolved it — the fit
+converged on heavy <b>topspin</b> with a leftward curl, independently corroborated by the clip's own caption ("탑스핀 사격 준비").
+This is a short ~7 m topspin training shot into a close goal, not a long match free kick — 40 km/h is the expected class.</p>
 <div class="tiles">
-  <div class="tile"><div class="v">33.9 km/h</div><div class="k">launch speed</div><div class="n">uncertainty band 25–43 km/h</div></div>
-  <div class="tile"><div class="v">25.3°</div><div class="k">launch elevation</div><div class="n">azimuth 10.9° right</div></div>
-  <div class="tile"><div class="v">0.94 m</div><div class="k">apex height</div><div class="n">over ~10 m of flight in 0.76 s</div></div>
-  <div class="tile"><div class="v">12.9 px</div><div class="k">fit RMS reprojection</div><div class="n">37 tracked points, 3-tracker fusion</div></div>
+  <div class="tile"><div class="v">40.6 km/h</div><div class="k">launch speed</div><div class="n">uncertainty band 25–45 km/h</div></div>
+  <div class="tile"><div class="v">27.1°</div><div class="k">launch elevation</div><div class="n">azimuth 11.9° right, curling left</div></div>
+  <div class="tile"><div class="v">0.94 m</div><div class="k">apex height</div><div class="n">~7 m carry in 0.76 s; camera solved at 1.99 m / 15° down</div></div>
+  <div class="tile"><div class="v">12.0 px</div><div class="k">fit RMS reprojection</div><div class="n">37 fused observations, 3-tracker agreement 5–10 px</div></div>
 </div>
 <div class="grid2" style="margin-top:16px">
   <div>
@@ -247,9 +249,9 @@ recovered the 3D flight. The fitted lateral curve (−5.1 m/s²) matches the cli
     <p class="vidcap">Metric world-frame flight: launch point, apex, kicker skeleton as scale reference. <a style="color:var(--series-1)" href="assets/trajectory3d.json">trajectory3d.json</a></p>
   </div>
 </div>
-<p style="color:var(--muted);font-size:0.8rem;margin-top:10px">Honest caveats: single static uncalibrated camera → the ±9 km/h band comes from intrinsics ±15% and camera-tilt ±5° sweeps;
-the ball-to-foot speed ratio (0.46) is low versus solid instep strikes (1.1–1.4), consistent with a lofted topspin flick but also a reminder that
-foot-peak speed and ball speed carry independent errors. Recording at 240 fps slo-mo would collapse most of the tracking uncertainty.</p>
+<p style="color:var(--muted);font-size:0.8rem;margin-top:10px">Honest caveats: single uncalibrated (and slightly panning) camera → the band spans the no-spin interpretation (25 km/h)
+through the preferred topspin model's intrinsics/tilt sweep (37–45 km/h); fitted spin forces (~0.9 g) likely absorb some ball-radius bias; assumes the clip is real-time.
+The recording-requirements spec (<code>TBG-DOCS/plans/23-stryke-heroshoot/ball-trajectory.md</code>) exists to shrink exactly these terms — original file (no screen recording), tripod, 240 fps, side-on view, goal in frame.</p>
 
 <h2>Readiness — what it took to run a fresh clone</h2>
 <p class="lead">The fork is now turn-key: six gaps were found on a clean <code>INSTALL_SLIM.md</code> install and fixed in

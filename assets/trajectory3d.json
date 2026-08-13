@@ -1,276 +1,246 @@
 {
- "launch_speed_kmh": 33.9,
- "launch_speed_ms": 9.42,
+ "launch_speed_kmh": 40.6,
+ "launch_speed_ms": 11.28,
  "launch_speed_band_kmh": [
-  24.6,
-  43.2
+  25.0,
+  45.2
  ],
- "elevation_deg": 25.3,
- "azimuth_deg": 10.9,
- "lateral_curve_accel_ms2": -5.05,
+ "launch_speed_band_note": "37.3-45.2 km/h from the preferred topspin model varying intrinsics +/-15% and camera tilt +/-5 deg; band floor extended to 25 km/h to cover the ballistic-only (no-spin) alternative interpretation (24.6-43.2 km/h), which fits the pixels but contradicts the measured ball apparent size",
+ "elevation_deg": 27.1,
+ "azimuth_deg": 11.9,
+ "spin_accel_ms2": {
+  "lateral_x": -6.56,
+  "vertical_extra": -6.2,
+  "note": "constant-accel Magnus approximation; ay<0 = topspin pressing the ball down (g_eff=16.0 m/s2). The clip caption literally says 'topspin shot'."
+ },
  "flight_points": [
   [
-   0.057,
+   0.086,
    0.11,
-   2.432,
+   3.473,
    0.0
   ],
   [
-   0.086,
-   0.185,
-   2.591,
+   0.124,
+   0.205,
+   3.659,
    0.019
   ],
   [
-   0.114,
-   0.256,
-   2.75,
+   0.16,
+   0.294,
+   3.846,
    0.038
   ],
   [
-   0.14,
-   0.323,
-   2.909,
+   0.193,
+   0.377,
+   4.033,
    0.057
   ],
   [
-   0.164,
-   0.388,
-   3.067,
+   0.224,
+   0.455,
+   4.219,
    0.076
   ],
   [
-   0.187,
-   0.448,
-   3.226,
+   0.253,
+   0.526,
+   4.406,
    0.095
   ],
   [
-   0.207,
-   0.505,
-   3.385,
+   0.279,
+   0.592,
+   4.593,
    0.114
   ],
   [
-   0.226,
-   0.558,
-   3.544,
+   0.303,
+   0.652,
+   4.779,
    0.133
   ],
   [
-   0.243,
-   0.608,
-   3.703,
+   0.324,
+   0.707,
+   4.966,
    0.152
   ],
   [
-   0.258,
-   0.655,
-   3.862,
+   0.343,
+   0.755,
+   5.152,
    0.171
   ],
   [
-   0.271,
-   0.698,
-   4.021,
+   0.36,
+   0.798,
+   5.339,
    0.19
   ],
   [
-   0.282,
-   0.737,
-   4.179,
+   0.374,
+   0.835,
+   5.526,
    0.209
   ],
   [
-   0.292,
-   0.773,
-   4.338,
+   0.386,
+   0.866,
+   5.712,
    0.228
   ],
   [
-   0.3,
-   0.805,
-   4.497,
+   0.396,
+   0.892,
+   5.899,
    0.247
   ],
   [
-   0.306,
-   0.833,
-   4.656,
+   0.403,
+   0.912,
+   6.086,
    0.2659
   ],
   [
-   0.31,
-   0.859,
-   4.815,
+   0.408,
+   0.925,
+   6.272,
    0.2849
   ],
   [
-   0.312,
-   0.88,
-   4.974,
+   0.411,
+   0.934,
+   6.459,
    0.3039
   ],
   [
-   0.312,
-   0.898,
-   5.133,
+   0.411,
+   0.936,
+   6.646,
    0.3229
   ],
   [
-   0.311,
-   0.913,
-   5.292,
+   0.409,
+   0.933,
+   6.832,
    0.3419
   ],
   [
-   0.308,
-   0.924,
-   5.45,
+   0.404,
+   0.923,
+   7.019,
    0.3609
   ],
   [
-   0.303,
-   0.931,
-   5.609,
+   0.397,
+   0.908,
+   7.205,
    0.3799
   ],
   [
-   0.296,
-   0.935,
-   5.768,
+   0.388,
+   0.888,
+   7.392,
    0.3989
   ],
   [
-   0.287,
-   0.935,
-   5.927,
+   0.376,
+   0.861,
+   7.579,
    0.4179
   ],
   [
-   0.277,
-   0.932,
-   6.086,
+   0.362,
+   0.829,
+   7.765,
    0.4369
   ],
   [
-   0.265,
-   0.925,
-   6.245,
+   0.346,
+   0.791,
+   7.952,
    0.4559
   ],
   [
-   0.251,
-   0.915,
-   6.404,
+   0.327,
+   0.747,
+   8.139,
    0.4749
   ],
   [
-   0.235,
-   0.901,
-   6.562,
+   0.306,
+   0.697,
+   8.325,
    0.4939
   ],
   [
-   0.217,
-   0.884,
-   6.721,
+   0.283,
+   0.642,
+   8.512,
    0.5129
   ],
   [
-   0.197,
-   0.863,
-   6.88,
+   0.257,
+   0.581,
+   8.699,
    0.5319
   ],
   [
-   0.176,
-   0.839,
-   7.039,
+   0.229,
+   0.514,
+   8.885,
    0.5509
   ],
   [
-   0.153,
-   0.811,
-   7.198,
+   0.198,
+   0.441,
+   9.072,
    0.5699
   ],
   [
-   0.128,
-   0.779,
-   7.357,
+   0.165,
+   0.362,
+   9.258,
    0.5889
   ],
   [
-   0.101,
-   0.744,
-   7.516,
+   0.13,
+   0.278,
+   9.445,
    0.6079
   ],
   [
-   0.072,
-   0.706,
-   7.675,
+   0.092,
+   0.188,
+   9.632,
    0.6269
   ],
   [
-   0.042,
-   0.663,
-   7.833,
+   0.052,
+   0.092,
+   9.818,
    0.6459
-  ],
-  [
-   0.009,
-   0.618,
-   7.992,
-   0.6649
-  ],
-  [
-   -0.025,
-   0.569,
-   8.151,
-   0.6839
-  ],
-  [
-   -0.061,
-   0.516,
-   8.31,
-   0.7029
-  ],
-  [
-   -0.099,
-   0.459,
-   8.469,
-   0.7219
-  ],
-  [
-   -0.138,
-   0.4,
-   8.628,
-   0.7409
-  ],
-  [
-   -0.18,
-   0.336,
-   8.787,
-   0.7598
   ]
  ],
- "fit_rms_px": 12.94,
+ "fit_rms_px": 11.98,
  "n_obs": 37,
  "camera": {
   "fx": 1290.0,
   "cx": 367.0,
   "cy": 537.0,
-  "pitch_deg": 7.16,
-  "height_m": 1.02,
-  "note": "world: X right, Y up, Z along optical-axis ground projection; camera at (0,h,0)"
+  "pitch_deg": 15.19,
+  "height_m": 1.99,
+  "note": "world: X right, Y up, Z = optical-axis ground projection; camera at (0,h,0); solved jointly with trajectory"
  },
  "launch_point_m": [
-  0.057,
+  0.086,
   0.11,
-  2.432
+  3.473
  ],
  "apex_height_m": 0.94,
- "method_notes": "Fused 3 tracker outputs (frame-diff/Hough/optical-flow; median-gated, conf-weighted) over post-contact frames 72-111; duplicated screen-recording frames (87,91,101) merged with midpoint timing. All pixels mapped to the f71 camera frame via per-frame similarity stabilization (LK+RANSAC on background; pan up to ~80 px, zoom negligible: scale 0.996-1.000). Model: p(t)=p0+v0 t+0.5 a t^2 with a=(ax_Magnus, -g, az_drag); az bounded <=0 (fit chose ~0); constant lateral ax=-5.1 m/s^2 was REQUIRED by the data (S-shaped 65-px horizontal residual without it; RMS 41.5->12.9 px) - the ball visibly curls left. p0 anchored on ground (y=0.11 m) at the pre-contact ball pixel; camera pitch + pre-contact depth z0 fitted jointly (h derived from ground constraint); robust Huber loss, conf weights. HONEST UNCERTAINTY: the two metric rulers disagree by ~30%: gravity+timing wants z0~2.4 m (24.6 km/h, rms 12.0) while the measured pre-contact ball radius (41.7 px, D=0.22 m) implies z0=3.41 m (radius-locked fit: 42.8 km/h, rms 16.9). The ratio is fx-independent; plausible causes: mild slow-motion retiming of the source clip (~1.2x would reconcile), smaller-than-assumed ball, or radius overestimation. Reported value = balanced fit (both cues); band [24.6, 43.2] km/h spans gravity-only, radius-locked, intrinsics +/-15% and tilt +/-5 deg scenarios (grid results in fit output). PLAUSIBILITY: this is NOT a full-length free kick - launch is ~3.4 m from the camera and the goal mouth is reached ~6 m downrange at f111 (apex ~0.9-1.7 m): a short lofted curler into a close goal. 30+/-10 km/h is physically consistent with that geometry (a 9.4 m/s, 25 deg launch carries ~7 m); the 60-110 km/h amateur free-kick range does not apply to this short chip. Timing: 52.642 fps screen recording assumed real-time; if the source clip is slow-mo retimed, true speed scales up accordingly (toward the upper half of the band)."
+ "method_notes": "Track: fused 3 independent 2D trackers (frame-diff, Hough/template, optical-flow), median-gated and confidence-weighted, frames 72-111 (37 obs after merging duplicated screen-recording frames 87/91/101 at midpoint timing). The camera inside the screen recording pans up to ~80 px (zoom negligible, scale 0.996-1.000), so every observation was mapped into the frame-71 camera via per-frame LK+RANSAC background stabilization before fitting. Model: p(t)=p0+v0*t+0.5*a*t^2, a=(ax, -(g-ay), az): constant-acceleration Magnus terms ax (side-spin) and ay (topspin), quadratic-drag az bounded <=0 (fit chose ~0). Both spin terms are data-driven: without ax the horizontal residual is an S-shaped 65 px (RMS 41.5 vs 12.0 px); without ay the fit cannot satisfy gravity timing and the measured ball apparent size simultaneously (they disagree ~30% in scale). With ay free, the fit converges to the ball-radius depth scale on its own (z0=3.7 m vs radius-implied 3.41 m), RMS 11.96 px (best of all variants), camera height 1.9 m (natural phone height), and ay=-6 m/s2 topspin - independently confirmed by the clip's own caption '[topspin shot ready]'. Anchors: p0 on the ground (y=0.11 m) at the pre-contact ball pixel; g=9.81 as timing ruler; pre-contact ball radius (41.7 px sharp, D=0.22 m) as depth ruler. Fitted ~6 m/s2 Magnus accelerations are 2-3x textbook values for ~11 m/s - they likely absorb some radius-measurement bias, so treat the spin split (vs speed) as qualitative. PLAUSIBILITY: launch ~3.6 m from camera, goal mouth reached ~9-10 m depth, apex ~0.95 m, flight 0.76 s. This is a short training free kick with heavy topspin into a close goal, NOT a 20-30 m match free kick, so the 60-110 km/h amateur free-kick range does not apply; 40 km/h (11 m/s) over a ~7 m carry is entirely plausible. Caveat: assumes the source clip is real-time; if it is slow-mo retimed, the true speed scales up by the retime factor.",
+ "flight_points_note": "truncated at t=0.646 s (frame ~105) where the constant-topspin model crosses the ground; the real ball is still airborne at f111 (keeper save follows) - constant-acceleration Magnus overstates late dip because spin/speed decay; launch parameters are set by the early/mid arc and are unaffected"
 }
