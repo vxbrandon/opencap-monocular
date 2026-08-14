@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Soccer Kick — 3D Body Mesh Viewer</title>
+<title>Soccer Kick — 3D Mesh + Ball Flight Viewer</title>
 <style>
   :root { color-scheme: dark; }
   * { margin: 0; box-sizing: border-box; }
@@ -34,8 +34,8 @@
 </head>
 <body>
 <header>
-  <h1>Soccer Kick — 3D Body Mesh (GVHMR, world frame)</h1>
-  <p>Recovered from a single phone clip · drag to orbit, scroll to zoom · <a href="index.html">← full report</a></p>
+  <h1>Soccer Kick — 3D Body Mesh + Ball Flight (GVHMR + physics fit)</h1>
+  <p>Recovered from a single phone clip · orange curve = fitted ball flight (40.6 km/h, topspin) · goal is schematic · drag to orbit, scroll to zoom · <a href="index.html">← full report</a></p>
 </header>
 <canvas id="stage"></canvas>
 <div id="bar">
@@ -72,6 +72,52 @@ const rim = new THREE.DirectionalLight(0x8fb4ff, 1.6); rim.position.set(-3, 3, -
 const grid = new THREE.GridHelper(12, 24, 0x2c2c2a, 0x22221f);
 scene.add(grid);
 
+// ---- ball flight + schematic goal ----
+const ballScene = await (await fetch("assets/mesh3d/ball_scene.json")).json();
+{
+  const pts = ballScene.points.map(p => new THREE.Vector3(p[0], p[1], p[2]));
+  const curve = new THREE.CatmullRomCurve3(pts);
+  const tube = new THREE.Mesh(
+    new THREE.TubeGeometry(curve, 120, 0.02, 8),
+    new THREE.MeshStandardMaterial({ color: 0xffa020, emissive: 0x7f3f00, emissiveIntensity: 0.6, roughness: 0.5 }));
+  scene.add(tube);
+  const g = ballScene.goal;
+  const dir = new THREE.Vector3(g.dir[0], 0, g.dir[2]).normalize();
+  const side = new THREE.Vector3(-dir.z, 0, dir.x);
+  const c = new THREE.Vector3(g.center[0], 0, g.center[2]);
+  const postMat = new THREE.MeshStandardMaterial({ color: 0xf2f2f2, roughness: 0.4 });
+  const post = (a, b) => {
+    const len = a.distanceTo(b);
+    const m = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, len, 10), postMat);
+    m.position.copy(a.clone().add(b).multiplyScalar(0.5));
+    m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), b.clone().sub(a).normalize());
+    scene.add(m);
+  };
+  const hw = g.width / 2, h = g.height;
+  const L = c.clone().add(side.clone().multiplyScalar(-hw));
+  const R = c.clone().add(side.clone().multiplyScalar(hw));
+  post(L, L.clone().setY(h));
+  post(R, R.clone().setY(h));
+  post(L.clone().setY(h), R.clone().setY(h));
+}
+const ballMesh = new THREE.Mesh(
+  new THREE.SphereGeometry(ballScene.ball_radius, 20, 16),
+  new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.35 }));
+ballMesh.visible = false;
+scene.add(ballMesh);
+function updateBall(tGlobal) {
+  const tf = tGlobal - ballScene.contact_t;
+  const P = ballScene.points;
+  if (tf < 0 || tf > P[P.length - 1][3]) { ballMesh.visible = tf >= 0; if (tf < 0) ballMesh.visible = false;
+    if (tf > P[P.length - 1][3]) { const q = P[P.length - 1]; ballMesh.position.set(q[0], q[1], q[2]); ballMesh.visible = true; }
+    return; }
+  let k = 0;
+  while (k < P.length - 2 && P[k + 1][3] < tf) k++;
+  const a = P[k], b = P[k + 1], u = (tf - a[3]) / Math.max(b[3] - a[3], 1e-6);
+  ballMesh.visible = true;
+  ballMesh.position.set(a[0] + u * (b[0] - a[0]), a[1] + u * (b[1] - a[1]), a[2] + u * (b[2] - a[2]));
+}
+
 const mat = new THREE.MeshStandardMaterial({ color: 0x6f8fd9, metalness: 0.25, roughness: 0.45 });
 const mesh = new THREE.Mesh(new THREE.BufferGeometry(), mat);
 scene.add(mesh);
@@ -96,7 +142,9 @@ function show(k) {
   const c = new THREE.Box3().setFromObject(mesh).getCenter(new THREE.Vector3());
   controls.target.lerp(new THREE.Vector3(c.x, 0.95, c.z), 0.35);
   seek.value = String(k);
-  tEl.textContent = `t = ${(IDX[k] / FPS).toFixed(2)}s`;
+  const tG = IDX[k] / FPS;
+  tEl.textContent = `t = ${tG.toFixed(2)}s`;
+  updateBall(tG);
 }
 show(0);
 
