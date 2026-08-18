@@ -60,7 +60,7 @@ renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x0d0e11);
 const camera = new THREE.PerspectiveCamera(42, 2, 0.05, 100);
-camera.position.set(2.8, 1.6, 3.4);
+camera.position.set(4.2, 2.0, 4.6);
 const controls = new OrbitControls(camera, canvas);
 controls.target.set(0, 0.95, 0);
 controls.enableDamping = true;
@@ -72,50 +72,121 @@ const rim = new THREE.DirectionalLight(0x8fb4ff, 1.6); rim.position.set(-3, 3, -
 const grid = new THREE.GridHelper(12, 24, 0x2c2c2a, 0x22221f);
 scene.add(grid);
 
-// ---- ball flight + schematic goal ----
+// ---- ball flight: speed-gradient path, trail, labels, goal with net ----
 const ballScene = await (await fetch("assets/mesh3d/ball_scene.json")).json();
+const P = ballScene.points;
 {
-  const pts = ballScene.points.map(p => new THREE.Vector3(p[0], p[1], p[2]));
+  const pts = P.map(q => new THREE.Vector3(q[0], q[1], q[2]));
   const curve = new THREE.CatmullRomCurve3(pts);
-  const tube = new THREE.Mesh(
-    new THREE.TubeGeometry(curve, 120, 0.02, 8),
-    new THREE.MeshStandardMaterial({ color: 0xffa020, emissive: 0x7f3f00, emissiveIntensity: 0.6, roughness: 0.5 }));
-  scene.add(tube);
-  const g = ballScene.goal;
-  const dir = new THREE.Vector3(g.dir[0], 0, g.dir[2]).normalize();
-  const side = new THREE.Vector3(-dir.z, 0, dir.x);
-  const c = new THREE.Vector3(g.center[0], 0, g.center[2]);
-  const postMat = new THREE.MeshStandardMaterial({ color: 0xf2f2f2, roughness: 0.4 });
-  const post = (a, b) => {
-    const len = a.distanceTo(b);
-    const m = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, len, 10), postMat);
-    m.position.copy(a.clone().add(b).multiplyScalar(0.5));
-    m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), b.clone().sub(a).normalize());
-    scene.add(m);
+  const speeds = P.map((q, i) => {
+    const a = P[Math.max(0, i - 1)], b = P[Math.min(P.length - 1, i + 1)];
+    const dt = Math.max(b[3] - a[3], 1e-6);
+    return Math.hypot(b[0] - a[0], b[1] - a[1], b[2] - a[2]) / dt;
+  });
+  const sMin = Math.min(...speeds), sMax = Math.max(...speeds);
+  const cold = new THREE.Color(0xffd166), hot = new THREE.Color(0xff5a1f);
+  const SEG = 160;
+  const tube = new THREE.TubeGeometry(curve, SEG, 0.024, 10);
+  const counts = tube.attributes.position.count;
+  const cols = new Float32Array(counts * 3);
+  for (let v = 0; v < counts; v++) {
+    const u = Math.min(SEG - 1, Math.floor(v / (counts / SEG))) / (SEG - 1);
+    const k = Math.min(P.length - 1, u * (P.length - 1));
+    const sp = speeds[Math.round(k)];
+    const c = cold.clone().lerp(hot, (sp - sMin) / Math.max(sMax - sMin, 1e-6));
+    cols[v * 3] = c.r; cols[v * 3 + 1] = c.g; cols[v * 3 + 2] = c.b;
+  }
+  tube.setAttribute("color", new THREE.BufferAttribute(cols, 3));
+  scene.add(new THREE.Mesh(tube, new THREE.MeshBasicMaterial({ vertexColors: true })));
+  scene.add(new THREE.Mesh(
+    new THREE.TubeGeometry(curve, SEG, 0.055, 10),
+    new THREE.MeshBasicMaterial({ color: 0xff7a2a, transparent: true, opacity: 0.13,
+      blending: THREE.AdditiveBlending, depthWrite: false })));
+  const gpts = pts.map(v => new THREE.Vector3(v.x, 0.006, v.z));
+  const gline = new THREE.Line(
+    new THREE.BufferGeometry().setFromPoints(gpts),
+    new THREE.LineDashedMaterial({ color: 0x8fb4ff, transparent: true, opacity: 0.45,
+      dashSize: 0.12, gapSize: 0.08 }));
+  gline.computeLineDistances();
+  scene.add(gline);
+  const ring = new THREE.Mesh(new THREE.RingGeometry(0.16, 0.2, 40),
+    new THREE.MeshBasicMaterial({ color: 0xffa020, transparent: true, opacity: 0.8, side: THREE.DoubleSide }));
+  ring.rotation.x = -Math.PI / 2;
+  ring.position.set(P[0][0], 0.012, P[0][2]);
+  scene.add(ring);
+  const label = (text, pos, scale = 1) => {
+    const cv = document.createElement("canvas"); cv.width = 512; cv.height = 128;
+    const g = cv.getContext("2d");
+    g.fillStyle = "rgba(20,22,28,0.82)"; g.beginPath();
+    g.roundRect(6, 14, 500, 100, 22); g.fill();
+    g.strokeStyle = "rgba(255,160,32,0.9)"; g.lineWidth = 3; g.stroke();
+    g.fillStyle = "#fff"; g.font = "600 52px system-ui, sans-serif";
+    g.textAlign = "center"; g.textBaseline = "middle"; g.fillText(text, 256, 66);
+    const sp = new THREE.Sprite(new THREE.SpriteMaterial({
+      map: new THREE.CanvasTexture(cv), transparent: true, depthTest: false }));
+    sp.position.copy(pos); sp.scale.set(1.5 * scale, 0.375 * scale, 1);
+    scene.add(sp);
   };
-  const hw = g.width / 2, h = g.height;
+  let apex = pts[0];
+  for (const v of pts) if (v.y > apex.y) apex = v;
+  label("40.6 km/h · 27\u00b0", pts[0].clone().add(new THREE.Vector3(0, 0.55, 0)), 1.15);
+  label(`apex ${apex.y.toFixed(2)} m`, apex.clone().add(new THREE.Vector3(0, 0.4, 0)), 0.85);
+  const g2 = ballScene.goal;
+  const dir = new THREE.Vector3(g2.dir[0], 0, g2.dir[2]).normalize();
+  const side = new THREE.Vector3(-dir.z, 0, dir.x);
+  const c = new THREE.Vector3(g2.center[0], 0, g2.center[2]);
+  const postMat = new THREE.MeshStandardMaterial({ color: 0xf5f5f5, metalness: 0.35, roughness: 0.3 });
+  const post = (a, b, r = 0.045) => {
+    const len = a.distanceTo(b);
+    const m2 = new THREE.Mesh(new THREE.CylinderGeometry(r, r, len, 12), postMat);
+    m2.position.copy(a.clone().add(b).multiplyScalar(0.5));
+    m2.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), b.clone().sub(a).normalize());
+    scene.add(m2);
+  };
+  const hw = g2.width / 2, gh = g2.height;
   const L = c.clone().add(side.clone().multiplyScalar(-hw));
   const R = c.clone().add(side.clone().multiplyScalar(hw));
-  post(L, L.clone().setY(h));
-  post(R, R.clone().setY(h));
-  post(L.clone().setY(h), R.clone().setY(h));
+  post(L, L.clone().setY(gh));
+  post(R, R.clone().setY(gh));
+  post(L.clone().setY(gh), R.clone().setY(gh));
+  const net = new THREE.Mesh(new THREE.PlaneGeometry(g2.width, gh, 16, 10),
+    new THREE.MeshBasicMaterial({ color: 0xbfd4ff, wireframe: true, transparent: true, opacity: 0.18 }));
+  net.position.set(c.x + dir.x * 0.12, gh / 2, c.z + dir.z * 0.12);
+  net.lookAt(net.position.clone().sub(dir));
+  scene.add(net);
 }
 const ballMesh = new THREE.Mesh(
-  new THREE.SphereGeometry(ballScene.ball_radius, 20, 16),
-  new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.35 }));
+  new THREE.SphereGeometry(ballScene.ball_radius, 24, 18),
+  new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.3, emissive: 0x222222 }));
 ballMesh.visible = false;
 scene.add(ballMesh);
-function updateBall(tGlobal) {
-  const tf = tGlobal - ballScene.contact_t;
-  const P = ballScene.points;
-  if (tf < 0 || tf > P[P.length - 1][3]) { ballMesh.visible = tf >= 0; if (tf < 0) ballMesh.visible = false;
-    if (tf > P[P.length - 1][3]) { const q = P[P.length - 1]; ballMesh.position.set(q[0], q[1], q[2]); ballMesh.visible = true; }
-    return; }
+const TRAIL_N = 14;
+const trail = [];
+for (let i = 0; i < TRAIL_N; i++) {
+  const m3 = new THREE.Mesh(new THREE.SphereGeometry(ballScene.ball_radius * (0.75 - 0.045 * i), 10, 8),
+    new THREE.MeshBasicMaterial({ color: 0xffc266, transparent: true,
+      opacity: 0.5 * (1 - i / TRAIL_N), blending: THREE.AdditiveBlending, depthWrite: false }));
+  m3.visible = false; scene.add(m3); trail.push(m3);
+}
+function ballPosAt(tf) {
+  if (tf <= 0) return null;
+  const last = P[P.length - 1];
+  if (tf >= last[3]) return new THREE.Vector3(last[0], last[1], last[2]);
   let k = 0;
   while (k < P.length - 2 && P[k + 1][3] < tf) k++;
   const a = P[k], b = P[k + 1], u = (tf - a[3]) / Math.max(b[3] - a[3], 1e-6);
-  ballMesh.visible = true;
-  ballMesh.position.set(a[0] + u * (b[0] - a[0]), a[1] + u * (b[1] - a[1]), a[2] + u * (b[2] - a[2]));
+  return new THREE.Vector3(a[0] + u * (b[0] - a[0]), a[1] + u * (b[1] - a[1]), a[2] + u * (b[2] - a[2]));
+}
+function updateBall(tGlobal) {
+  const tf = tGlobal - ballScene.contact_t;
+  const pos = ballPosAt(tf);
+  ballMesh.visible = !!pos;
+  if (pos) ballMesh.position.copy(pos);
+  for (let i = 0; i < TRAIL_N; i++) {
+    const tp = ballPosAt(tf - 0.022 * (i + 1));
+    trail[i].visible = !!tp && !!pos && tf <= P[P.length - 1][3] + 0.05;
+    if (tp) trail[i].position.copy(tp);
+  }
 }
 
 const mat = new THREE.MeshStandardMaterial({ color: 0x6f8fd9, metalness: 0.25, roughness: 0.45 });
@@ -139,12 +210,18 @@ seek.max = String(FRAMES.length - 1);
 function show(k) {
   cur = k;
   if (geos[k]) mesh.geometry = geos[k];
-  const c = new THREE.Box3().setFromObject(mesh).getCenter(new THREE.Vector3());
-  controls.target.lerp(new THREE.Vector3(c.x, 0.95, c.z), 0.35);
   seek.value = String(k);
   const tG = IDX[k] / FPS;
   tEl.textContent = `t = ${tG.toFixed(2)}s`;
   updateBall(tG);
+  // camera target: the player before contact, swinging toward the ball flight after
+  const c = new THREE.Box3().setFromObject(mesh).getCenter(new THREE.Vector3());
+  const tgt = new THREE.Vector3(c.x, 0.95, c.z);
+  if (ballMesh.visible) {
+    tgt.lerp(new THREE.Vector3(ballMesh.position.x,
+      Math.min(ballMesh.position.y + 0.2, 1.5), ballMesh.position.z), 0.55);
+  }
+  controls.target.lerp(tgt, 0.3);
 }
 show(0);
 
