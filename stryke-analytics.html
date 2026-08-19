@@ -1,0 +1,306 @@
+<title>STRYKE Data Branch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<style>
+:root{
+  --ink:#12181b; --ink-2:#33413f; --ink-3:#63736e;
+  --paper:#f1f4f0; --surface:#ffffff; --line:#d8ded6; --line-soft:#e7ebe4;
+  --turf:#2e7d5b; --turf-deep:#1f5c42; --turf-wash:#e4efe8;
+  --amber:#8a6a1f; --amber-wash:#f6eeda;
+  --critical:#a4453a; --critical-wash:#f8e7e4;
+  --shadow:0 1px 2px rgba(18,24,27,.06),0 8px 24px -16px rgba(18,24,27,.35);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ink:#e8ece7; --ink-2:#a9b6b0; --ink-3:#7d8b85;
+    --paper:#0e1315; --surface:#161d1f; --line:#2a3436; --line-soft:#212a2c;
+    --turf:#5fb98c; --turf-deep:#8ad3ac; --turf-wash:#16302554;
+    --amber:#d7ad4e; --amber-wash:#33290f66;
+    --critical:#e08376; --critical-wash:#3a201c66;
+    --shadow:0 1px 2px rgba(0,0,0,.5),0 10px 28px -18px rgba(0,0,0,.9);
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#e8ece7; --ink-2:#a9b6b0; --ink-3:#7d8b85;
+  --paper:#0e1315; --surface:#161d1f; --line:#2a3436; --line-soft:#212a2c;
+  --turf:#5fb98c; --turf-deep:#8ad3ac; --turf-wash:#16302554;
+  --amber:#d7ad4e; --amber-wash:#33290f66;
+  --critical:#e08376; --critical-wash:#3a201c66;
+  --shadow:0 1px 2px rgba(0,0,0,.5),0 10px 28px -18px rgba(0,0,0,.9);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
+  font-size:16px; line-height:1.62; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:60rem; margin:0 auto; padding:0 1.5rem 5rem}
+h1,h2,h3{font-family:"Barlow Condensed","Arial Narrow",sans-serif; text-wrap:balance; margin:0}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace; font-variant-numeric:tabular-nums}
+
+/* ---------- masthead ---------- */
+header{border-bottom:2px solid var(--ink); padding:3.5rem 0 1.25rem; margin-bottom:2.5rem}
+.eyebrow{
+  font-family:"IBM Plex Mono",monospace; font-size:.72rem; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--turf); font-weight:600;
+}
+h1{font-size:clamp(3rem,9vw,5.5rem); line-height:.92; font-weight:700; letter-spacing:-.02em; margin:.4rem 0 .6rem}
+.standfirst{font-size:1.13rem; color:var(--ink-2); max-width:44ch; margin:0}
+.meta{
+  display:flex; flex-wrap:wrap; gap:.4rem 1.5rem; margin-top:1.6rem;
+  font-family:"IBM Plex Mono",monospace; font-size:.76rem; color:var(--ink-3);
+}
+.meta b{color:var(--ink-2); font-weight:500}
+
+/* ---------- sections ---------- */
+section{margin-top:3.25rem}
+h2{
+  font-size:1.9rem; font-weight:600; letter-spacing:.01em;
+  padding-bottom:.4rem; border-bottom:1px solid var(--line); margin-bottom:.35rem;
+  display:flex; align-items:baseline; justify-content:space-between; gap:1rem;
+}
+h2 span{font-family:"IBM Plex Mono",monospace; font-size:.7rem; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--ink-3); font-weight:400}
+.lede{color:var(--ink-2); max-width:66ch; margin:.9rem 0 1.5rem}
+
+/* ---------- verdict pills ---------- */
+.pill{
+  display:inline-flex; align-items:center; gap:.4rem; flex:none;
+  font-family:"IBM Plex Mono",monospace; font-size:.66rem; font-weight:600;
+  letter-spacing:.1em; text-transform:uppercase; padding:.2rem .5rem;
+  border-radius:2px; border:1px solid;
+}
+.pill.measured{color:var(--turf-deep); background:var(--turf-wash); border-color:var(--turf)}
+.pill.refuses{color:var(--amber); background:var(--amber-wash); border-color:var(--amber)}
+.pill.open{color:var(--critical); background:var(--critical-wash); border-color:var(--critical)}
+
+/* ---------- the chain ---------- */
+.chain{display:flex; flex-direction:column; gap:0; margin:0; padding:0; list-style:none}
+.chain li{
+  display:grid; grid-template-columns:1.6rem 1fr auto; gap:1rem; align-items:baseline;
+  padding:.7rem 0; border-bottom:1px solid var(--line-soft);
+}
+.chain .n{font-family:"IBM Plex Mono",monospace; font-size:.75rem; color:var(--turf); font-weight:600}
+.chain .what{font-weight:500}
+.chain .what em{display:block; font-style:normal; font-weight:400; color:var(--ink-3); font-size:.88rem}
+.chain .t{font-family:"IBM Plex Mono",monospace; font-size:.82rem; color:var(--ink-2)}
+
+/* ---------- claim cards ---------- */
+.claims{display:grid; gap:1px; background:var(--line); border:1px solid var(--line); border-radius:3px; overflow:hidden}
+.claim{background:var(--surface); padding:1.15rem 1.25rem; display:grid; gap:.55rem}
+.claim-top{display:flex; gap:.75rem; align-items:baseline; justify-content:space-between; flex-wrap:wrap}
+.claim h3{font-size:1.22rem; font-weight:600; letter-spacing:.01em}
+.claim p{margin:0; color:var(--ink-2); font-size:.94rem}
+.figs{display:flex; flex-wrap:wrap; gap:.35rem .5rem; margin-top:.15rem}
+.fig{
+  font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums;
+  font-size:.78rem; padding:.16rem .45rem; border:1px solid var(--line);
+  border-radius:2px; color:var(--ink); background:var(--paper); white-space:nowrap;
+}
+.fig b{color:var(--turf-deep); font-weight:600}
+
+/* ---------- quote ---------- */
+blockquote{
+  margin:1.5rem 0; padding:1.1rem 1.3rem; background:var(--surface);
+  border-left:3px solid var(--turf); border-radius:0 3px 3px 0; box-shadow:var(--shadow);
+  font-size:1.02rem; color:var(--ink); line-height:1.55;
+}
+blockquote cite{display:block; margin-top:.6rem; font-style:normal;
+  font-family:"IBM Plex Mono",monospace; font-size:.72rem; color:var(--ink-3)}
+
+/* ---------- table ---------- */
+.tablewrap{overflow-x:auto; border:1px solid var(--line); border-radius:3px; background:var(--surface)}
+table{border-collapse:collapse; width:100%; min-width:34rem; font-size:.88rem}
+th,td{text-align:left; padding:.55rem .8rem; border-bottom:1px solid var(--line-soft)}
+th{
+  font-family:"IBM Plex Mono",monospace; font-size:.68rem; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--ink-3); font-weight:500;
+  border-bottom:1px solid var(--line); white-space:nowrap;
+}
+td.num{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; white-space:nowrap}
+tr:last-child td{border-bottom:none}
+.good{color:var(--turf-deep); font-weight:600}
+.bad{color:var(--critical); font-weight:600}
+
+/* ---------- asks ---------- */
+.asks{display:grid; gap:.85rem; margin-top:1.25rem}
+.ask{
+  display:grid; grid-template-columns:auto 1fr; gap:.9rem; align-items:start;
+  background:var(--surface); border:1px solid var(--line); border-left:3px solid var(--amber);
+  border-radius:0 3px 3px 0; padding:.95rem 1.15rem;
+}
+.ask .k{
+  font-family:"IBM Plex Mono",monospace; font-size:.68rem; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--amber); font-weight:600; padding-top:.2rem; white-space:nowrap;
+}
+.ask p{margin:0; font-size:.94rem; color:var(--ink-2)}
+.ask strong{color:var(--ink); font-weight:600}
+
+footer{margin-top:4rem; padding-top:1.25rem; border-top:1px solid var(--line);
+  font-family:"IBM Plex Mono",monospace; font-size:.72rem; color:var(--ink-3)}
+
+@media (max-width:33rem){
+  .chain li{grid-template-columns:1.4rem 1fr; }
+  .chain .t{grid-column:2; }
+  .ask{grid-template-columns:1fr; gap:.35rem}
+}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">Two phones → game state → coaching</div>
+  <h1>STRYKE<br>Data Branch</h1>
+  <p class="standfirst">A football match, filmed on two phones, turned into every player's position in metres — and then into coaching that names the decision, not the stat line.</p>
+  <div class="meta">
+    <span><b>Status</b> single-camera chain proven end to end</span>
+    <span><b>Tests</b> 151 assertions green</span>
+    <span><b>Blocked on</b> real footage</span>
+    <span><b>Updated</b> 19 Aug 2026</span>
+  </div>
+</header>
+
+<section>
+  <h2>The chain <span>one command, 6 stages</span></h2>
+  <p class="lede">Every stage below ran on a 30-second clip and produced output that the next stage consumed. A stage that exits cleanly but writes nothing is reported as <span class="mono">NO OUTPUT</span> rather than passing quietly — nearly every serious defect found in this build had exactly that shape.</p>
+  <ul class="chain">
+    <li><span class="n">01</span><span class="what">Game state<em>video → per-frame ball and players in pitch metres</em></span><span class="t">251 s</span></li>
+    <li><span class="n">02</span><span class="what">Track repair<em>splits identity switches, removes camera wobble</em></span><span class="t">&lt;1 s</span></li>
+    <li><span class="n">03</span><span class="what">Team identity<em>per-track kit colour → who plays for whom</em></span><span class="t">111 s</span></li>
+    <li><span class="n">04</span><span class="what">Events<em>possession, touch, pass, interception, carry</em></span><span class="t">&lt;1 s</span></li>
+    <li><span class="n">05</span><span class="what">Metrics<em>distance, speed, sprints, heatmaps, team shape</em></span><span class="t">2 s</span></li>
+    <li><span class="n">06</span><span class="what">Coaching<em>per-reception decision context → plain language</em></span><span class="t">1 s</span></li>
+  </ul>
+  <div class="figs" style="margin-top:1rem">
+    <span class="fig">750 frames</span>
+    <span class="fig">23 tracks</span>
+    <span class="fig">teams <b>11 / 10</b> + 2 unlabelled</span>
+    <span class="fig">11 possessions</span>
+    <span class="fig">28 touches</span>
+    <span class="fig">10 passes</span>
+    <span class="fig">8 carries</span>
+  </div>
+</section>
+
+<section>
+  <h2>What it produces <span>measured, not asserted</span></h2>
+  <div class="claims">
+
+    <div class="claim">
+      <div class="claim-top"><h3>Coaching that names the decision</h3><span class="pill measured">Measured</span></div>
+      <p>Deterministic rules — no language model — turn each reception into pressure, open space, teammate options ranked by metres gained, and what the player actually chose.</p>
+      <blockquote>“You received in the middle third, left channel with t13 2.9 m away on your front-left, closing in 0.7 s. You played backwards to t10 (−8.7 m) — t14 was open 21.0 m on your front-right for 19.0 m of progress.”<cite>verified against the source video at three timestamps: positions, pressure side and the open teammate all real on screen</cite></blockquote>
+    </div>
+
+    <div class="claim">
+      <div class="claim-top"><h3>Two-camera fusion beats both cameras</h3><span class="pill measured">Measured</span></div>
+      <p>A constant offset between the two independently-calibrated phones is measured and subtracted — up to 5 m in every direction tested, and refused rather than guessed beyond it, checked across 56 bias configurations. Association is sticky across time; positions are combined by expected accuracy, not averaged blindly. The ball is <em>selected</em> from the better camera rather than averaged — averaging puts it where it never was.</p>
+      <div class="figs">
+        <span class="fig">association <b>99.83 %</b></span>
+        <span class="fig">fused RMSE <b>0.637 m</b></span>
+        <span class="fig">vs 0.765 / 0.982 alone</span>
+        <span class="fig">coverage <b>+53 %</b></span>
+        <span class="fig">ball RMSE 2.98 m vs 8.15 averaged</span>
+        <span class="fig">bias corrected to <b>5 m</b>, refused beyond</span>
+      </div>
+    </div>
+
+    <div class="claim">
+      <div class="claim-top"><h3>Positions that survive physics</h3><span class="pill measured">Measured</span></div>
+      <p>Identity switches used to manufacture motion: a 7 m single-frame jump smeared by smoothing into 22 m/s of fake speed. Repair splits the track instead.</p>
+      <div class="figs">
+        <span class="fig">speed cap hits <b>52 % → 0 %</b></span>
+        <span class="fig">max speed <b>36.6 km/h</b></span>
+        <span class="fig">work rate 93.3 m/min</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <h2>What it refuses to say <span>the deliberate part</span></h2>
+  <p class="lede">A measurement system earns trust by declining. Each refusal below is enforced in code and pinned by a test, not left to discipline.</p>
+  <div class="claims">
+
+    <div class="claim">
+      <div class="claim-top"><h3>Which way the team is attacking</h3><span class="pill refuses">Refuses</span></div>
+      <p>Five signals in three independent families vote. On the demo clip only one family could vote, giving confidence 0.23 against a 0.35 bar — so every direction-dependent claim is suppressed rather than hedged. On a second clip the old single-statistic rule would have shipped the <em>inverted</em> answer, telling a player he went backwards when he went forwards.</p>
+      <div class="figs">
+        <span class="fig">clip A conf 0.23 — right, suppressed</span>
+        <span class="fig">clip B conf 0.13 — <b>wrong, refused</b></span>
+        <span class="fig">clip C conf 0.38 — right, hedged</span>
+      </div>
+    </div>
+
+    <div class="claim">
+      <div class="claim-top"><h3>Body orientation — “you received too square”</h3><span class="pill refuses">Refuses</span></div>
+      <p>The phrase this feature was named for is not produced. It needs pose estimation, which this pipeline does not have, so body angle, head direction and first-touch quality sit in a <span class="mono">not_claimed</span> list — and a test asserts they never appear in generated text.</p>
+    </div>
+
+    <div class="claim">
+      <div class="claim-top"><h3>Ball speed as a single number</h3><span class="pill refuses">Refuses</span></div>
+      <p>Speed scales one-for-one with depth, and depth is read from a ball-radius estimate whose published error is 24–28 %. Without a metric reference in frame the point value is withheld and only a band is shown. Launch angle is emitted as <em>four</em> camera solutions separated by half a pixel of fit error — where the old code picked one and printed it as fact.</p>
+      <div class="figs">
+        <span class="fig">band 22.9 – 48.5 km/h</span>
+        <span class="fig">point value <b>null</b></span>
+        <span class="fig">spin: direction only, no magnitude</span>
+      </div>
+    </div>
+
+    <div class="claim">
+      <div class="claim-top"><h3>Coordinates from a collapsed calibration</h3><span class="pill refuses">Refuses</span></div>
+      <p>A homography can pass every check — enough keypoints, converged, finite — and still map the whole image onto a puddle. On amateur footage 17 players were landing inside a 0.4 × 0.2 m box while the system reported 100 % calibration. Frames whose players collapse below a 5 m spread now emit nothing.</p>
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <h2>Open risks <span>known, unresolved</span></h2>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Risk</th><th>Evidence</th><th>State</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Detection collapses on amateur wide-angle footage</td>
+          <td class="num">calibration <span class="bad">9 %</span> vs 100 % broadcast</td>
+          <td>Keypoint retrain is the blocker</td>
+        </tr>
+        <tr>
+          <td>Absolute pitch position under camera bias</td>
+          <td class="num">residual = a whole-cloud shift</td>
+          <td>Geometry corrected; frame ambiguity reported</td>
+        </tr>
+        <tr>
+          <td>Detector weights are copyleft (AGPL)</td>
+          <td class="num">whole stack</td>
+          <td>Apache retrain before ship</td>
+        </tr>
+        <tr>
+          <td>No ground truth for any ball measurement</td>
+          <td class="num">zero radar-paired samples</td>
+          <td>Blocks every accuracy claim</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>What only you can supply <span>5 asks</span></h2>
+  <div class="asks">
+    <div class="ask"><span class="k">Footage</span><p><strong>90 seconds at a real pitch, one phone.</strong> Static, wide, slightly elevated, 4K30 at 0.5×, with the centre circle and one penalty box in frame. This measures the broadcast→phone domain shift that currently blocks the amateur path. Full recipe in <span class="mono">CAPTURE-SPEC.md §8</span>.</p></div>
+    <div class="ask"><span class="k">First run</span><p><strong>One command decides whether the two-phone maths transfers to your hardware.</strong> On a clip you believe is well aligned, run <span class="mono">t0_fuse.py --calibrate-chi2</span> before trusting any correction: it re-measures the two populations the safety threshold separates and prints its own go/no-go. Take that measurement deliberately on the first capture rather than inferring it later from a failure.</p></div>
+    <div class="ask"><span class="k">Rig</span><p><strong>The two-phone capture</strong> — phones ~80° apart with overlapping view. Ultrawide is mandatory, not preference: at that spread the main lens leaves a blind gap down the middle of the pitch.</p></div>
+    <div class="ask"><span class="k">Licensing</span><p><strong>Two emails, drafted and unsent.</strong> One to the Reco maintainer (AGPL, gates the video branch), one to the KIST authors (no licence at all, gates the code-copy route). Neither blocks current work.</p></div>
+    <div class="ask"><span class="k">Radar</span><p><strong>A ~$300 speed gun and 100 paired kicks.</strong> Nothing else can convert the ball module from self-consistent physics into a measurement — and every accuracy claim stays unvalidated until it exists.</p></div>
+  </div>
+</section>
+
+<footer>
+  Workstreams 23 &amp; 24 · repos <span class="mono">stryke-analytics</span>, <span class="mono">stryke-pipeline</span> · every figure on this page traced to a committed run
+</footer>
+</div>
