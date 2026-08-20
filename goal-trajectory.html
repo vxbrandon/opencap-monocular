@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='26'%3E%E2%9A%BD%3C/text%3E%3C/svg%3E">
+<title>Goal-Anchored Ball Flight — the focal is the only unknown</title>
+<style>
+  :root {
+    color-scheme: light;
+    --page: #f7f6f3;
+    --surface-1: #ffffff;
+    --surface-2: #efeee9;
+    --text-primary: #16161a;
+    --text-secondary: #4a4a52;
+    --muted: #78777f;
+    --border: rgba(0,0,0,0.12);
+    --grid: rgba(0,0,0,0.08);
+    --accent: #1f6fd0;
+    --hot: #e0521b;
+    --cold: #e0a815;
+    --good: #0b7d3e;
+    --warning: #a06a05;
+    --scene-bg: #eceae4;
+    --scene-grid-a: #cfcdc4;
+    --scene-grid-b: #dedcd4;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --page: #0d0d0d;
+      --surface-1: #1a1a19;
+      --surface-2: #242423;
+      --text-primary: #ffffff;
+      --text-secondary: #c3c2b7;
+      --muted: #898781;
+      --border: rgba(255,255,255,0.10);
+      --grid: rgba(255,255,255,0.07);
+      --accent: #3987e5;
+      --hot: #ff5a1f;
+      --cold: #ffd166;
+      --good: #35c46a;
+      --warning: #fab219;
+      --scene-bg: #0d0e11;
+      --scene-grid-a: #2c2c2a;
+      --scene-grid-b: #22221f;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --page: #0d0d0d;
+    --surface-1: #1a1a19;
+    --surface-2: #242423;
+    --text-primary: #ffffff;
+    --text-secondary: #c3c2b7;
+    --muted: #898781;
+    --border: rgba(255,255,255,0.10);
+    --grid: rgba(255,255,255,0.07);
+    --accent: #3987e5;
+    --hot: #ff5a1f;
+    --cold: #ffd166;
+    --good: #35c46a;
+    --warning: #fab219;
+    --scene-bg: #0d0e11;
+    --scene-grid-a: #2c2c2a;
+    --scene-grid-b: #22221f;
+  }
+
+  * { margin: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--page); color: var(--text-primary);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif; line-height: 1.55;
+  }
+  a { color: var(--accent); }
+  .num { font-variant-numeric: tabular-nums; }
+
+  header { padding: 22px 26px 14px; max-width: 1400px; margin: 0 auto; }
+  .kicker { color: var(--muted); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; }
+  h1 { font-size: 1.5rem; letter-spacing: -0.02em; margin-top: 6px; }
+  header .sub { color: var(--text-secondary); font-size: 0.92rem; margin-top: 8px; max-width: 88ch; }
+  .navlinks { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .navlinks a, .ghost {
+    font-size: 0.82rem; text-decoration: none; color: var(--text-primary);
+    border: 1px solid var(--border); border-radius: 999px; padding: 6px 14px;
+    background: var(--surface-1); cursor: pointer;
+  }
+  .navlinks a:hover, .ghost:hover { border-color: var(--accent); }
+
+  /* ---- stage ---- */
+  .stagewrap { position: relative; max-width: 1400px; margin: 0 auto; padding: 0 26px; }
+  #stage {
+    width: 100%; height: min(62vh, 620px); min-height: 380px; display: block;
+    border-radius: 12px; border: 1px solid var(--border); background: var(--scene-bg);
+    touch-action: none;
+  }
+  #fixedfacts {
+    position: absolute; top: 14px; left: 40px; width: 250px; z-index: 3;
+    background: color-mix(in srgb, var(--surface-1) 92%, transparent);
+    border: 1px solid var(--border); border-left: 3px solid var(--good);
+    border-radius: 10px; padding: 12px 14px; backdrop-filter: blur(8px);
+  }
+  #fixedfacts h3 { font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--good); }
+  #fixedfacts .why { color: var(--muted); font-size: 0.72rem; margin: 4px 0 10px; line-height: 1.4; }
+  .factrow { display: flex; justify-content: space-between; gap: 10px; font-size: 0.8rem; padding: 3px 0; }
+  .factrow span:first-child { color: var(--text-secondary); }
+  .factrow span:last-child { font-weight: 640; font-variant-numeric: tabular-nums; }
+  #legend {
+    position: absolute; bottom: 14px; left: 40px; z-index: 3; font-size: 0.74rem;
+    color: var(--text-secondary); background: color-mix(in srgb, var(--surface-1) 88%, transparent);
+    border: 1px solid var(--border); border-radius: 8px; padding: 7px 11px; backdrop-filter: blur(8px);
+  }
+  #legend .sw { display: inline-block; width: 22px; height: 4px; border-radius: 2px; vertical-align: middle; margin-right: 6px; }
+  @media (max-width: 780px) {
+    #fixedfacts { position: static; width: auto; margin-top: 12px; backdrop-filter: none; }
+    #legend { position: static; margin-top: 10px; display: block; }
+  }
+
+  /* ---- controls ---- */
+  .panel { max-width: 1400px; margin: 16px auto 0; padding: 0 26px; }
+  .ctrl {
+    background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px;
+  }
+  .ctrl.focal { border-left: 3px solid var(--hot); }
+  .ctrl h3 { font-size: 0.95rem; }
+  .ctrl .hint { color: var(--muted); font-size: 0.79rem; margin-top: 3px; line-height: 1.45; }
+  .sliderrow { display: flex; align-items: center; gap: 14px; margin-top: 14px; }
+  input[type=range] { flex: 1; accent-color: var(--hot); min-width: 120px; }
+  #timerow input[type=range] { accent-color: var(--accent); }
+  button.play {
+    background: var(--accent); color: #fff; border: 0; border-radius: 8px; padding: 7px 16px;
+    font-size: 0.85rem; font-weight: 600; cursor: pointer;
+  }
+  .readouts { display: grid; grid-template-columns: repeat(auto-fit, minmax(132px, 1fr)); gap: 10px; margin-top: 14px; }
+  .ro { background: var(--surface-2); border: 1px solid var(--border); border-radius: 9px; padding: 10px 12px; }
+  .ro .v { font-size: 1.3rem; font-weight: 660; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .ro .k { color: var(--muted); font-size: 0.74rem; margin-top: 1px; }
+  .ro.moves .v { color: var(--hot); }
+  .grid2 { display: grid; grid-template-columns: 1.15fr 1fr; gap: 16px; }
+  @media (max-width: 980px) { .grid2 { grid-template-columns: 1fr; } }
+
+  /* ---- prose ---- */
+  .wrap { max-width: 1000px; margin: 0 auto; padding: 8px 26px 80px; }
+  h2 { font-size: 1.12rem; margin: 40px 0 6px; letter-spacing: -0.01em; }
+  p.lead { color: var(--text-secondary); margin-bottom: 14px; max-width: 80ch; font-size: 0.93rem; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; }
+  .card + .card { margin-top: 14px; }
+  .card.warnbox { border-left: 3px solid var(--warning); }
+  .card.goodbox { border-left: 3px solid var(--good); }
+  .card h4 { font-size: 0.9rem; margin-bottom: 6px; }
+  .card p { color: var(--text-secondary); font-size: 0.89rem; }
+  .card p + p { margin-top: 8px; }
+  code { background: var(--surface-2); border-radius: 4px; padding: 1px 5px; font-size: 0.85em; }
+  .tblwrap { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: 0.86rem; min-width: 520px; }
+  th { text-align: left; color: var(--muted); font-weight: 500; padding: 6px 10px; border-bottom: 1px solid var(--border); }
+  td { padding: 7px 10px; border-bottom: 1px solid var(--grid); color: var(--text-secondary); }
+  td:first-child { color: var(--text-primary); }
+  td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
+  tr.here td { background: color-mix(in srgb, var(--hot) 12%, transparent); color: var(--text-primary); }
+  footer { margin-top: 50px; color: var(--muted); font-size: 0.8rem; border-top: 1px solid var(--grid); padding-top: 16px; }
+  #loading {
+    position: absolute; inset: 0 26px; display: grid; place-items: center; z-index: 4;
+    background: var(--scene-bg); border-radius: 12px; color: var(--muted); font-size: 0.88rem;
+  }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+
+<header>
+  <div class="kicker">Monocular ball flight · Stanford clip 0fff39f8</div>
+  <h1>One camera, one unknown: the focal length is the whole argument</h1>
+  <p class="sub">A real struck ball, tracked for <strong>21 detections</strong> across source frames 3359–3388, in front of a
+  <strong>measured</strong> full-size goal. The ball's sideways and upward motion is in true metres and does not depend on
+  the camera at all. Its <em>depth</em> — and therefore its speed — does. Drag the focal slider and watch exactly which
+  half of the answer moves.</p>
+  <div class="navlinks">
+    <a href="index.html">← Full report</a>
+    <a href="how-trajectory-works.html">How this is computed →</a>
+    <a href="mesh.html">Body-mesh viewer</a>
+    <button class="ghost" id="themebtn" type="button">Toggle theme</button>
+  </div>
+</header>
+
+<div class="stagewrap">
+  <canvas id="stage"></canvas>
+  <div id="loading">Building scene…</div>
+  <div id="fixedfacts">
+    <h3>Does not move</h3>
+    <div class="why">Lateral and vertical metres come from <code>X&nbsp;=&nbsp;(x−c<sub>x</sub>)·D/d</code>. The focal
+      cancels out of that expression, so these numbers survive any focal you pick.</div>
+    <div class="factrow"><span>Lateral speed</span><span>5.37 m/s</span></div>
+    <div class="factrow"><span>Vertical speed</span><span>0.66 m/s</span></div>
+    <div class="factrow"><span>Lateral travel</span><span>2.37 m</span></div>
+    <div class="factrow"><span>Rise to apex</span><span>0.39 m</span></div>
+    <div class="factrow"><span>Goal mouth</span><span>7.32 × 2.44 m</span></div>
+    <div class="factrow"><span>Detections</span><span>21</span></div>
+  </div>
+  <div id="legend">
+    <span class="sw" id="lg-grad"></span>flight path, coloured by <em>relative</em> speed &nbsp;·&nbsp;
+    <span class="sw" style="background:currentColor;opacity:0.45"></span>dashed = frames with no detection
+  </div>
+</div>
+
+<div class="panel">
+  <div class="grid2">
+    <div class="ctrl focal">
+      <h3>Focal length — the one genuinely unknown quantity</h3>
+      <p class="hint">The clip was re-encoded and Apple's lens metadata was stripped, so the camera's focal length is
+        unknown. <strong>Everything you can see along the depth axis scales with it; the shape does not.</strong>
+        The goal cannot rescue this: it is fronto-parallel in frame (post asymmetry 1.93 %, crossbar tilted 1.44°),
+        so a rectangle projects as a rectangle at <em>any</em> focal/depth pair. It fixes the depth once you choose a
+        focal — it cannot choose one.</p>
+      <div class="sliderrow">
+        <span class="num" style="color:var(--muted);font-size:0.78rem">500</span>
+        <input id="focal" type="range" min="500" max="1300" step="1" value="1155">
+        <span class="num" style="color:var(--muted);font-size:0.78rem">1300</span>
+        <button class="ghost" id="resetfocal" type="button">Default 1155</button>
+        <button class="ghost" id="fitview" type="button">Fit view</button>
+      </div>
+      <div class="readouts">
+        <div class="ro moves"><div class="v"><span id="ro-f">1155</span> px</div><div class="k">focal length</div></div>
+        <div class="ro moves"><div class="v"><span id="ro-fov">47.8</span>°</div><div class="k">horizontal field of view</div></div>
+        <div class="ro moves"><div class="v"><span id="ro-goal">33.4</span> m</div><div class="k">distance to the goal</div></div>
+        <div class="ro moves"><div class="v"><span id="ro-speed">93.4</span></div><div class="k">launch km/h <em>if</em> this focal</div></div>
+      </div>
+    </div>
+
+    <div class="ctrl">
+      <h3>Launch speed across the focal family</h3>
+      <p class="hint">The eight points are the published <code>focal_family</code> rows. The curve between them is the
+        same arithmetic, continuous. It bends because the 5.37 m/s of lateral and 0.66 m/s of vertical motion are fixed —
+        only the depth component grows with the focal.</p>
+      <div id="fam"></div>
+      <div id="timerow" class="sliderrow">
+        <button class="play" id="play" type="button">Pause</button>
+        <input id="seek" type="range" min="0" max="1000" value="0">
+        <span class="num" id="tlabel" style="color:var(--muted);font-size:0.8rem;min-width:74px;text-align:right">t = 0.000 s</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<h2>What you are looking at</h2>
+<p class="lead">Every number below is measured from the footage. Nothing here is a fit to an assumed scene.</p>
+
+<div class="card goodbox">
+  <h4>The goal is measured, not invented</h4>
+  <p>Its pixel corners were localised on a <strong>121-frame median</strong> image, and its real-world size is confirmed
+  <em>by the footage itself</em>: the projected mouth has aspect <strong>3.0044</strong> against the metric
+  <strong>3.0000</strong> of a regulation 7.32 × 2.44 m goal — a <strong>0.15 %</strong> agreement. This is the one solid
+  object in the scene. (The earlier viewer on this site drew a goal at an assumed 3 × 2 m and placed it where the fit
+  happened to end. That goal was decoration. This one is data.)</p>
+  <p>Only the mouth rectangle is measured. The netting drawn behind it is there so the frame reads as a goal.</p>
+</div>
+
+<div class="card warnbox">
+  <h4>What is <em>not</em> claimed</h4>
+  <p>No point speed. The pipeline refuses one on this clip and so does this page — the readout above is explicitly
+  conditional (<em>“launch km/h <strong>if</strong> this focal”</em>), and the honest answer is the whole family:
+  <strong>44 km/h at f = 500 through 105 km/h at f = 1300</strong>. The colour gradient along the path encodes
+  <em>relative</em> speed so the shape reads; no individual point value is asserted.</p>
+  <p>The vertical axis is the camera's own up direction, not gravity's. The camera's height and tilt are unsolved — a
+  separate solve on this clip puts it near ground level, tilted about 5° <em>up</em>. So the reference plane the shadow
+  falls on is drawn through the goal's feet for legibility; it is not a surveyed pitch, and “height above that plane”
+  is not height above the grass.</p>
+  <p>Depth is also the <em>noisiest</em> axis even at a fixed focal, because it is read off the ball's apparent diameter,
+  which the tracker reports to the nearest half pixel. Late in the flight the ball is about 9.5 px across, so half a
+  pixel is roughly 5 % of the depth. That is why the far end of the track wobbles toward and away from the camera in a
+  way no struck ball does.</p>
+</div>
+
+<div class="card">
+  <h4>Timing: 30.000 fps, and why the container is wrong</h4>
+  <p>Speeds were computed at <strong>30.000 fps</strong>. The container advertises an <code>r_frame_rate</code> of
+  <strong>31.58</strong>, which disagrees with the decoded rate by about <strong>+5.3 %</strong>. Since a speed scales
+  one-for-one with the assumed frame rate, believing the container would have inflated <em>every</em> speed on this page
+  by that much. The pipeline flags exactly this: it warns when the container's two rate statements disagree by more
+  than 2 %, and on this clip it sets <code>point_value_allowed = false</code> for that reason alone.</p>
+</div>
+
+<h2>The focal family, in full</h2>
+<p class="lead">The published table. Same pixels, eight hypotheses about the lens. The highlighted row is wherever the
+slider currently sits. Note that goal distance is exactly linear in the focal, while launch speed is not — that gap is
+the focal cancellation showing up in the arithmetic.</p>
+<div class="card">
+  <div class="tblwrap">
+  <table id="famtable">
+    <thead><tr><th>focal (px)</th><th class="n">h-FOV</th><th class="n">goal distance</th><th class="n">launch speed</th><th class="n">depth component</th></tr></thead>
+    <tbody></tbody>
+  </table>
+  </div>
+  <p style="color:var(--muted);font-size:0.79rem;margin-top:10px">Depth component = the along-axis part of the launch
+  velocity, 0.02196 m/s per pixel of focal. The lateral 5.37 m/s and vertical 0.66 m/s add to it in quadrature and never
+  change, which is why the speed column compresses at the low end.</p>
+</div>
+
+<h2>Provenance</h2>
+<div class="card">
+  <p>Track and scene: <code>out/goal_anchored/scene_measured.json</code> — 21 flight detections, contact at source frame
+  3354, flight frames 3359–3388, ball diameter taken as 0.22 m (FIFA size 5), default focal 1155.3 px.
+  Method, constants and the reasoning behind each refusal: <a href="how-trajectory-works.html">how the trajectory is
+  computed</a>.</p>
+</div>
+
+<footer>
+  Rendered from the measured scene file; three.js 0.160 via unpkg. Part of the
+  <a href="index.html">opencap-monocular</a> report. Ball flight measured 2026-08-21.
+</footer>
+</div>
+
+<script type="module">
+import * as THREE from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+/* ------------------------------------------------------------------ data
+   Verbatim from out/goal_anchored/scene_measured.json.
+   x, y are focal-free metres; z_over_f multiplies by the chosen focal.     */
+const PTS = [
+  [0.0,     0.486, -0.153, 0.009778, 22.5],
+  [0.0333,  0.806, -0.067, 0.012571, 17.5],
+  [0.1333,  1.540,  0.147, 0.015172, 14.5],
+  [0.1667,  1.709,  0.209, 0.016296, 13.5],
+  [0.2,     1.660,  0.207, 0.014667, 15.0],
+  [0.2333,  1.949,  0.238, 0.016296, 13.5],
+  [0.2667,  2.001,  0.220, 0.016296, 13.5],
+  [0.3,     2.089,  0.209, 0.016296, 13.5],
+  [0.3333,  2.548,  0.184, 0.019130, 11.5],
+  [0.3667,  2.460,  0.149, 0.018333, 12.0],
+  [0.4,     2.856,  0.124, 0.020952, 10.5],
+  [0.6667,  4.324, -0.915, 0.029333,  7.5],
+  [0.7,     3.828, -0.952, 0.025882,  8.5],
+  [0.7333,  3.124, -0.909, 0.020952, 10.5],
+  [0.7667,  3.282, -1.080, 0.022000, 10.0],
+  [0.8,     2.864, -1.052, 0.019130, 11.5],
+  [0.8333,  3.293, -1.364, 0.022000, 10.0],
+  [0.8667,  3.462, -1.591, 0.023158,  9.5],
+  [0.9,     3.460, -1.741, 0.023158,  9.5],
+  [0.9333,  3.642, -2.012, 0.024444,  9.0],
+  [0.9667,  3.497, -2.049, 0.023158,  9.5],
+];
+// Goal mouth corners: X and Y are focal-free and identical at every focal in
+// the published family; only the depth scales.  TL, TR, BR, BL.
+const GOAL_XY = { TL: [-3.20, -0.463], TR: [4.12, -0.278], BR: [4.12, -2.692], BL: [-3.20, -2.923] };
+const GOAL_ZF   = 33.42 / 1156;      // 0.0289100 — goal depth per pixel of focal
+const DEPTH_PER_F = 0.02196;         // m/s of along-axis launch speed per pixel of focal
+const V_LAT = 5.37, V_VERT = 0.66;   // focal-free launch components, m/s
+const HALF_W_PX = 512;               // image half-width implied by the published FOV column
+const DEFAULT_F = 1155.3;
+const T_END = PTS[PTS.length - 1][0];
+const GROUND = (GOAL_XY.BL[1] + GOAL_XY.BR[1]) / 2;   // -2.8075 m, the goal's feet
+const FAMILY = [
+  [500, 91.4, 14.45, 44.1], [600, 81.0, 17.35, 51.3], [700, 72.4, 20.24, 58.7],
+  [800, 65.2, 23.13, 66.2], [900, 59.3, 26.02, 73.8], [1000, 54.2, 28.91, 81.4],
+  [1156, 47.8, 33.42, 93.4], [1300, 43.0, 37.58, 104.6],
+];
+
+const fovOf   = f => 2 * Math.atan(HALF_W_PX / f) * 180 / Math.PI;
+const goalOf  = f => GOAL_ZF * f;
+const speedOf = f => Math.hypot(DEPTH_PER_F * f, V_LAT, V_VERT) * 3.6;
+
+/* --------------------------------------------------------------- segments
+   The track has two holes (frames with no detection). Never bridge them with
+   a solid line: the viewer should see where the tracker had nothing.        */
+const GAP = 0.05;                      // > 1.5 frame intervals at 30 fps
+const SEGMENTS = [];
+{
+  let start = 0;
+  for (let i = 1; i < PTS.length; i++) {
+    if (PTS[i][0] - PTS[i - 1][0] > GAP) { SEGMENTS.push([start, i - 1]); start = i; }
+  }
+  SEGMENTS.push([start, PTS.length - 1]);
+}
+const GAPS = [];
+for (let i = 1; i < PTS.length; i++) if (PTS[i][0] - PTS[i - 1][0] > GAP) GAPS.push(i);
+
+/* ------------------------------------------------------------------ theme */
+const root = document.documentElement;
+const prefersDark = matchMedia("(prefers-color-scheme: dark)");
+function themeIsDark() {
+  const t = root.getAttribute("data-theme");
+  return t ? t === "dark" : prefersDark.matches;
+}
+const css = n => getComputedStyle(root).getPropertyValue(n).trim();
+
+/* ------------------------------------------------------------------ three */
+const canvas = document.getElementById("stage");
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(40, 2, 0.05, 500);
+camera.position.set(-24, 8, -6);
+const controls = new OrbitControls(camera, canvas);
+controls.target.set(0.5, -1.2, 17);
+controls.enableDamping = true;
+controls.maxDistance = 260;
+
+scene.add(new THREE.HemisphereLight(0xbfd4ff, 0x22221f, 1.0));
+const key = new THREE.DirectionalLight(0xfff7e8, 1.9); key.position.set(6, 12, -6); scene.add(key);
+const rim = new THREE.DirectionalLight(0x8fb4ff, 1.1); rim.position.set(-8, 6, 14); scene.add(rim);
+
+const world = new THREE.Group();          // everything sits on the reference plane
+scene.add(world);
+
+/* ground reference plane + grid, drawn through the goal's feet.
+   2 m cells, centred on the corridor rather than on the camera. */
+let grid = null;
+function buildGrid() {
+  if (grid) { world.remove(grid); grid.geometry.dispose(); grid.material.dispose(); }
+  grid = new THREE.GridHelper(96, 48, new THREE.Color(css("--scene-grid-a")), new THREE.Color(css("--scene-grid-b")));
+  grid.position.set(0, GROUND, 20);
+  grid.material.transparent = true;
+  grid.material.opacity = 0.85;
+  world.add(grid);
+}
+
+/* ---------------------------------------------------------------- labels */
+function makeLabel(scale = 1, accent = "#ff8a3d") {
+  const cv = document.createElement("canvas");
+  cv.width = 640; cv.height = 128;
+  const tex = new THREE.CanvasTexture(cv);
+  const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false }));
+  sp.scale.set(3.4 * scale, 0.68 * scale, 1);
+  sp.renderOrder = 20;
+  world.add(sp);
+  return {
+    sprite: sp,
+    set(text, sub) {
+      const g = cv.getContext("2d");
+      g.clearRect(0, 0, 640, 128);
+      g.fillStyle = themeIsDark() ? "rgba(16,18,24,0.86)" : "rgba(255,255,255,0.92)";
+      g.beginPath(); g.roundRect(8, 10, 624, 108, 20); g.fill();
+      g.strokeStyle = accent; g.lineWidth = 3; g.stroke();
+      g.fillStyle = themeIsDark() ? "#ffffff" : "#16161a";
+      g.textAlign = "center";
+      if (sub) {
+        g.font = "700 44px system-ui, sans-serif"; g.fillText(text, 320, 56);
+        g.font = "500 30px system-ui, sans-serif";
+        g.fillStyle = themeIsDark() ? "#c3c2b7" : "#4a4a52";
+        g.fillText(sub, 320, 98);
+      } else {
+        g.font = "700 46px system-ui, sans-serif"; g.textBaseline = "middle"; g.fillText(text, 320, 66);
+      }
+      tex.needsUpdate = true;
+    },
+  };
+}
+const goalLabel   = makeLabel(1.15, "#35c46a");
+const launchLabel = makeLabel(1.15, "#ff8a3d");
+const camLabel    = makeLabel(0.85, "#8fb4ff");
+
+/* ------------------------------------------------------------------ goal */
+const postMat = new THREE.MeshStandardMaterial({ color: 0xf2f2ee, metalness: 0.25, roughness: 0.35 });
+const goalGroup = new THREE.Group(); world.add(goalGroup);
+function cylinderBetween(a, b, r, mat) {
+  const len = a.distanceTo(b);
+  const m = new THREE.Mesh(new THREE.CylinderGeometry(r, r, len, 14), mat);
+  m.position.copy(a).add(b).multiplyScalar(0.5);
+  m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), b.clone().sub(a).normalize());
+  return m;
+}
+let netMesh, netBack, netRoof;
+function buildGoal(depth) {
+  goalGroup.clear();
+  const V = k => new THREE.Vector3(GOAL_XY[k][0], GOAL_XY[k][1], depth);
+  const TL = V("TL"), TR = V("TR"), BR = V("BR"), BL = V("BL");
+  goalGroup.add(cylinderBetween(BL, TL, 0.06, postMat));   // left post
+  goalGroup.add(cylinderBetween(BR, TR, 0.06, postMat));   // right post
+  goalGroup.add(cylinderBetween(TL, TR, 0.06, postMat));   // crossbar
+
+  const netCol = themeIsDark() ? 0xbfd4ff : 0x5b6b86;
+  const netMat = new THREE.MeshBasicMaterial({ color: netCol, wireframe: true, transparent: true, opacity: 0.22 });
+  // mouth net
+  const mouth = new THREE.PlaneGeometry(1, 1, 18, 8);
+  netMesh = new THREE.Mesh(mouth, netMat);
+  netMesh.position.set((TL.x + TR.x) / 2, (TL.y + BL.y) / 2, depth + 0.05);
+  netMesh.scale.set(TR.x - TL.x, TL.y - BL.y, 1);
+  goalGroup.add(netMesh);
+  // shallow back, purely so the frame reads as a goal
+  const back = 1.6;
+  netBack = new THREE.Mesh(mouth, netMat.clone());
+  netBack.position.set((TL.x + TR.x) / 2, (TL.y + BL.y) / 2 - 0.35, depth + back);
+  netBack.scale.set(TR.x - TL.x, TL.y - BL.y - 0.7, 1);
+  goalGroup.add(netBack);
+  netRoof = new THREE.Mesh(mouth, netMat.clone());
+  netRoof.rotation.x = -Math.PI / 2 + 0.22;
+  netRoof.position.set((TL.x + TR.x) / 2, (TL.y + TR.y) / 2 - 0.18, depth + back / 2);
+  netRoof.scale.set(TR.x - TL.x, back, 1);
+  goalGroup.add(netRoof);
+}
+
+/* --------------------------------------------------- field-of-view wedge */
+const wedge = new THREE.Line(
+  new THREE.BufferGeometry(),
+  new THREE.LineBasicMaterial({ color: 0x8fb4ff, transparent: true, opacity: 0.34 }));
+const wedgeFill = new THREE.Mesh(
+  new THREE.BufferGeometry(),
+  new THREE.MeshBasicMaterial({ color: 0x8fb4ff, transparent: true, opacity: 0.055,
+    side: THREE.DoubleSide, depthWrite: false }));
+world.add(wedge); world.add(wedgeFill);
+function buildWedge(f, depth) {
+  const halfW = depth * HALF_W_PX / f;
+  const y = GROUND + 0.02;
+  const L = new THREE.Vector3(-halfW, y, depth), O = new THREE.Vector3(0, y, 0),
+        R = new THREE.Vector3(halfW, y, depth);
+  wedge.geometry.dispose();
+  wedge.geometry = new THREE.BufferGeometry().setFromPoints([L, O, R]);
+  wedgeFill.geometry.dispose();
+  wedgeFill.geometry = new THREE.BufferGeometry().setFromPoints([O, L, R]);
+}
+
+/* -------------------------------------------------------------- the path */
+const pathGroup = new THREE.Group(); world.add(pathGroup);
+const COLD = new THREE.Color(0xffd166), HOT = new THREE.Color(0xff5a1f);
+function pointAt(i, f) { return new THREE.Vector3(PTS[i][1], PTS[i][2], PTS[i][3] * f); }
+
+function buildPath(f) {
+  pathGroup.clear();
+  const P = PTS.map((_, i) => pointAt(i, f));
+  // relative speed per point, at this focal
+  const sp = P.map((_, i) => {
+    const a = P[Math.max(0, i - 1)], b = P[Math.min(P.length - 1, i + 1)];
+    const dt = Math.max(PTS[Math.min(PTS.length - 1, i + 1)][0] - PTS[Math.max(0, i - 1)][0], 1e-6);
+    return a.distanceTo(b) / dt;
+  });
+  const sMin = Math.min(...sp), sMax = Math.max(...sp);
+
+  for (const [a, b] of SEGMENTS) {
+    if (b === a) continue;
+    const pts = P.slice(a, b + 1);
+    const curve = new THREE.CatmullRomCurve3(pts);
+    const SEG = 120;
+    const tube = new THREE.TubeGeometry(curve, SEG, 0.075, 10);
+    const n = tube.attributes.position.count;
+    const cols = new Float32Array(n * 3);
+    for (let v = 0; v < n; v++) {
+      const u = Math.min(SEG, Math.floor(v / (n / (SEG + 1)))) / SEG;
+      const k = Math.round(a + u * (b - a));
+      const c = COLD.clone().lerp(HOT, (sp[k] - sMin) / Math.max(sMax - sMin, 1e-6));
+      cols[v * 3] = c.r; cols[v * 3 + 1] = c.g; cols[v * 3 + 2] = c.b;
+    }
+    tube.setAttribute("color", new THREE.BufferAttribute(cols, 3));
+    pathGroup.add(new THREE.Mesh(tube, new THREE.MeshBasicMaterial({ vertexColors: true })));
+    pathGroup.add(new THREE.Mesh(
+      new THREE.TubeGeometry(curve, SEG, 0.20, 8),
+      new THREE.MeshBasicMaterial({ color: 0xff7a2a, transparent: true, opacity: 0.10,
+        blending: THREE.AdditiveBlending, depthWrite: false })));
+  }
+  // holes in the track, drawn dashed so they cannot be mistaken for data
+  for (const i of GAPS) {
+    const l = new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints([P[i - 1], P[i]]),
+      new THREE.LineDashedMaterial({ color: 0xff9d5c, transparent: true, opacity: 0.6,
+        dashSize: 0.35, gapSize: 0.28 }));
+    l.computeLineDistances();
+    pathGroup.add(l);
+  }
+  // one dot per real detection
+  const dotGeo = new THREE.SphereGeometry(0.062, 10, 8);
+  const dotMat = new THREE.MeshBasicMaterial({ color: themeIsDark() ? 0xffffff : 0x24242a });
+  for (const p of P) { const d = new THREE.Mesh(dotGeo, dotMat); d.position.copy(p); pathGroup.add(d); }
+  // ground track
+  const gline = new THREE.Line(
+    new THREE.BufferGeometry().setFromPoints(P.map(v => new THREE.Vector3(v.x, GROUND + 0.01, v.z))),
+    new THREE.LineDashedMaterial({ color: 0x8fb4ff, transparent: true, opacity: 0.4, dashSize: 0.4, gapSize: 0.3 }));
+  gline.computeLineDistances();
+  pathGroup.add(gline);
+  // contact ring at the first detection
+  const ring = new THREE.Mesh(new THREE.RingGeometry(0.28, 0.36, 40),
+    new THREE.MeshBasicMaterial({ color: 0xffa020, transparent: true, opacity: 0.8, side: THREE.DoubleSide }));
+  ring.rotation.x = -Math.PI / 2;
+  ring.position.set(P[0].x, GROUND + 0.015, P[0].z);
+  pathGroup.add(ring);
+  return P;
+}
+
+/* -------------------------------------------------------- ball and trail */
+const ball = new THREE.Mesh(
+  new THREE.SphereGeometry(0.11, 26, 18),
+  new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.3, emissive: 0x2a2a2a, transparent: true }));
+world.add(ball);
+const TRAIL_N = 12, trail = [];
+for (let i = 0; i < TRAIL_N; i++) {
+  const m = new THREE.Mesh(new THREE.SphereGeometry(0.11 * (0.82 - 0.055 * i), 10, 8),
+    new THREE.MeshBasicMaterial({ color: 0xffc266, transparent: true, opacity: 0.45 * (1 - i / TRAIL_N),
+      blending: THREE.AdditiveBlending, depthWrite: false }));
+  world.add(m); trail.push(m);
+}
+const shadow = new THREE.Mesh(new THREE.CircleGeometry(0.17, 24),
+  new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.28 }));
+shadow.rotation.x = -Math.PI / 2;
+world.add(shadow);
+const drop = new THREE.Line(new THREE.BufferGeometry(),
+  new THREE.LineBasicMaterial({ color: 0x8fb4ff, transparent: true, opacity: 0.3 }));
+world.add(drop);
+
+let P3 = [];                 // current 3D points at the current focal
+function inGap(t) {
+  for (const i of GAPS) if (t > PTS[i - 1][0] && t < PTS[i][0]) return true;
+  return false;
+}
+function posAt(t) {
+  if (t <= 0) return P3[0].clone();
+  if (t >= T_END) return P3[P3.length - 1].clone();
+  let k = 0;
+  while (k < PTS.length - 2 && PTS[k + 1][0] < t) k++;
+  const u = (t - PTS[k][0]) / Math.max(PTS[k + 1][0] - PTS[k][0], 1e-6);
+  return P3[k].clone().lerp(P3[k + 1], u);
+}
+function placeBall(t) {
+  const p = posAt(t);
+  ball.position.copy(p);
+  ball.material.opacity = inGap(t) ? 0.35 : 1.0;      // dim where nothing was detected
+  for (let i = 0; i < TRAIL_N; i++) {
+    const tt = t - 0.018 * (i + 1);
+    trail[i].visible = tt > 0;
+    if (tt > 0) trail[i].position.copy(posAt(tt));
+  }
+  shadow.position.set(p.x, GROUND + 0.02, p.z);
+  const h = Math.max(p.y - GROUND, 0.001);
+  shadow.scale.setScalar(1 + h * 0.35);
+  shadow.material.opacity = 0.3 / (1 + h * 0.5);
+  drop.geometry.dispose();
+  drop.geometry = new THREE.BufferGeometry().setFromPoints([p, new THREE.Vector3(p.x, GROUND + 0.02, p.z)]);
+}
+
+/* ---------------------------------------------------------- framing
+   Fit the camera to the trajectory + goal. Called on load and from the
+   button only — never on a focal change, because the whole point is to
+   watch the scene stretch while the camera holds still.                 */
+const VIEW_DIR = new THREE.Vector3(-0.86, 0.34, -0.38).normalize();
+function fitView() {
+  const box = new THREE.Box3();
+  for (const p of P3) box.expandByPoint(p);
+  const gd = goalOf(focal);
+  for (const k of ["TL", "TR", "BR", "BL"]) box.expandByPoint(new THREE.Vector3(GOAL_XY[k][0], GOAL_XY[k][1], gd));
+  box.expandByPoint(new THREE.Vector3(0, GROUND, 0));       // keep the camera marker in shot
+  box.expandByScalar(0.9);
+  const c = box.getCenter(new THREE.Vector3());
+  const corners = [];
+  for (const X of [box.min.x, box.max.x]) for (const Y of [box.min.y, box.max.y])
+    for (const Z of [box.min.z, box.max.z]) corners.push(new THREE.Vector3(X, Y, Z));
+  let d = box.getSize(new THREE.Vector3()).length();
+  for (let it = 0; it < 8; it++) {
+    camera.position.copy(c).addScaledVector(VIEW_DIR, d);
+    camera.lookAt(c);
+    camera.updateMatrixWorld(true);
+    let maxr = 0;
+    for (const q of corners) {
+      const v = q.clone().project(camera);
+      maxr = Math.max(maxr, Math.abs(v.x), Math.abs(v.y));
+    }
+    if (!isFinite(maxr) || maxr <= 0) break;
+    d *= maxr / 0.94;
+  }
+  camera.position.copy(c).addScaledVector(VIEW_DIR, d);
+  controls.target.copy(c);
+  controls.update();
+}
+
+/* ------------------------------------------------------------- rebuild */
+let focal = DEFAULT_F;
+function rebuild() {
+  const depth = goalOf(focal);
+  buildGoal(depth);
+  buildWedge(focal, depth);
+  P3 = buildPath(focal);
+
+  goalLabel.set("Goal — measured 7.32 × 2.44 m", `${depth.toFixed(1)} m away at f = ${Math.round(focal)} px`);
+  goalLabel.sprite.position.set((GOAL_XY.TL[0] + GOAL_XY.TR[0]) / 2, GOAL_XY.TL[1] + 1.5, depth);
+  goalLabel.sprite.scale.set(6.2, 1.24, 1);
+
+  launchLabel.set(`${speedOf(focal).toFixed(1)} km/h`, "only if the focal is right");
+  launchLabel.sprite.position.set(P3[0].x - 0.6, P3[0].y + 1.9, P3[0].z);
+  launchLabel.sprite.scale.set(4.4, 0.88, 1);
+
+  camLabel.set("camera", `h-FOV ${fovOf(focal).toFixed(1)}°`);
+  camLabel.sprite.position.set(0, GROUND + 1.4, 0);
+  camLabel.sprite.scale.set(3.0, 0.6, 1);
+
+  document.getElementById("ro-f").textContent = Math.round(focal);
+  document.getElementById("ro-fov").textContent = fovOf(focal).toFixed(1);
+  document.getElementById("ro-goal").textContent = depth.toFixed(1);
+  document.getElementById("ro-speed").textContent = speedOf(focal).toFixed(1);
+  markFamily();
+  drawFamily();
+  placeBall(tNow);
+}
+
+/* ------------------------------------------------------- family widgets */
+const tbody = document.querySelector("#famtable tbody");
+tbody.innerHTML = FAMILY.map(([f, fov, d, s]) => `<tr data-f="${f}">
+  <td class="n">${f}</td><td class="n">${fov.toFixed(1)}°</td><td class="n">${d.toFixed(2)} m</td>
+  <td class="n">${s.toFixed(1)} km/h</td><td class="n">${(DEPTH_PER_F * f).toFixed(2)} m/s</td></tr>`).join("");
+function markFamily() {
+  let best = null, bd = Infinity;
+  for (const tr of tbody.rows) {
+    const d = Math.abs(+tr.dataset.f - focal);
+    if (d < bd) { bd = d; best = tr; }
+    tr.classList.remove("here");
+  }
+  if (best && bd <= 80) best.classList.add("here");
+}
+const famBox = document.getElementById("fam");
+function drawFamily() {
+  const W = 460, H = 150, m = { l: 42, r: 12, t: 12, b: 26 };
+  const x = f => m.l + (f - 500) / 800 * (W - m.l - m.r);
+  const yMin = 40, yMax = 110;
+  const y = s => H - m.b - (s - yMin) / (yMax - yMin) * (H - m.t - m.b);
+  let d = "";
+  for (let f = 500; f <= 1300; f += 10) d += `${d ? "L" : "M"}${x(f).toFixed(1)} ${y(speedOf(f)).toFixed(1)}`;
+  const dots = FAMILY.map(([f, , , s]) =>
+    `<circle cx="${x(f).toFixed(1)}" cy="${y(s).toFixed(1)}" r="3.2" fill="var(--accent)"/>`).join("");
+  const ticks = [500, 700, 900, 1100, 1300].map(f =>
+    `<text x="${x(f).toFixed(1)}" y="${H - 8}" fill="var(--muted)" font-size="10" text-anchor="middle">${f}</text>`).join("");
+  const yticks = [40, 60, 80, 100].map(s =>
+    `<g><line x1="${m.l}" y1="${y(s)}" x2="${W - m.r}" y2="${y(s)}" stroke="var(--grid)"/>
+       <text x="${m.l - 6}" y="${y(s) + 3}" fill="var(--muted)" font-size="10" text-anchor="end">${s}</text></g>`).join("");
+  famBox.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img"
+      aria-label="Launch speed against focal length, rising from 44 km/h at 500 px to 105 km/h at 1300 px">
+    ${yticks}
+    <path d="${d}" fill="none" stroke="var(--hot)" stroke-width="2.2"/>
+    ${dots}
+    <line x1="${x(focal).toFixed(1)}" y1="${m.t}" x2="${x(focal).toFixed(1)}" y2="${H - m.b}"
+          stroke="var(--hot)" stroke-width="1" stroke-dasharray="3 3"/>
+    <circle cx="${x(focal).toFixed(1)}" cy="${y(speedOf(focal)).toFixed(1)}" r="5" fill="var(--hot)"
+            stroke="var(--surface-1)" stroke-width="2"/>
+    ${ticks}
+    <text x="${m.l}" y="${m.t + 9}" fill="var(--muted)" font-size="10">km/h</text>
+    <text x="${W - m.r}" y="${H - 8}" fill="var(--muted)" font-size="10" text-anchor="end">focal (px)</text>
+  </svg>`;
+}
+
+/* -------------------------------------------------------------- controls */
+const focalEl = document.getElementById("focal");
+let pending = false;
+focalEl.addEventListener("input", () => {
+  focal = +focalEl.value;
+  if (!pending) { pending = true; requestAnimationFrame(() => { pending = false; rebuild(); }); }
+});
+document.getElementById("resetfocal").onclick = () => {
+  focal = DEFAULT_F; focalEl.value = String(Math.round(DEFAULT_F)); rebuild();
+};
+
+let tNow = 0, playing = true, lastNow = performance.now();
+const seek = document.getElementById("seek"), tlabel = document.getElementById("tlabel"),
+      playBtn = document.getElementById("play");
+playBtn.onclick = () => { playing = !playing; playBtn.textContent = playing ? "Pause" : "Play"; };
+seek.addEventListener("input", () => {
+  playing = false; playBtn.textContent = "Play";
+  tNow = (+seek.value / 1000) * T_END;
+  placeBall(tNow); tlabel.textContent = `t = ${tNow.toFixed(3)} s`;
+});
+
+document.getElementById("themebtn").onclick = () => {
+  root.setAttribute("data-theme", themeIsDark() ? "light" : "dark");
+  applyTheme();
+};
+function applyTheme() {
+  scene.background = new THREE.Color(css("--scene-bg"));
+  buildGrid();
+  document.getElementById("lg-grad").style.background =
+    `linear-gradient(90deg, ${css("--cold")}, ${css("--hot")})`;
+  rebuild();
+}
+prefersDark.addEventListener("change", () => { if (!root.getAttribute("data-theme")) applyTheme(); });
+
+/* ------------------------------------------------------------------ loop */
+function resize() {
+  const w = canvas.clientWidth, h = canvas.clientHeight;
+  const r = renderer.getPixelRatio();
+  if (canvas.width !== Math.round(w * r) || canvas.height !== Math.round(h * r)) {
+    renderer.setSize(w, h, false);
+    camera.aspect = w / Math.max(h, 1); camera.updateProjectionMatrix();
+  }
+}
+applyTheme();
+resize();
+fitView();
+document.getElementById("fitview").onclick = fitView;
+document.getElementById("loading").style.display = "none";
+
+(function loop(now) {
+  requestAnimationFrame(loop);
+  resize();
+  const dt = Math.min((now - lastNow) / 1000, 0.1); lastNow = now;
+  if (playing) {
+    tNow += dt * 0.45;                       // slow enough to read
+    if (tNow > T_END + 0.6) tNow = 0;
+    placeBall(Math.min(tNow, T_END));
+    seek.value = String(Math.round(Math.min(tNow / T_END, 1) * 1000));
+    tlabel.textContent = `t = ${Math.min(tNow, T_END).toFixed(3)} s`;
+  }
+  controls.update();
+  renderer.render(scene, camera);
+})(performance.now());
+</script>
+</body>
+</html>

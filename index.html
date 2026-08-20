@@ -154,6 +154,22 @@ with hip flexion range 104° on the kicking side.</p>
   <b>🧊 Interactive 3D viewer:</b>&nbsp; <a style="color:var(--series-1)" href="mesh.html">animated body mesh + ball flight + goal (orbit/zoom/scrub) →</a>
 </div>
 
+<div class="card" style="margin-top:20px;border-color:#fab219">
+  <b>⚽ Goal-anchored ball flight — <span style="color:var(--warning)">drag the focal slider</span>:</b>&nbsp;
+  <a style="color:var(--series-1)" href="goal-trajectory.html">21 real detections in front of a measured full-size goal →</a>
+  <p style="color:var(--text-secondary);font-size:0.87rem;margin-top:8px">The successor to the viewer above, and a much
+  stronger scene: the goal is <b>measured</b> at its true 7.32 × 2.44 m (confirmed to 0.15 % from the footage's own
+  projected aspect), not invented at an assumed 3 × 2 m. The camera's focal length is unknown, so depth and speed are a
+  one-parameter family — 44 km/h at f = 500 through 105 km/h at f = 1300 — and the slider makes that the interaction
+  rather than hiding it behind one number. The lateral and vertical metres do not move when you drag it, because the
+  focal cancels out of them.</p>
+  <p style="color:var(--text-secondary);font-size:0.87rem;margin-top:8px">Method, constants and refusals:
+  <a style="color:var(--series-1)" href="how-trajectory-works.html">how the trajectory is computed →</a> — the
+  focal-cancellation identity, the two surviving rulers, why the <b>gravity ruler was deleted</b> on 2026-08-21 (it
+  solved to 14.69 m/s², 1.5× real gravity), the drag crisis, the camera-basin ambiguity, and what the system refuses to
+  claim.</p>
+</div>
+
 <h2>Body mesh &amp; skeleton</h2>
 <p class="lead">SMPL body mesh recovered by WHAM, rendered two ways: composited onto the original footage
 (official WHAM renderer, pytorch3d), and as a world-frame mesh + 24-joint skeleton with an orbiting camera.

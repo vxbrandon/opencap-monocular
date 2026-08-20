@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='26'%3E%E2%9A%BD%3C/text%3E%3C/svg%3E">
+<title>How the ball trajectory is computed — and what it refuses to claim</title>
+<style>
+  :root {
+    color-scheme: light;
+    --page: #f7f6f3; --surface-1: #ffffff; --surface-2: #efeee9;
+    --text-primary: #16161a; --text-secondary: #4a4a52; --muted: #78777f;
+    --border: rgba(0,0,0,0.12); --grid: rgba(0,0,0,0.08);
+    --accent: #1f6fd0; --hot: #e0521b; --cold: #c98f0a; --good: #0b7d3e;
+    --warning: #a06a05; --danger: #c22f2f; --panel: #f1efe9;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --page: #0d0d0d; --surface-1: #1a1a19; --surface-2: #242423;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --muted: #898781;
+      --border: rgba(255,255,255,0.10); --grid: rgba(255,255,255,0.07);
+      --accent: #3987e5; --hot: #ff5a1f; --cold: #ffd166; --good: #35c46a;
+      --warning: #fab219; --danger: #ef5350; --panel: #16181c;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface-1: #1a1a19; --surface-2: #242423;
+    --text-primary: #ffffff; --text-secondary: #c3c2b7; --muted: #898781;
+    --border: rgba(255,255,255,0.10); --grid: rgba(255,255,255,0.07);
+    --accent: #3987e5; --hot: #ff5a1f; --cold: #ffd166; --good: #35c46a;
+    --warning: #fab219; --danger: #ef5350; --panel: #16181c;
+  }
+
+  * { margin: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--page); color: var(--text-primary);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif; line-height: 1.6;
+  }
+  a { color: var(--accent); }
+  .wrap { max-width: 940px; margin: 0 auto; padding: 40px 24px 90px; }
+
+  .kicker { color: var(--muted); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; }
+  h1 { font-size: 1.75rem; letter-spacing: -0.025em; margin-top: 6px; }
+  header .sub { color: var(--text-secondary); margin-top: 10px; max-width: 76ch; }
+  .navlinks { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+  .navlinks a, .ghost {
+    font-size: 0.82rem; text-decoration: none; color: var(--text-primary); background: var(--surface-1);
+    border: 1px solid var(--border); border-radius: 999px; padding: 6px 14px; cursor: pointer;
+    font-family: inherit;
+  }
+  .navlinks a:hover, .ghost:hover { border-color: var(--accent); }
+
+  h2 {
+    font-size: 1.28rem; letter-spacing: -0.015em; margin: 54px 0 8px;
+    padding-top: 18px; border-top: 1px solid var(--grid);
+  }
+  h2 .n { color: var(--muted); font-weight: 500; margin-right: 10px; font-variant-numeric: tabular-nums; }
+  h3 { font-size: 0.98rem; margin: 26px 0 6px; }
+  p { color: var(--text-secondary); max-width: 76ch; }
+  p + p { margin-top: 12px; }
+  strong { color: var(--text-primary); font-weight: 640; }
+  ul { color: var(--text-secondary); margin: 10px 0 0 20px; max-width: 76ch; }
+  li { margin-bottom: 8px; }
+  code {
+    background: var(--surface-2); border-radius: 4px; padding: 1px 5px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.85em;
+  }
+  .src { color: var(--muted); font-size: 0.78rem; font-family: ui-monospace, Menlo, monospace; }
+
+  figure {
+    margin: 22px 0; background: var(--panel); border: 1px solid var(--border);
+    border-radius: 12px; padding: 18px 18px 12px; overflow-x: auto;
+  }
+  figure svg { display: block; width: 100%; height: auto; min-width: 460px; }
+  figcaption { color: var(--muted); font-size: 0.8rem; margin-top: 12px; line-height: 1.5; max-width: 78ch; }
+  svg text { font-family: system-ui, -apple-system, sans-serif; }
+  svg .lbl { font-size: 12px; fill: var(--text-secondary); }
+  svg .lblq { font-size: 11px; fill: var(--muted); }
+  svg .big { font-size: 15px; font-weight: 650; fill: var(--text-primary); }
+  svg .mono { font-family: ui-monospace, Menlo, monospace; font-size: 13px; fill: var(--text-primary); }
+
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; margin: 18px 0; }
+  .card h4 { font-size: 0.92rem; margin-bottom: 6px; }
+  .card p { font-size: 0.9rem; }
+  .card.warnbox { border-left: 3px solid var(--warning); }
+  .card.dangerbox { border-left: 3px solid var(--danger); }
+  .card.goodbox { border-left: 3px solid var(--good); }
+  blockquote {
+    margin: 16px 0; padding: 12px 16px; border-left: 3px solid var(--muted);
+    background: var(--surface-2); border-radius: 0 8px 8px 0;
+    color: var(--text-secondary); font-size: 0.9rem;
+  }
+  blockquote p { color: inherit; }
+  blockquote .who { display: block; margin-top: 8px; color: var(--muted); font-size: 0.78rem;
+                    font-family: ui-monospace, Menlo, monospace; }
+
+  .tblwrap { overflow-x: auto; margin: 16px 0; }
+  table { border-collapse: collapse; width: 100%; font-size: 0.86rem; min-width: 480px; }
+  th { text-align: left; color: var(--muted); font-weight: 500; padding: 7px 10px; border-bottom: 1px solid var(--border); }
+  td { padding: 7px 10px; border-bottom: 1px solid var(--grid); color: var(--text-secondary); }
+  td:first-child { color: var(--text-primary); }
+  td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
+
+  .toc { background: var(--surface-1); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin-top: 26px; }
+  .toc ol { margin: 8px 0 0 20px; color: var(--text-secondary); font-size: 0.89rem; }
+  .toc li { margin-bottom: 4px; }
+  .toc a { text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+  footer { margin-top: 60px; color: var(--muted); font-size: 0.8rem; border-top: 1px solid var(--grid); padding-top: 16px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="kicker">Method · stryke-pipeline / pipeline/ball.py</div>
+  <h1>How the ball trajectory is computed</h1>
+  <p class="sub">A single phone camera cannot see depth. Everything below is about what you can still measure once you
+  accept that — which turns out to be more than you would guess and less than a product would like. It also covers the
+  ruler this pipeline <em>deleted</em>, which is the most instructive thing in it.</p>
+  <div class="navlinks">
+    <a href="goal-trajectory.html">← Interactive 3D viewer</a>
+    <a href="index.html">Full report</a>
+    <button class="ghost" id="themebtn" type="button">Toggle theme</button>
+  </div>
+  <div class="toc">
+    <strong style="font-size:0.85rem">On this page</strong>
+    <ol>
+      <li><a href="#depth">The one thing one camera cannot see</a></li>
+      <li><a href="#cancel">The identity that saves half the answer</a></li>
+      <li><a href="#rulers">The two rulers that survive</a></li>
+      <li><a href="#gravity">The ruler that was deleted</a></li>
+      <li><a href="#hough">What a ball-diameter ruler actually costs: 24–28 %</a></li>
+      <li><a href="#trackers">Three trackers, one track</a></li>
+      <li><a href="#drag">Drag, and the soccer crisis</a></li>
+      <li><a href="#basins">Camera height and tilt: many answers, one pixel apart</a></li>
+      <li><a href="#fps">Time: the container lies</a></li>
+      <li><a href="#refuse">What the system refuses to claim</a></li>
+    </ol>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════════════════════════ 1 ══ -->
+<h2 id="depth"><span class="n">01</span>The one thing one camera cannot see</h2>
+<p>A pinhole camera turns a 3D point into a pixel by dividing by depth. The projection the pipeline actually runs is
+this, with <code>f_px</code> the focal length in pixels and <code>Zc</code> the depth along the optical axis:</p>
+<blockquote>
+<p><code>u = cx + f_px * (q · right) / Zc</code><br>
+<code>v = cy − f_px * (q · up) / Zc</code></p>
+<span class="who">pipeline/ball.py:1077–1084</span>
+</blockquote>
+<p>Depth appears only in a denominator, multiplied against the focal. A ball twice as far away and twice as large
+lands on exactly the same pixels. One camera has no way to tell those two worlds apart.</p>
+
+<figure>
+<svg viewBox="0 0 720 240" role="img" aria-label="Two balls at different depths and sizes project to the identical image">
+  <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+    <path d="M0 0 L7 3 L0 6 z" fill="var(--muted)"/></marker></defs>
+  <!-- camera -->
+  <path d="M40 100 L70 84 L70 156 L40 140 z" fill="var(--accent)" opacity="0.85"/>
+  <text class="lbl" x="34" y="180" text-anchor="middle">camera</text>
+  <!-- rays -->
+  <line x1="55" y1="120" x2="690" y2="56" stroke="var(--muted)" stroke-dasharray="4 4"/>
+  <line x1="55" y1="120" x2="690" y2="184" stroke="var(--muted)" stroke-dasharray="4 4"/>
+  <!-- near ball: radius matches the ray envelope exactly at this x -->
+  <circle cx="250" cy="120" r="19.6" fill="var(--cold)" opacity="0.9"/>
+  <text class="lbl" x="250" y="164" text-anchor="middle">near · small</text>
+  <text class="lblq" x="250" y="180" text-anchor="middle">Z = 11 m</text>
+  <!-- far ball -->
+  <circle cx="570" cy="120" r="51.9" fill="var(--hot)" opacity="0.5"/>
+  <text class="lbl" x="570" y="196" text-anchor="middle">far · large</text>
+  <text class="lblq" x="570" y="212" text-anchor="middle">Z = 25 m</text>
+  <!-- image plane -->
+  <line x1="170" y1="74" x2="170" y2="166" stroke="var(--text-primary)" stroke-width="2"/>
+  <circle cx="170" cy="120" r="11.6" fill="var(--good)"/>
+  <text class="lbl" x="170" y="64" text-anchor="middle">image</text>
+  <text class="big" x="360" y="30" text-anchor="middle">Identical pixels. Different worlds.</text>
+  <line x1="230" y1="216" x2="590" y2="216" stroke="var(--muted)" marker-end="url(#ar)"/>
+  <text class="lblq" x="410" y="232" text-anchor="middle">every depth on this ray is equally consistent with the image</text>
+</svg>
+<figcaption>The scale ambiguity. It is not a limitation of the tracker or the optimiser — it is the projection itself.
+Recovering metres requires something in the frame whose real size you already know.</figcaption>
+</figure>
+
+<p>The consequence is the sentence this whole page orbits: <strong>depth transfers to speed one for one.</strong> If the
+depth is 25 % wrong, the speed is 25 % wrong. There is no averaging that helps, no number of frames that fixes it. The
+pipeline states it flatly:</p>
+<blockquote>
+<p>“…measured Hough-circle diameter at <strong>24–28 % relative depth error</strong>, and depth transfers to speed 1:1.
+Their disagreement is the reason the band exists; it is not a reason to trust either.”</p>
+<span class="who">docs/BALL.md:248–251</span>
+</blockquote>
+<p>And, on a clip with no reference object at all:</p>
+<blockquote>
+<p>“A metre is a metre: a single-basin clip with no goal in frame pins the arc's <strong>SHAPE</strong> and nothing about
+its <strong>SCALE</strong>.”</p>
+<span class="who">pipeline/ball.py:93–96</span>
+</blockquote>
+
+<!-- ══════════════════════════════════════════════════════════ 2 ══ -->
+<h2 id="cancel"><span class="n">02</span>The identity that saves half the answer</h2>
+<p>Here is the good news, and it is better than it first looks. The scale ambiguity does <em>not</em> contaminate the
+whole measurement. It contaminates exactly one axis.</p>
+<p>Start with the ball's own diameter as a depth cue. A sphere of real diameter <em>D</em> that covers <em>d</em> pixels
+sits at depth</p>
+<figure>
+<svg viewBox="0 0 720 300" role="img" aria-label="Derivation showing the focal length cancelling out of the lateral coordinate">
+  <!-- step 1 -->
+  <rect x="40" y="24" width="290" height="66" rx="10" fill="var(--surface-1)" stroke="var(--border)"/>
+  <text class="lblq" x="56" y="46">depth, from the ball's apparent size</text>
+  <text class="mono" x="56" y="74">Z = f · D / d</text>
+  <!-- step 2 -->
+  <rect x="390" y="24" width="290" height="66" rx="10" fill="var(--surface-1)" stroke="var(--border)"/>
+  <text class="lblq" x="406" y="46">lateral metres, from the pixel offset</text>
+  <text class="mono" x="406" y="74">X = (x − c<tspan font-size="9" dy="3">x</tspan><tspan dy="-3">) · Z / f</tspan></text>
+  <!-- arrows down -->
+  <path d="M185 96 L185 122 L535 122 L535 96" stroke="var(--muted)" stroke-width="1.5" fill="none"/>
+  <path d="M360 122 L360 146" stroke="var(--muted)" stroke-width="1.5"/>
+  <text class="lblq" x="372" y="116">substitute Z</text>
+  <!-- combined, with both f struck through -->
+  <rect x="150" y="152" width="420" height="60" rx="10" fill="var(--surface-2)" stroke="var(--hot)" stroke-width="1.6"/>
+  <text class="mono" x="360" y="190" font-size="17" text-anchor="middle">X = (x − c<tspan font-size="10" dy="3">x</tspan><tspan dy="-3">) · </tspan><tspan fill="var(--danger)" text-decoration="line-through">f</tspan><tspan> · D / d / </tspan><tspan fill="var(--danger)" text-decoration="line-through">f</tspan></text>
+  <!-- result -->
+  <rect x="150" y="230" width="420" height="52" rx="10" fill="none" stroke="var(--good)" stroke-width="2"/>
+  <text class="mono" x="360" y="263" font-size="18" text-anchor="middle" fill="var(--good)">X = (x − c<tspan font-size="11" dy="3">x</tspan><tspan dy="-3">) · D / d</tspan></text>
+  <text class="lblq" x="586" y="263">no f anywhere</text>
+</svg>
+<figcaption>The focal length enters the depth as a multiplier and the lateral coordinate as a divisor, so it cancels.
+Lateral and vertical metres are therefore <strong>focal-free</strong>: they are true measurements that do not depend on
+any assumption about the lens. Depth is the sole survivor of the ambiguity — and it drags speed along with it.</figcaption>
+</figure>
+
+<p>This is why the viewer's fixed panel can sit still while the scene stretches. On the Stanford clip that means
+these numbers are simply <em>measured</em>, at any focal you care to name:</p>
+<div class="tblwrap">
+<table>
+  <thead><tr><th>Focal-free, on the measured window</th><th class="n">value</th></tr></thead>
+  <tbody>
+    <tr><td>Lateral speed</td><td class="n">5.37 m/s</td></tr>
+    <tr><td>Vertical speed</td><td class="n">0.66 m/s</td></tr>
+    <tr><td>Lateral travel</td><td class="n">2.37 m</td></tr>
+    <tr><td>Rise to apex</td><td class="n">0.39 m</td></tr>
+    <tr><td>Goal mouth (confirmed 0.15 % against its projected aspect)</td><td class="n">7.32 × 2.44 m</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="card warnbox">
+  <h4>Attribution, precisely</h4>
+  <p>The cancellation identity is stated in the scene file this analysis produced —
+  <code>out/goal_anchored/scene_measured.json</code>, generated by <code>scripts/goal_ab.py</code> — not in
+  <code>pipeline/ball.py</code>. The pipeline never implements <code>X = (x − cx)·D/d</code> directly: it back-projects
+  through a solved camera instead (<span class="src">ball.py:1087–1093</span>) and treats the apparent radius as a soft
+  weighted residual, <code>r_model = f·R/Z</code> (<span class="src">ball.py:1297–1299</span>), rather than inverting it.
+  The structurally identical algebra <em>is</em> in the pipeline for the goal — <code>depth = f·goal_w / width_px</code>
+  at <span class="src">ball.py:1741</span>. Everything on this page is either in the source or in that scene file; where
+  the two differ, the difference is called out.</p>
+</div>
+
+<h3>Same pixels, eight lenses</h3>
+<p>Because only depth scales, you can enumerate the entire answer as a one-parameter family. Goal distance comes out
+exactly linear in the focal; launch speed does not, because the two focal-free velocity components refuse to grow
+with it.</p>
+<figure>
+<svg id="famsvg" viewBox="0 0 720 280" role="img"
+     aria-label="Goal distance rises linearly with focal length while launch speed rises on a curve"></svg>
+<figcaption>Both curves are the published <code>focal_family</code> table (dots) with the same arithmetic drawn
+continuously between them. At f = 500 the camera is a 91° wide-angle and the goal is 14.5 m away, giving 44 km/h;
+at f = 1300 it is a 43° near-tele, the goal is 37.6 m away, and the same pixels give 105 km/h. Nothing in the image
+distinguishes these.</figcaption>
+</figure>
+
+<div class="card">
+  <h4>Why the goal cannot break the tie</h4>
+  <p>A rectangle of known size in view ought to solve the camera. It does not here, because the goal is
+  <strong>fronto-parallel</strong>: its post lengths differ by only 1.93 % and its crossbar is tilted 1.44°. With no
+  perspective foreshortening to exploit, a rectangle projects as a rectangle at <em>any</em> focal/depth pair, and the
+  PnP solve is degenerate. The pipeline detects this explicitly — post-length asymmetry under 0.04 and crossbar angle
+  under 2.5° trips <code>goal_fronto_parallel</code> and it falls back to scale-only depth
+  (<span class="src">ball.py:1735–1741</span>). The goal pins the depth <em>once you choose a focal</em>. It cannot
+  choose one.</p>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ 3 ══ -->
+<h2 id="rulers"><span class="n">03</span>The two rulers that survive</h2>
+<p>Scale can only come from something visible whose real size is already known. As of 2026-08-21 the pipeline computes
+exactly two candidates, and the code is the authority
+(<span class="src">ball.py:1586–1590</span>, the <code>per_anchor</code> dict):</p>
+
+<h3>Ruler 1 — a goal of known size</h3>
+<p>The only true <em>reference</em>, and the only thing that flips <code>quality.metric_reference</code> to true
+(<span class="src">ball.py:1926</span>) or unlocks a point speed at all. Detection is a white mask (<code>V &gt; 160</code>,
+<code>S &lt; 60</code>), a probabilistic Hough line transform, verticals filtered to 70–110° and horizontals to under 20°,
+then <code>solvePnP</code> with <code>SOLVEPNP_IPPE</code> (<span class="src">ball.py:1707–1754</span>). It enters the fit
+as a single heavily-weighted residual, weight 6.0 (<span class="src">ball.py:1454–1455</span>).</p>
+
+<h3>Ruler 2 — the ball's own 22 cm</h3>
+<p>A FIFA size-5 ball is 0.22 m across (size 4 is 0.205 m). Its apparent radius gives depth through
+<code>r = f·R/Z</code>. This is an <em>estimator</em>, not a reference, and it is fragile: motion blur inflates the
+apparent diameter, which under-estimates depth, which biases the speed low. Radii are filtered with a Theil–Sen fit of
+<code>1/r</code> against frame index, demoting anything more than 30 % off the line
+(<span class="src">ball.py:1321–1339</span>). One measurement is exempt and carries the highest weight in the entire fit:
+the pre-contact ball sitting still on the ground, the one blur-free radius in the clip
+(<span class="src">ball.py:836–837</span>).</p>
+
+<div class="card warnbox">
+  <h4>Where the prose still disagrees with the code</h4>
+  <p>The gravity removal (next section) was not fully swept through the documentation.
+  <span class="src">BALL.md:233–246</span> still lists “Gravity as ruler” as metric anchor #2, and
+  <span class="src">ball.py:36–39</span>, <span class="src">:1906</span> and <span class="src">:1931–1932</span> still
+  name it in docstrings and warning strings. The computed <code>per_anchor</code> dict has only
+  <code>diameter_kmh</code> and <code>goal_kmh</code>. Trust the computation.</p>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ 4 ══ -->
+<h2 id="gravity"><span class="n">04</span>The ruler that was deleted</h2>
+<p>This is the most useful thing in the pipeline, and it is a deletion.</p>
+<p>Gravity is an attractive ruler. You know <em>g</em> = 9.81 m/s² for free, everywhere on Earth, without measuring
+anything. A ballistic arc's curvature against its timing therefore looks like a free metric scale: solve for the
+effective gravity, compare to 9.81, and the ratio hands you the scale factor.</p>
+<p>It works if the arc's curvature comes from gravity alone. On a real struck ball it does not. Drag through the
+transonic-for-a-football regime and Magnus from spin both bend the same arc, and a single-view fit cannot separate
+either of them from a scale error. So the solver quietly folds the scale error into <em>g</em> and reports a number.</p>
+
+<figure>
+<svg viewBox="0 0 720 260" role="img"
+     aria-label="Solved effective gravity 14.69 versus real 9.81, and the speed band widening after removal">
+  <text class="big" x="18" y="24">Solved “effective gravity” on the reference clip</text>
+  <!-- g bars -->
+  <rect x="18" y="44" width="380" height="26" rx="5" fill="var(--good)" opacity="0.85"/>
+  <text class="lbl" x="30" y="62" fill="#fff">real g = 9.81 m/s²</text>
+  <rect x="18" y="80" width="569" height="26" rx="5" fill="var(--danger)" opacity="0.9"/>
+  <text class="lbl" x="30" y="98" fill="#fff">solved g_eff = 14.69 m/s²</text>
+  <text class="lblq" x="600" y="98">1.50 ×</text>
+  <text class="lblq" x="18" y="128">Not a measurement of gravity — a scale error wearing gravity's clothes.</text>
+
+  <text class="big" x="18" y="168">What removing it did to the reported speed band</text>
+  <!-- band before -->
+  <line x1="18" y1="196" x2="700" y2="196" stroke="var(--grid)"/>
+  <rect x="150" y="186" width="180" height="20" rx="4" fill="var(--muted)" opacity="0.55"/>
+  <text class="lblq" x="140" y="201" text-anchor="end">before</text>
+  <text class="lblq" x="340" y="201">22.9 – 48.5 km/h</text>
+  <!-- band after -->
+  <line x1="18" y1="232" x2="700" y2="232" stroke="var(--grid)"/>
+  <rect x="190" y="222" width="376" height="20" rx="4" fill="var(--hot)" opacity="0.8"/>
+  <text class="lblq" x="140" y="237" text-anchor="end">after</text>
+  <text class="lblq" x="576" y="237">28.8 – 76.6 km/h</text>
+</svg>
+<figcaption>The band more than doubled in width when the gravity ruler was withdrawn. That is the correct direction:
+a second opinion was removed, and it had been systematically wrong. Reference clip only — the Stanford goal clip in the
+viewer has its own, different numbers.</figcaption>
+</figure>
+
+<blockquote>
+<p>“The GRAVITY RULER IS GONE (2026-08-21). Using a known g to set metric scale cannot be separated from drag and Magnus
+on a real strike: this module's own effective-g came back at <strong>14.69 m/s²</strong> on the reference clip,
+<strong>1.5× real gravity</strong>, which is a scale error wearing gravity's clothes rather than a measurement. Scale now
+comes only from things actually visible in the frame — a goal of known size, or the ball's own 22 cm diameter.</p>
+<p>Gravity remains in the DYNAMICS (see <code>integrate_flight</code>): the ball really does fall at 9.81 m/s² and
+removing that would stop the model being a trajectory at all. <strong>What is deleted is gravity as a RULER, not as a
+force.</strong>”</p>
+<span class="who">pipeline/ball.py:1576–1585 — the in-code tombstone, commit 36d6aa0</span>
+</blockquote>
+
+<p>Two details make this more than a tidy-up.</p>
+<p><strong>The failure had been predicted, in the same repository, before it was acted on.</strong>
+<span class="src">BALL.md:193–196</span> already said the anchor “is not measuring gravity; it measures <em>g + drag</em>,
+and drag was mis-specified by up to a factor of two.” It took the solver returning 1.5 × <em>g</em> for the argument to
+land.</p>
+<p><strong>A cross-check built on it was worse than useless.</strong> A ratio of the two rulers' speeds was supposed to
+detect retimed footage — feed it an 8× slow-motion bake and it should return 8. Measured on a real bake it returned
+<strong>1.02</strong>. The reason is that both “independent” rulers were re-solves against a camera geometry pinned to
+the primary fit, and the primary fit had already used the radius observations, so the gravity anchor inherited its scale
+from the diameter ruler through the pinned camera. Two rulers that were never independent cannot disagree usefully. It
+was deleted with the ruler; retimed clips are still caught by the duplicate-frame ratio, which flagged that same bake at
+0.88 against a 0.50 threshold.</p>
+
+<div class="card goodbox">
+  <h4>What replaced it</h4>
+  <p>Nothing — deliberately. A residual sanity alarm survives: if the solved <code>g_eff</code> lands more than 50 %
+  away from 9.81 the fit emits
+  <code>effective_g_..._beyond_what_magnus_alone_can_explain_metric_scale_error_suspected</code>
+  (<span class="src">ball.py:1627–1630</span>). It is a smoke detector for misspecification, not a ruler. Note that the
+  14.69 which killed the ruler sits at 1.50×, exactly on that threshold's edge.</p>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ 5 ══ -->
+<h2 id="hough"><span class="n">05</span>What a ball-diameter ruler actually costs: 24–28 %</h2>
+<p>With gravity gone and no goal in frame, scale rests on the ball's apparent size alone. It is worth being precise
+about how good that is, because the answer is published and it is not good.</p>
+<p>Van Zandycke &amp; De Vleeschouwer (CVPRW 2022, Table 2) measured Hough-circle ball diameter against ground truth and
+found <strong>24–28 % relative depth error</strong>. Combine that with the 1:1 transfer from section 1 and the
+consequence is immediate.</p>
+
+<figure>
+<svg viewBox="0 0 720 210" role="img" aria-label="A 24 to 28 percent depth error becomes a 24 to 28 percent speed error">
+  <defs><marker id="ar2" markerWidth="10" markerHeight="10" refX="9" refY="3.5" orient="auto">
+    <path d="M0 0 L9 3.5 L0 7 z" fill="var(--hot)"/></marker></defs>
+  <rect x="18" y="40" width="250" height="96" rx="10" fill="var(--surface-1)" stroke="var(--border)"/>
+  <text class="lblq" x="34" y="64">measured ball diameter</text>
+  <text class="big" x="34" y="94" fill="var(--warning)">24 – 28 %</text>
+  <text class="lbl" x="34" y="118">relative depth error</text>
+
+  <line x1="286" y1="88" x2="428" y2="88" stroke="var(--hot)" stroke-width="2.5" marker-end="url(#ar2)"/>
+  <text class="lblq" x="357" y="76" text-anchor="middle">× 1.00</text>
+  <text class="lblq" x="357" y="108" text-anchor="middle">no averaging helps</text>
+
+  <rect x="446" y="40" width="250" height="96" rx="10" fill="var(--surface-1)" stroke="var(--danger)"/>
+  <text class="lblq" x="462" y="64">reported launch speed</text>
+  <text class="big" x="462" y="94" fill="var(--danger)">24 – 28 %</text>
+  <text class="lbl" x="462" y="118">error, identically</text>
+
+  <text class="lblq" x="360" y="172" text-anchor="middle">On a 90 km/h strike that is a ±22–25 km/h uncertainty, from the ruler alone,</text>
+  <text class="lblq" x="360" y="190" text-anchor="middle">before the focal, the frame rate or the tracker have contributed anything.</text>
+</svg>
+<figcaption>Source: <span class="src">BALL.md:248–251</span>. The same document names a learned, blur-aware diameter
+regressor as the single biggest available improvement — 24–28 % down to about 10 % — which would still not be good
+enough to publish a point speed on its own.</figcaption>
+</figure>
+
+<div class="card">
+  <h4>A number that looks similar and means something else</h4>
+  <p><code>ball.py</code> quotes <strong>24–35 %</strong> in several warning strings. That is not the published Hough
+  error — it is the observed <em>disagreement between the two rulers</em> on down-the-axis shots, which is the reason a
+  band is emitted instead of a value. Two different quantities that happen to start with the same digits.</p>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ 6 ══ -->
+<h2 id="trackers"><span class="n">06</span>Three trackers, one track</h2>
+<p>Before any geometry there has to be a track, and a small white ball against a bright sky over grass defeats any
+single detector. Three independent ones run on every frame and vote.</p>
+
+<figure>
+<svg viewBox="0 0 720 290" role="img" aria-label="Three independent trackers feeding a voting fusion step">
+  <!-- lanes -->
+  <g>
+    <rect x="18" y="30" width="216" height="70" rx="10" fill="var(--surface-1)" stroke="var(--border)"/>
+    <text class="lbl" x="34" y="54" fill="var(--text-primary)" font-weight="650">① frame difference</text>
+    <text class="lblq" x="34" y="74">min(|t−t⁻|, |t−t⁺|), threshold 18</text>
+    <text class="lblq" x="34" y="90">finds anything that moved</text>
+  </g>
+  <g>
+    <rect x="252" y="30" width="216" height="70" rx="10" fill="var(--surface-1)" stroke="var(--border)"/>
+    <text class="lbl" x="268" y="54" fill="var(--text-primary)" font-weight="650">② Hough circles</text>
+    <text class="lblq" x="268" y="74">white mask, param2 = 18</text>
+    <text class="lblq" x="268" y="90">the only source of a radius</text>
+  </g>
+  <g>
+    <rect x="486" y="30" width="216" height="70" rx="10" fill="var(--surface-1)" stroke="var(--border)"/>
+    <text class="lbl" x="502" y="54" fill="var(--text-primary)" font-weight="650">③ flow + template</text>
+    <text class="lblq" x="502" y="74">Lucas–Kanade, NCC &gt; 0.4</text>
+    <text class="lblq" x="502" y="90">bridges, never confirms</text>
+  </g>
+  <!-- arrows -->
+  <path d="M126 104 L126 128 L360 128" stroke="var(--muted)" fill="none"/>
+  <path d="M360 104 L360 128" stroke="var(--muted)" fill="none"/>
+  <path d="M594 104 L594 128 L360 128" stroke="var(--muted)" fill="none"/>
+  <path d="M360 128 L360 148" stroke="var(--muted)" fill="none"/>
+  <!-- fusion -->
+  <rect x="180" y="150" width="360" height="66" rx="10" fill="var(--surface-2)" stroke="var(--accent)" stroke-width="1.6"/>
+  <text class="lbl" x="360" y="174" text-anchor="middle" fill="var(--text-primary)" font-weight="650">cluster within max(8 px, 0.9·r), then score</text>
+  <text class="mono" x="360" y="202" text-anchor="middle" font-size="12">Σ scores + 0.35 · (distinct sources − 1)</text>
+  <!-- gate -->
+  <path d="M360 220 L360 240" stroke="var(--muted)"/>
+  <rect x="180" y="242" width="360" height="38" rx="9" fill="none" stroke="var(--good)" stroke-width="1.6"/>
+  <text class="lbl" x="360" y="266" text-anchor="middle" fill="var(--good)">agreement across trackers is worth more than any one score</text>
+</svg>
+<figcaption><span class="src">ball.py:543–631</span> for the three detectors, <span class="src">:915–937</span> for the
+clustering and the agreement bonus. Search is gated around a constant-acceleration prediction from the last four
+detections, with the gate widened during acquisition.</figcaption>
+</figure>
+
+<p>The interesting parts are the guards, each of which encodes a specific way the naive version fails:</p>
+<ul>
+  <li><strong>A lone flow lock can never count as a detection.</strong> Its confidence is clamped to 0.28, just under the
+  0.30 detection threshold, because “a lone LK/NCC lock only bridges — it can self-confirm any drifting patch forever”
+  (<span class="src">ball.py:956–969</span>). It is allowed to keep the track alive across a few frames and nothing more.</li>
+  <li><strong>A “moving” lock that has not moved is a distractor.</strong> If the predicted speed exceeds 3 px/frame but
+  the candidate barely displaced, it is dropped (<span class="src">ball.py:947–955</span>).</li>
+  <li><strong>The ball must be seen to leave.</strong> Candidates for the ball at rest are tracked until departure; one
+  that never departs is discarded. This is what rejects a screen-recording play button and spare balls on the grass
+  (<span class="src">ball.py:683–732</span>, <span class="src">:1858–1877</span>).</li>
+  <li><strong>Consistent motion is not enough to launch on.</strong> The launch search scores three-frame candidate
+  triples by velocity consistency, then re-scores by Hough confirmation, because “a kicker's trailing white sock coasts
+  consistently too, but never confirms as a circle” (<span class="src">ball.py:744–746</span>).</li>
+  <li><strong>Stabilisation does not transfer to the near field.</strong> The global background affine drifted a
+  stabilised probe about 90 px off the ball on the prototype clip when the camera translated
+  (<span class="src">ball.py:689–694</span>), so the rest-ball tracker works in raw coordinates.</li>
+</ul>
+<p>Below eight real detections the pipeline raises rather than fits; below twenty it refuses a point value and emits a
+band only (<span class="src">ball.py:1884–1889</span>). The Stanford clip in the viewer has 21.</p>
+
+<!-- ══════════════════════════════════════════════════════════ 7 ══ -->
+<h2 id="drag"><span class="n">07</span>Drag, and the soccer crisis</h2>
+<p>A football does not obey a constant drag coefficient over the speeds a person can kick it. It crosses the
+<em>drag crisis</em> — the laminar-to-turbulent transition of the boundary layer — right in the middle of the range,
+and its drag coefficient <strong>falls by a factor of three</strong> as it speeds up.</p>
+
+<figure>
+<svg id="cdsvg" viewBox="0 0 720 300" role="img"
+     aria-label="Drag coefficient falling from 0.45 to 0.15 between 54 and 81 km per hour"></svg>
+<figcaption>Modelled as a logistic in log₁₀(Re) whose 10 % and 90 % points land exactly on Re = 2.2×10⁵ and 3.3×10⁵ by
+construction (<span class="src">ball.py:199–224</span>). For a 0.22 m ball those Reynolds numbers are
+<strong>54.00 and 81.00 km/h</strong> — squarely inside the range of an ordinary strike. Wind-tunnel source: Asai &amp;
+Seo, <em>SpringerPlus</em> 2 (2013) 171.</figcaption>
+</figure>
+
+<p>Getting this wrong is not a rounding error. At 100 km/h, a fixed C<sub>d</sub> of 0.45 and the crisis value of 0.15
+differ by <strong>18.8 versus 6.3 m/s² of deceleration — 1.9 g against 0.6 g</strong>. Any fit that assumes a constant
+C<sub>d</sub> across a strike has to absorb that mismatch somewhere, and where it absorbs it is the scale.</p>
+
+<div class="tblwrap">
+<table>
+  <thead><tr><th>speed</th><th class="n">Reynolds</th><th class="n">C<sub>d</sub></th><th class="n">drag decel</th><th class="n">vs fixed C<sub>d</sub> = 0.25</th></tr></thead>
+  <tbody>
+    <tr><td>40 km/h</td><td class="n">1.6 × 10⁵</td><td class="n">0.449</td><td class="n">3.00 m/s²</td><td class="n">× 1.80</td></tr>
+    <tr><td>54 km/h</td><td class="n">2.2 × 10⁵</td><td class="n">0.420</td><td class="n">5.12 m/s²</td><td class="n">× 1.68</td></tr>
+    <tr><td>70 km/h</td><td class="n">2.9 × 10⁵</td><td class="n">0.255</td><td class="n">5.23 m/s²</td><td class="n">× 1.02</td></tr>
+    <tr><td>81 km/h</td><td class="n">3.3 × 10⁵</td><td class="n">0.180</td><td class="n">4.93 m/s²</td><td class="n">× 0.72</td></tr>
+    <tr><td>100 km/h</td><td class="n">4.1 × 10⁵</td><td class="n">0.153</td><td class="n">6.41 m/s²</td><td class="n">× 0.61</td></tr>
+  </tbody>
+</table>
+</div>
+<p class="src" style="margin-top:-6px">BALL.md:212–218. Note the deceleration is nearly flat from 54 to 81 km/h: the
+falling C<sub>d</sub> almost exactly cancels the rising v².</p>
+
+<h3>Spin is modelled as a direction, never a rate</h3>
+<p>Magnus enters as at most two free accelerations, bounded to about ±1.4 g, and the default model carries only the
+lateral one. That choice is empirical, not aesthetic: on a roughly 6,000-segment real-soccer benchmark (ball3d,
+CVPRW 2026) a simple drag model beat drag-plus-Magnus on <em>all five</em> monocular settings, because
+“angular-momentum parameters remain poorly constrained by 2D reprojection residuals from a single viewpoint”
+(<span class="src">ball.py:45–54</span>). Curl is read out as the <em>sign</em> of the quadratic term in the horizontal
+reprojection residual, reported only when its t-statistic clears 1.5 (<span class="src">ball.py:1391–1433</span>). No
+field anywhere in the module carries a spin rate.</p>
+
+<!-- ══════════════════════════════════════════════════════════ 8 ══ -->
+<h2 id="basins"><span class="n">08</span>Camera height and tilt: many answers, one pixel apart</h2>
+<p>Even with the scale settled, the geometry has a second problem. For a shot travelling roughly away from the camera,
+camera tilt trades against launch elevation, and camera height trades against depth, at almost no cost in reprojection
+error. The optimiser does not have one minimum. It has several, separated by less than the noise on the track.</p>
+
+<figure>
+<svg id="basinsvg" viewBox="0 0 720 300" role="img"
+     aria-label="Four camera solutions spanning 1.4 to 3.1 metres of height with nearly identical fit error"></svg>
+<figcaption>The four camera solutions reported for the unanchored Stanford fit. Their fit errors span
+<strong>9.1 to 9.2 px RMS</strong> — a tenth of a pixel — while the camera height they imply spans 1.4 to 3.1 m and the
+launch elevation 17° to 23°. Choosing the lowest cost here is noise choosing the answer.</figcaption>
+</figure>
+
+<p>Because free multi-start optimisation was found to miss the truth entirely — on a synthetic clip all nine free
+starts converged on one camera at 3.2 m / 24° while the true camera at 1.6 m / 12° sat <strong>0.07 px</strong> away in
+RMS and was never even offered (<span class="src">ball.py:1477–1483</span>) — the pipeline stopped searching and started
+enumerating. It solves a fixed 5 × 5 lattice of camera heights (1.0 to 3.5 m) and tilts (0° to 32°) against two speed
+seeds, 50 pinned solves, then refines the distinct survivors inside their own boxes and reports up to four
+(<span class="src">ball.py:1475–1510</span>).</p>
+
+<div class="card dangerbox">
+  <h4>The honest part: the ranking is not yet defensible</h4>
+  <p>On the synthetic clip with known ground truth, the four surviving basins span 1.4–3.2 m of camera height and
+  16.8°–29.5° of launch elevation with RMS differing by 0.1 px. The truth is inside the set — but it is
+  <strong>rank 4 of 4</strong>, so the rank-1 values the file emits are 13.2° away from it. The documentation says so
+  plainly: “ranking by drag-only solver cost is not yet a defensible ranking”
+  (<span class="src">BALL.md:392–412</span>). The corresponding test was widened from “truth is rank 1 within 4°” to
+  “truth is somewhere in the set”, which is the weaker claim that is actually true.</p>
+</div>
+
+<p>One more measured surprise, from the goal-anchored A/B run on the Stanford clip: the true camera was
+<strong>0.08 m off the ground, tilted 4.6° upward</strong> — outside the solver's default box on both axes, which
+searches heights from 0.8 m and tilts downward only. With the box widened, the two rulers on that clip disagreed by
+63 %. A solver railed against its own bounds reports a solution pinned by a bound rather than by the data, and the
+pipeline emits exactly that warning when it happens (<span class="src">ball.py:1210–1219</span>).</p>
+
+<!-- ══════════════════════════════════════════════════════════ 9 ══ -->
+<h2 id="fps"><span class="n">09</span>Time: the container lies</h2>
+<p>Speed scales one-for-one with the assumed frame rate, exactly as it does with depth. And a video container will
+happily state its frame rate three different ways that do not agree — after a re-encode, an AirDrop, or a slow-motion
+bake, at least one of them is wrong.</p>
+
+<figure>
+<svg viewBox="0 0 720 200" role="img" aria-label="Container frame rate 31.579 disagrees with the decoded 29.97 by 5.4 percent">
+  <text class="big" x="18" y="26">What the Stanford clip says about its own timing</text>
+  <line x1="150" y1="46" x2="150" y2="150" stroke="var(--grid)"/>
+  <rect x="150" y="52" width="420" height="24" rx="4" fill="var(--good)" opacity="0.85"/>
+  <text class="lbl" x="142" y="69" text-anchor="end">decoded</text>
+  <text class="lbl" x="582" y="69">29.97 fps</text>
+  <rect x="150" y="86" width="420" height="24" rx="4" fill="var(--good)" opacity="0.85"/>
+  <text class="lbl" x="142" y="103" text-anchor="end">avg_frame_rate</text>
+  <text class="lbl" x="582" y="103">29.97 fps</text>
+  <rect x="150" y="120" width="443" height="24" rx="4" fill="var(--danger)" opacity="0.9"/>
+  <text class="lbl" x="142" y="137" text-anchor="end">r_frame_rate</text>
+  <text class="lbl" x="605" y="137" fill="var(--danger)">31.58 fps</text>
+  <text class="lblq" x="150" y="172">+5.3 % — and speed transfers 1:1 from the frame rate, so believing the container</text>
+  <text class="lblq" x="150" y="190">would have inflated every number on these pages by that much.</text>
+</svg>
+<figcaption>The analysis used <strong>30.000 fps</strong>. The pipeline flags this disagreement itself and, on this clip,
+sets <code>point_value_allowed = false</code> for that reason alone.</figcaption>
+</figure>
+
+<p>The timebase assessment reads three independent statements about the rate — <code>avg_frame_rate</code>,
+<code>r_frame_rate</code>, and the median inter-packet presentation-timestamp interval — plus a duplicate-frame count,
+and reacts on a fixed table (<span class="src">ball.py:346–433</span>):</p>
+<div class="tblwrap">
+<table>
+  <thead><tr><th>signal</th><th class="n">threshold</th><th>reaction</th></tr></thead>
+  <tbody>
+    <tr><td>avg_frame_rate vs r_frame_rate</td><td class="n">&gt; 2 %</td><td>point value <strong>refused</strong>; uncertainty ≥ 0.10</td></tr>
+    <tr><td>packet timestamps vs decoded rate</td><td class="n">&gt; 2 %</td><td>warn; uncertainty ≥ 0.15 — the caller's decoder may itself be at fault</td></tr>
+    <tr><td>timestamp interval spread (variable rate / speed ramp)</td><td class="n">&gt; 5 %</td><td>point value <strong>refused</strong>; uncertainty ≥ 0.25</td></tr>
+    <tr><td>duplicate-frame ratio</td><td class="n">≥ 0.50</td><td>point value <strong>refused</strong> — a 2× retime lands on exactly 0.500</td></tr>
+  </tbody>
+</table>
+</div>
+<p>The Stanford clip trips the first row. The pipeline's own worked example of a worse case is an AirDropped clip
+claiming <code>avg_frame_rate</code> 30 against <code>r_frame_rate</code> 239.02 — an eightfold disagreement in a file
+that plays back perfectly.</p>
+
+<!-- ══════════════════════════════════════════════════════════ 10 ══ -->
+<h2 id="refuse"><span class="n">10</span>What the system refuses to claim</h2>
+<p>This list is enforced in code through a <code>claims</code> block, not left to the reader's judgement. The
+documentation's instruction to anyone wiring these numbers into a product is “gate on the <code>claims</code> block,
+never on the presence of a field” (<span class="src">BALL.md:9–12</span>).</p>
+
+<div class="card dangerbox">
+  <h4>Refused outright</h4>
+  <ul>
+    <li><strong>Any point value for launch speed with no metric reference object in frame.</strong>
+    <code>launch.speed_kmh</code> is null and <code>claims.point_speed</code> is false. Ship the band.</li>
+    <li><strong>Apex height, launch elevation and solved camera geometry as measurements</strong>, whenever the basins
+    are ambiguous or there is no reference — because the competing basins differ by under 2 px RMS on tracks carrying
+    10–25 px of centroid error.</li>
+    <li><strong>Any spin magnitude, ever.</strong> <code>claims.spin_magnitude</code> is hard-wired false. The
+    comparison offered is that Hawk-Eye — calibrated and multi-camera — reports a spin bias of −100 ± 542 RPM.</li>
+    <li><strong>Its own earlier accuracy tiers</strong> (±5–8 % / ±10–15 % / ±20–30 %), which are described as
+    unvalidated engineering estimates. Of roughly 40 surveyed repositories and papers, not one reports a launch-<em>speed</em>
+    error from monocular video.</li>
+    <li><strong>“±5–10 % is typical for consumer video apps.”</strong> The two independent validations found go the other
+    way: a cricket system at 2.6–3.1 % CV plus a +2.5–4 % systematic bias and judged <em>not</em> interchangeable with
+    radar, and a tennis system at +6.8 % bias. Both had a known metric corridor this does not.</li>
+    <li><strong>Anything below ±3 %, ever, from one phone</strong> — the criterion radar's own coefficient of variation
+    on soccer kicks is 4.0–5.4 %.</li>
+  </ul>
+</div>
+
+<div class="card goodbox">
+  <h4>Claimed, and defensible</h4>
+  <p>The band. The refusal rule itself. The trajectory's <em>shape</em>. Curl and spin <em>direction</em>. The quality
+  flags. And, most usefully for a product: <strong>session-relative ranking</strong>. A tennis system reaches an
+  intraclass correlation of 0.970 while carrying a 6.8 % bias — which is the whole point. “Your hardest strike today”
+  is defensible long before “your strike was 38.7 km/h” is.</p>
+  <p>Plus, on this particular clip, everything in the focal-free column: 5.37 m/s of lateral speed, 0.66 m/s of vertical
+  speed, 2.37 m of lateral travel and 0.39 m of rise are measurements, not estimates — see
+  <a href="goal-trajectory.html">the viewer</a>.</p>
+</div>
+
+<div class="card">
+  <h4>The honest bottom line</h4>
+  <p>There is no radar ground-truth set yet, so no accuracy figure anywhere in this system has been validated against
+  an independent instrument. The documentation's own follow-up item is to buy a radar and build one, with the note:
+  “Everything above is unfalsifiable without it” (<span class="src">BALL.md:504–506</span>).</p>
+</div>
+
+<h2 style="border:0">Sources</h2>
+<p>Code and documentation: <code>stryke-pipeline/pipeline/ball.py</code> (2,142 lines) and
+<code>stryke-pipeline/docs/BALL.md</code>, at commit <code>36d6aa0</code> (2026-08-21, “remove the gravity ruler — scale
+now only from what is visible”). Measured scene for the viewer:
+<code>out/goal_anchored/scene_measured.json</code>, produced by <code>scripts/goal_ab.py</code>. External references
+cited by the pipeline: Van Zandycke &amp; De Vleeschouwer, CVPRW 2022 (ball diameter depth error); Asai &amp; Seo,
+SpringerPlus 2:171 (2013) (drag crisis wind-tunnel data); ball3d, CVPRW 2026 (monocular trajectory benchmark).</p>
+
+<footer>
+  Part of the <a href="index.html">opencap-monocular</a> report ·
+  <a href="goal-trajectory.html">interactive 3D viewer</a> · written 2026-08-21.
+</footer>
+</div>
+
+<script>
+/* ---------- theme ---------- */
+const root = document.documentElement;
+document.getElementById("themebtn").onclick = () => {
+  const dark = root.getAttribute("data-theme")
+    ? root.getAttribute("data-theme") === "dark"
+    : matchMedia("(prefers-color-scheme: dark)").matches;
+  root.setAttribute("data-theme", dark ? "light" : "dark");
+};
+
+/* ---------- figure: the focal family ---------- */
+(function () {
+  const W = 720, H = 280, m = { l: 56, r: 58, t: 34, b: 40 };
+  const V_LAT = 5.37, V_VERT = 0.66, DEPTH_PER_F = 0.02196, GOAL_ZF = 33.42 / 1156;
+  const FAM = [[500, 14.45, 44.1], [600, 17.35, 51.3], [700, 20.24, 58.7], [800, 23.13, 66.2],
+               [900, 26.02, 73.8], [1000, 28.91, 81.4], [1156, 33.42, 93.4], [1300, 37.58, 104.6]];
+  const x = f => m.l + (f - 500) / 800 * (W - m.l - m.r);
+  const yD = d => H - m.b - (d - 10) / 32 * (H - m.t - m.b);      // 10..42 m
+  const yS = s => H - m.b - (s - 35) / 80 * (H - m.t - m.b);      // 35..115 km/h
+  const spd = f => Math.hypot(DEPTH_PER_F * f, V_LAT, V_VERT) * 3.6;
+  let pd = "", ps = "";
+  for (let f = 500; f <= 1300; f += 8) {
+    pd += `${pd ? "L" : "M"}${x(f).toFixed(1)} ${yD(GOAL_ZF * f).toFixed(1)}`;
+    ps += `${ps ? "L" : "M"}${x(f).toFixed(1)} ${yS(spd(f)).toFixed(1)}`;
+  }
+  const dots = FAM.map(([f, d, s]) =>
+    `<circle cx="${x(f).toFixed(1)}" cy="${yD(d).toFixed(1)}" r="3.4" fill="var(--accent)"/>
+     <circle cx="${x(f).toFixed(1)}" cy="${yS(s).toFixed(1)}" r="3.4" fill="var(--hot)"/>`).join("");
+  const xt = [500, 700, 900, 1100, 1300].map(f =>
+    `<text class="lblq" x="${x(f).toFixed(1)}" y="${H - 18}" text-anchor="middle">${f}</text>`).join("");
+  const yl = [10, 20, 30, 40].map(d =>
+    `<text class="lblq" x="${m.l - 8}" y="${yD(d) + 4}" text-anchor="end">${d}</text>`).join("");
+  const yr = [40, 60, 80, 100].map(s =>
+    `<text class="lblq" x="${W - m.r + 8}" y="${yS(s) + 4}">${s}</text>`).join("");
+  const gl = [10, 20, 30, 40].map(d =>
+    `<line x1="${m.l}" y1="${yD(d)}" x2="${W - m.r}" y2="${yD(d)}" stroke="var(--grid)"/>`).join("");
+  document.getElementById("famsvg").innerHTML = `
+    ${gl}
+    <path d="${pd}" fill="none" stroke="var(--accent)" stroke-width="2.4"/>
+    <path d="${ps}" fill="none" stroke="var(--hot)" stroke-width="2.4"/>
+    ${dots}${xt}${yl}${yr}
+    <text class="lbl" x="${m.l}" y="20" fill="var(--accent)">goal distance (m) — exactly linear in f</text>
+    <text class="lbl" x="${W - m.r}" y="20" text-anchor="end" fill="var(--hot)">launch speed (km/h) — not linear</text>
+    <text class="lblq" x="${W / 2}" y="${H - 3}" text-anchor="middle">focal length (px)</text>`;
+})();
+
+/* ---------- figure: the drag crisis ---------- */
+(function () {
+  const W = 720, H = 300, m = { l: 58, r: 20, t: 34, b: 44 };
+  const CD_SUB = 0.45, CD_SUPER = 0.15, RE_C = 2.694e5, WID = 0.040071, NU = 1.5e-5, D = 0.22;
+  const cd = Re => CD_SUPER + 0.30 / (1 + Math.exp((Math.log10(Re) - Math.log10(RE_C)) / WID));
+  const cdV = kmh => cd(Math.max(kmh / 3.6 * D / NU, 1));
+  const x = v => m.l + (v - 20) / 100 * (W - m.l - m.r);           // 20..120 km/h
+  const y = c => H - m.b - (c - 0.10) / 0.40 * (H - m.t - m.b);    // 0.10..0.50
+  let p = "";
+  for (let v = 20; v <= 120; v += 0.5) p += `${p ? "L" : "M"}${x(v).toFixed(1)} ${y(cdV(v)).toFixed(1)}`;
+  const band = `<rect x="${x(54).toFixed(1)}" y="${m.t}" width="${(x(81) - x(54)).toFixed(1)}"
+      height="${H - m.t - m.b}" fill="var(--hot)" opacity="0.10"/>`;
+  const xt = [20, 40, 60, 80, 100, 120].map(v =>
+    `<text class="lblq" x="${x(v).toFixed(1)}" y="${H - 22}" text-anchor="middle">${v}</text>`).join("");
+  const yt = [0.15, 0.25, 0.35, 0.45].map(c =>
+    `<g><line x1="${m.l}" y1="${y(c)}" x2="${W - m.r}" y2="${y(c)}" stroke="var(--grid)"/>
+      <text class="lblq" x="${m.l - 8}" y="${y(c) + 4}" text-anchor="end">${c.toFixed(2)}</text></g>`).join("");
+  const mark = (v, lab) => `
+    <line x1="${x(v).toFixed(1)}" y1="${m.t}" x2="${x(v).toFixed(1)}" y2="${H - m.b}"
+          stroke="var(--hot)" stroke-dasharray="4 4" stroke-width="1.2"/>
+    <text class="lblq" x="${x(v).toFixed(1)}" y="${m.t - 8}" text-anchor="middle" fill="var(--hot)">${lab}</text>`;
+  document.getElementById("cdsvg").innerHTML = `
+    ${band}${yt}${mark(54, "54 km/h · Re 2.2e5")}${mark(81, "81 km/h · Re 3.3e5")}
+    <path d="${p}" fill="none" stroke="var(--accent)" stroke-width="2.6"/>
+    <circle cx="${x(40).toFixed(1)}" cy="${y(cdV(40)).toFixed(1)}" r="4" fill="var(--accent)"/>
+    <text class="lbl" x="${x(40) + 10}" y="${y(cdV(40)) - 8}">C_d 0.449 at 40 km/h</text>
+    <circle cx="${x(100).toFixed(1)}" cy="${y(cdV(100)).toFixed(1)}" r="4" fill="var(--accent)"/>
+    <text class="lbl" x="${x(100) - 10}" y="${y(cdV(100)) + 22}" text-anchor="end">C_d 0.153 at 100 km/h</text>
+    ${xt}
+    <text class="lblq" x="${m.l - 8}" y="${m.t - 8}" text-anchor="end">C_d</text>
+    <text class="lblq" x="${W / 2}" y="${H - 5}" text-anchor="middle">ball speed (km/h)</text>
+    <text class="lbl" x="${W - m.r}" y="${H - m.b - 8}" text-anchor="end" fill="var(--muted)">the crisis window</text>`;
+})();
+
+/* ---------- figure: the basins ---------- */
+(function () {
+  const W = 720, H = 300, m = { l: 62, r: 200, t: 36, b: 46 };
+  // unanchored Stanford fit: [camera height m, tilt deg, launch elevation deg, RMS px, rank]
+  const B = [[2.42, 9.3, 19.6, 9.1, 1], [1.90, 6.2, 21.5, 9.2, 2],
+             [3.10, 13.4, 17.1, 9.1, 3], [1.40, 3.2, 23.4, 9.2, 4]];
+  const x = h => m.l + (h - 1.0) / 2.6 * (W - m.l - m.r);          // 1.0..3.6 m
+  const y = t => H - m.b - (t - 0) / 16 * (H - m.t - m.b);         // 0..16 deg
+  const xt = [1.0, 1.5, 2.0, 2.5, 3.0, 3.5].map(h =>
+    `<text class="lblq" x="${x(h).toFixed(1)}" y="${H - 24}" text-anchor="middle">${h.toFixed(1)}</text>`).join("");
+  const yt = [0, 4, 8, 12, 16].map(t =>
+    `<g><line x1="${m.l}" y1="${y(t)}" x2="${W - m.r}" y2="${y(t)}" stroke="var(--grid)"/>
+      <text class="lblq" x="${m.l - 8}" y="${y(t) + 4}" text-anchor="end">${t}°</text></g>`).join("");
+  const pts = B.map(([h, t, el, rms, rank]) => `
+    <circle cx="${x(h).toFixed(1)}" cy="${y(t).toFixed(1)}" r="9" fill="var(--hot)" opacity="0.32"/>
+    <circle cx="${x(h).toFixed(1)}" cy="${y(t).toFixed(1)}" r="4.5" fill="var(--hot)"/>
+    <text class="lblq" x="${x(h).toFixed(1)}" y="${y(t) - 16}" text-anchor="middle">#${rank} · ${rms} px</text>`).join("");
+  const rows = B.map(([h, t, el, rms, rank]) =>
+    `<text class="lblq" x="${W - m.r + 16}" y="${m.t + 24 + rank * 22}">
+       #${rank}&nbsp; ${h.toFixed(2)} m · ${t.toFixed(1)}° · launch ${el.toFixed(1)}°</text>`).join("");
+  document.getElementById("basinsvg").innerHTML = `
+    ${yt}${pts}${xt}${rows}
+    <text class="lbl" x="${m.l}" y="20">four camera solutions · fit error spans 9.1 – 9.2 px</text>
+    <text class="lblq" x="${(m.l + W - m.r) / 2}" y="${H - 6}" text-anchor="middle">camera height (m)</text>
+    <text class="lblq" x="${m.l - 8}" y="${m.t - 8}" text-anchor="end">tilt</text>
+    <line x1="${W - m.r + 4}" y1="${m.t + 14}" x2="${W - m.r + 4}" y2="${m.t + 116}" stroke="var(--grid)"/>
+    <text class="lblq" x="${W - m.r + 16}" y="${m.t + 24}" fill="var(--text-secondary)">reported, best first:</text>`;
+})();
+</script>
+</body>
+</html>
