@@ -1,0 +1,246 @@
+<title>Two Cameras, No Footage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<style>
+:root{
+  --ink:#12181b; --ink-2:#33413f; --ink-3:#63736e;
+  --paper:#f1f4f0; --surface:#ffffff; --line:#d8ded6; --line-soft:#e7ebe4;
+  --turf:#2e7d5b; --turf-deep:#1f5c42; --turf-wash:#e4efe8;
+  --amber:#8a6a1f; --amber-wash:#f6eeda;
+  --critical:#a4453a; --critical-wash:#f8e7e4;
+  --shadow:0 1px 2px rgba(18,24,27,.06),0 8px 24px -16px rgba(18,24,27,.35);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ink:#e8ece7; --ink-2:#a9b6b0; --ink-3:#7d8b85;
+    --paper:#0e1315; --surface:#161d1f; --line:#2a3436; --line-soft:#212a2c;
+    --turf:#5fb98c; --turf-deep:#8ad3ac; --turf-wash:#16302554;
+    --amber:#d7ad4e; --amber-wash:#33290f66;
+    --critical:#e08376; --critical-wash:#3a201c66;
+    --shadow:0 1px 2px rgba(0,0,0,.5),0 10px 28px -18px rgba(0,0,0,.9);
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#e8ece7; --ink-2:#a9b6b0; --ink-3:#7d8b85;
+  --paper:#0e1315; --surface:#161d1f; --line:#2a3436; --line-soft:#212a2c;
+  --turf:#5fb98c; --turf-deep:#8ad3ac; --turf-wash:#16302554;
+  --amber:#d7ad4e; --amber-wash:#33290f66;
+  --critical:#e08376; --critical-wash:#3a201c66;
+  --shadow:0 1px 2px rgba(0,0,0,.5),0 10px 28px -18px rgba(0,0,0,.9);
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
+  font-size:16px; line-height:1.62; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:60rem; margin:0 auto; padding:0 1.5rem 5rem}
+h1,h2,h3{font-family:"Barlow Condensed","Arial Narrow",sans-serif; text-wrap:balance; margin:0}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace; font-variant-numeric:tabular-nums}
+a{color:var(--turf-deep)} @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) a{color:var(--turf-deep)}}
+
+header{border-bottom:2px solid var(--ink); padding:3.5rem 0 1.25rem; margin-bottom:2.5rem}
+.eyebrow{font-family:"IBM Plex Mono",monospace; font-size:.72rem; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--turf); font-weight:600;}
+h1{font-size:clamp(2.6rem,8vw,4.8rem); line-height:.94; font-weight:700; letter-spacing:-.02em; margin:.4rem 0 .6rem}
+.standfirst{font-size:1.13rem; color:var(--ink-2); max-width:50ch; margin:0}
+.meta{display:flex; flex-wrap:wrap; gap:.4rem 1.5rem; margin-top:1.6rem;
+  font-family:"IBM Plex Mono",monospace; font-size:.76rem; color:var(--ink-3);}
+.meta b{color:var(--ink-2); font-weight:500}
+
+section{margin-top:3.25rem}
+h2{font-size:clamp(1.7rem,4vw,2.4rem); font-weight:600; letter-spacing:-.01em;
+  padding-bottom:.4rem; border-bottom:1px solid var(--line); margin-bottom:1.1rem}
+h3{font-size:1.22rem; font-weight:600; margin:2rem 0 .5rem}
+p{margin:0 0 1rem}
+
+.verdict{border:2px solid var(--critical); background:var(--critical-wash);
+  border-radius:.5rem; padding:1.4rem 1.5rem; margin:0 0 2rem}
+.verdict .k{font-family:"Barlow Condensed",sans-serif; font-size:1.9rem; font-weight:700;
+  color:var(--critical); line-height:1.05; display:block; margin-bottom:.35rem}
+.verdict p{margin:0; color:var(--ink-2)}
+
+.card{background:var(--surface); border:1px solid var(--line); border-radius:.5rem;
+  padding:1.25rem 1.4rem; box-shadow:var(--shadow); margin:1.25rem 0}
+.card h3{margin-top:0}
+
+figure{margin:1.5rem 0; background:var(--surface); border:1px solid var(--line);
+  border-radius:.5rem; overflow:hidden; box-shadow:var(--shadow)}
+video{display:block; width:100%; height:auto; background:#0b0f10}
+figcaption{padding:.85rem 1.1rem; font-size:.88rem; color:var(--ink-2); border-top:1px solid var(--line-soft)}
+figcaption b{color:var(--ink)}
+.tag{display:inline-block; font-family:"IBM Plex Mono",monospace; font-size:.68rem;
+  letter-spacing:.1em; text-transform:uppercase; font-weight:600; padding:.18rem .5rem;
+  border-radius:.25rem; margin-right:.5rem; vertical-align:.1em}
+.tag.synth{background:var(--critical-wash); color:var(--critical); border:1px solid var(--critical)}
+.tag.real{background:var(--turf-wash); color:var(--turf-deep); border:1px solid var(--turf)}
+.tag.warn{background:var(--amber-wash); color:var(--amber); border:1px solid var(--amber)}
+
+.tw{overflow-x:auto; margin:1.25rem 0}
+table{border-collapse:collapse; width:100%; font-size:.92rem; min-width:32rem}
+th,td{text-align:left; padding:.55rem .7rem; border-bottom:1px solid var(--line-soft)}
+th{font-family:"Barlow Condensed",sans-serif; font-size:1rem; font-weight:600;
+  border-bottom:1.5px solid var(--line); white-space:nowrap}
+td.n{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; white-space:nowrap}
+.win{color:var(--turf-deep); font-weight:600}
+.bad{color:var(--critical); font-weight:600}
+
+ul{margin:0 0 1rem; padding-left:1.2rem} li{margin:.3rem 0}
+.pre{font-family:"IBM Plex Mono",monospace; font-size:.8rem; line-height:1.5;
+  background:var(--surface); border:1px solid var(--line); border-radius:.5rem;
+  padding:1rem 1.2rem; overflow-x:auto; white-space:pre; color:var(--ink-2); margin:1.25rem 0}
+footer{margin-top:4rem; padding-top:1.25rem; border-top:1px solid var(--line);
+  font-family:"IBM Plex Mono",monospace; font-size:.75rem; color:var(--ink-3)}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">STRYKE · Match Analytics · Two-Camera Fusion</div>
+  <h1>Two cameras,<br>no footage</h1>
+  <p class="standfirst">The fusion works. It has never seen a real second camera.
+  This page shows exactly what has and has not been measured, and what the videos
+  on it actually are.</p>
+  <div class="meta">
+    <span><b>Built</b> 2026-08-19 → 08-25</span>
+    <span><b>Real two-camera frames processed</b> 0</span>
+    <span><b>Synthetic frames</b> 1,800</span>
+    <span><b>Repo</b> stryke-analytics</span>
+  </div>
+</header>
+
+<div class="verdict">
+  <span class="k">No two-phone video exists</span>
+  <p>Nobody has filmed anything with two phones. No two real videos have ever been
+  fused. The stitched panorama has never run on real footage. Everything below is
+  either <b>single-camera real footage</b> or <b>synthetic two-camera data</b> —
+  the labels on each video say which.</p>
+</div>
+
+<section>
+<h2>The three videos</h2>
+
+<figure>
+  <video controls preload="none" poster="" src="assets/twocam/broadcast_pitch.mp4"></video>
+  <figcaption><span class="tag real">Real · 1 camera</span>
+  <b>Broadcast, 30 s.</b> One camera, TV angle. Calibration succeeds on
+  <b>100%</b> of frames and players land where they belong on the pitch map.
+  This is the case the pitch-keypoint model was trained for.</figcaption>
+</figure>
+
+<figure>
+  <video controls preload="none" poster="" src="assets/twocam/amateur_pitch.mp4"></video>
+  <figcaption><span class="tag warn">Real · 1 camera</span>
+  <b>Amateur match, 90 s.</b> Same code, phone-height angle — and it falls apart.
+  Calibration succeeds on roughly <b>9%</b> of frames. Nothing downstream can be
+  better than this input. <b>This is the single biggest open problem</b>, and it is
+  fixed with footage, not code.</figcaption>
+</figure>
+
+<figure>
+  <video controls preload="none" poster="" src="assets/twocam/fused_synth.mp4"></video>
+  <figcaption><span class="tag synth">Synthetic · 0 cameras</span>
+  <b>Two-camera fusion, 60 s.</b> There is <b>no footage in this video at all.</b>
+  <span class="mono">t0_fuse_synth.py</span> invents 22 players moving on a pitch,
+  projects them through two imaginary viewpoints, adds realistic noise, ID swaps and
+  false positives, then fuses them back and scores the result against ground truth
+  it knows exactly. What you are watching is a plot of numbers — not a stitched match.</figcaption>
+</figure>
+</section>
+
+<section>
+<h2>What the synthetic run actually proves</h2>
+<p>Synthetic is the correct way to build fusion before footage exists: it is the only
+setting where the true answer is known, so the estimator can be scored rather than
+admired. These numbers are real measurements of the algorithm — they are simply not
+measurements of two iPhones.</p>
+
+<h3>Fusion beats either camera alone</h3>
+<div class="tw"><table>
+<tr><th>Position error, players visible to both</th><th>RMSE (m)</th><th>p90 (m)</th></tr>
+<tr><td><b>Fused</b></td><td class="n win">0.637</td><td class="n win">0.976</td></tr>
+<tr><td>Right camera only</td><td class="n">0.765</td><td class="n">1.207</td></tr>
+<tr><td>Left camera only</td><td class="n">0.982</td><td class="n">1.547</td></tr>
+</table></div>
+<p>Beating <em>both</em> inputs is the result that matters — a fusion that lands between
+its two sources is just averaging. Coverage rises too: <b>37,893 fused player-rows vs
+24,725 from the left camera alone</b>, about <b>+53%</b>, because each camera fills the
+other's blind spots.</p>
+
+<h3>Association and sync</h3>
+<div class="tw"><table>
+<tr><th>Metric</th><th>Value</th><th>Note</th></tr>
+<tr><td>Correct cross-camera matches</td><td class="n win">99.83%</td><td>10,398 of 10,416 player-frames</td></tr>
+<tr><td>Missed duplicates</td><td class="n">15</td><td>0.14% — same player twice</td></tr>
+<tr><td>Wrong partner</td><td class="n">3</td><td>0.029%</td></tr>
+<tr><td>Time offset recovered</td><td class="n win">0.4117 s</td><td>true 0.4117 s — <b>0 frames error</b></td></tr>
+</table></div>
+
+<h3>Where it is weak — stated, not buried</h3>
+<div class="card">
+<p><b>It understates its own uncertainty.</b> Median reported σ is 0.255 m against a
+median actual error of 0.453 m — a ratio of <b>0.564</b>. The module is roughly
+<b>1.8× more confident than it deserves to be</b>. Any downstream consumer that trusts
+σ as a gate is being lied to, gently.</p>
+<p><b>Identity drifts.</b> 22 true players produce <b>2.18 fused IDs each</b> — 27 ID
+changes, about 1.23 per player per minute. Fine for heatmaps and team shape; not yet
+good enough for per-player season stats.</p>
+<p><b>The ball is the worst part.</b> Median error is a respectable 0.57 m, but RMSE is
+<b>7.99 m</b> — the gap is false positives. Of 88 available FPs, <b>73 leaked through</b>,
+and 14 leaked <em>even though the other camera could see the real ball</em>. That is the
+clearest thing to fix next, and it is fixable in code.</p>
+</div>
+<p>One genuine win hides in that table: when both cameras see the ball,
+selecting the better view gives RMSE <b>2.98 m</b> versus <b>8.15 m</b> for naive
+averaging. Averaging two ball estimates is actively harmful — a fact only the
+synthetic harness could have revealed.</p>
+</section>
+
+<section>
+<h2>What it does not prove</h2>
+<ul>
+<li>That two phones on a mount can be calibrated at all — <b>untested</b></li>
+<li>That real lens distortion, rolling shutter and IMU drift behave like the injected noise</li>
+<li>That audio/IMU sync recovers the offset on real clips — the synthetic offset was recovered perfectly because it was <em>inserted</em> perfectly</li>
+<li>That the inter-camera bias estimator sees real bias — it corrects to ~5 m synthetically and refuses beyond, but real bias has never been shown to it</li>
+<li>Anything at all about the stitched-panorama video branch</li>
+</ul>
+<p>The bias work carries its own caveat, and it is the important one:
+<span class="mono">BIAS_MAX_CHI2 = 4.0</span> was derived synthetically. Before trusting
+any correction on real footage, it must be re-measured on a clip believed well aligned:</p>
+<div class="pre">python scripts/t0_fuse.py --calibrate-chi2 \
+    --left L.jsonl --right R.jsonl --offset S</div>
+<p>Aligned χ² ≈ 2.5 means the threshold transfers. Above 4.0 and the module refuses
+every correction — safe, but useless — and the ceiling has to be re-derived from that clip.</p>
+</section>
+
+<section>
+<h2>What unblocks this</h2>
+<div class="tw"><table>
+<tr><th>#</th><th>Needed</th><th>Why it is the blocker</th></tr>
+<tr><td class="n">1</td><td><b>90 s single-phone pitch clip</b><br>4K30, 0.5× ultrawide, centre circle + one penalty box</td>
+<td>Calibration is 9% on amateur vs 100% on broadcast. Retraining the keypoint model
+needs footage from the real camera height. <b>Highest leverage by a distance.</b></td></tr>
+<tr><td class="n">2</td><td><b>2-phone rig capture</b><br>one rigid mount, ~80° apart, ultrawide mandatory</td>
+<td>Produces the first real two-camera frames in existence. Only worth doing
+<em>after</em> #1 — fusing two badly-calibrated cameras yields a confidently wrong map.</td></tr>
+<tr><td class="n">3</td><td><b>Two licensing emails</b> (drafted, unsent)</td>
+<td>Reco is AGPL-3.0-only; KIST Broadcast2Pitch has no licence at all. Gates
+shipping the video branch, not building the data branch.</td></tr>
+<tr><td class="n">4</td><td><b>~$300 radar + 100 paired kicks</b></td>
+<td>Nothing else validates ball speed. Every speed figure is currently unvalidated
+against ground truth.</td></tr>
+</table></div>
+<p>Full filming instructions — settings, rig geometry, and the five things that ruin a
+capture — are in <span class="mono">CAPTURE-SPEC.md</span>, written for whoever holds
+the phones, no engineering assumed.</p>
+</section>
+
+<footer>
+Generated 2026-08-25 by Claude Code · source <span class="mono">stryke-analytics</span>
+(<span class="mono">out/fuse_synth_bias/report.json</span>) ·
+every figure on this page is from a run, none is estimated ·
+companion: <a href="stryke-analytics.html">STRYKE data-branch status</a>
+</footer>
+</div>
