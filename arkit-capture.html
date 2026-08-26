@@ -1,0 +1,309 @@
+<title>The Phone Already Knows</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<style>
+:root{
+  --ink:#12181b; --ink-2:#33413f; --ink-3:#63736e;
+  --paper:#f1f4f0; --surface:#ffffff; --line:#d8ded6; --line-soft:#e7ebe4;
+  --turf:#2e7d5b; --turf-deep:#1f5c42; --turf-wash:#e4efe8;
+  --amber:#8a6a1f; --amber-wash:#f6eeda;
+  --critical:#a4453a; --critical-wash:#f8e7e4;
+  --shadow:0 1px 2px rgba(18,24,27,.06),0 8px 24px -16px rgba(18,24,27,.35);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ink:#e8ece7; --ink-2:#a9b6b0; --ink-3:#7d8b85;
+    --paper:#0e1315; --surface:#161d1f; --line:#2a3436; --line-soft:#212a2c;
+    --turf:#5fb98c; --turf-deep:#8ad3ac; --turf-wash:#16302554;
+    --amber:#d7ad4e; --amber-wash:#33290f66;
+    --critical:#e08376; --critical-wash:#3a201c66;
+    --shadow:0 1px 2px rgba(0,0,0,.5),0 10px 28px -18px rgba(0,0,0,.9);
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#e8ece7; --ink-2:#a9b6b0; --ink-3:#7d8b85;
+  --paper:#0e1315; --surface:#161d1f; --line:#2a3436; --line-soft:#212a2c;
+  --turf:#5fb98c; --turf-deep:#8ad3ac; --turf-wash:#16302554;
+  --amber:#d7ad4e; --amber-wash:#33290f66;
+  --critical:#e08376; --critical-wash:#3a201c66;
+  --shadow:0 1px 2px rgba(0,0,0,.5),0 10px 28px -18px rgba(0,0,0,.9);
+}
+*{box-sizing:border-box}
+body{margin:0; background:var(--paper); color:var(--ink);
+  font-family:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
+  font-size:16px; line-height:1.62; -webkit-font-smoothing:antialiased;}
+.wrap{max-width:62rem; margin:0 auto; padding:0 1.5rem 5rem}
+h1,h2,h3{font-family:"Barlow Condensed","Arial Narrow",sans-serif; text-wrap:balance; margin:0}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace; font-variant-numeric:tabular-nums}
+a{color:var(--turf-deep)}
+
+header{border-bottom:2px solid var(--ink); padding:3.5rem 0 1.25rem; margin-bottom:2.5rem}
+.eyebrow{font-family:"IBM Plex Mono",monospace; font-size:.72rem; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--turf); font-weight:600;}
+h1{font-size:clamp(2.6rem,8vw,4.8rem); line-height:.94; font-weight:700; letter-spacing:-.02em; margin:.4rem 0 .6rem}
+.standfirst{font-size:1.15rem; color:var(--ink-2); max-width:52ch; margin:0}
+.meta{display:flex; flex-wrap:wrap; gap:.4rem 1.5rem; margin-top:1.6rem;
+  font-family:"IBM Plex Mono",monospace; font-size:.76rem; color:var(--ink-3);}
+.meta b{color:var(--ink-2); font-weight:500}
+
+section{margin-top:3.25rem}
+h2{font-size:clamp(1.7rem,4vw,2.4rem); font-weight:600; letter-spacing:-.01em;
+  padding-bottom:.4rem; border-bottom:1px solid var(--line); margin-bottom:1.1rem}
+h3{font-size:1.24rem; font-weight:600; margin:2rem 0 .5rem}
+p{margin:0 0 1rem}
+
+.hero{border:2px solid var(--turf); background:var(--turf-wash);
+  border-radius:.5rem; padding:1.5rem 1.6rem; margin:0 0 2rem}
+.hero .k{font-family:"Barlow Condensed",sans-serif; font-size:2rem; font-weight:700;
+  color:var(--turf-deep); line-height:1.05; display:block; margin-bottom:.4rem}
+.hero p{margin:0; color:var(--ink-2)}
+.hero p+p{margin-top:.7rem}
+
+.card{background:var(--surface); border:1px solid var(--line); border-radius:.5rem;
+  padding:1.25rem 1.4rem; box-shadow:var(--shadow); margin:1.25rem 0}
+.card h3{margin-top:0}
+.card.warn{border-color:var(--amber); background:var(--amber-wash)}
+.card.stop{border-color:var(--critical); background:var(--critical-wash)}
+
+.tw{overflow-x:auto; margin:1.25rem 0}
+table{border-collapse:collapse; width:100%; font-size:.92rem; min-width:34rem}
+th,td{text-align:left; padding:.6rem .7rem; border-bottom:1px solid var(--line-soft); vertical-align:top}
+th{font-family:"Barlow Condensed",sans-serif; font-size:1.02rem; font-weight:600;
+  border-bottom:1.5px solid var(--line); white-space:nowrap}
+td.n{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; white-space:nowrap}
+.win{color:var(--turf-deep); font-weight:600}
+.bad{color:var(--critical); font-weight:600}
+
+.pre{font-family:"IBM Plex Mono",monospace; font-size:.79rem; line-height:1.55;
+  background:var(--surface); border:1px solid var(--line); border-radius:.5rem;
+  padding:1rem 1.2rem; overflow-x:auto; white-space:pre; color:var(--ink-2); margin:1.25rem 0}
+.eq{text-align:center; font-family:"IBM Plex Mono",monospace; font-size:1.05rem;
+  background:var(--surface); border:1px solid var(--line); border-radius:.5rem;
+  padding:1.1rem; margin:1.25rem 0; color:var(--ink); overflow-x:auto}
+.eq b{color:var(--turf-deep)}
+.eq s{color:var(--critical); text-decoration-thickness:2px}
+
+.phase{display:grid; grid-template-columns:3.2rem 1fr; gap:0 1.1rem; margin:1.4rem 0;
+  padding-bottom:1.4rem; border-bottom:1px solid var(--line-soft)}
+.phase:last-child{border-bottom:0}
+.pn{font-family:"Barlow Condensed",sans-serif; font-size:2.1rem; font-weight:700;
+  color:var(--turf); line-height:1}
+.phase h3{margin:0 0 .3rem}
+.phase .cost{font-family:"IBM Plex Mono",monospace; font-size:.72rem; color:var(--ink-3);
+  letter-spacing:.04em; margin-bottom:.5rem}
+.phase p{margin:0 0 .6rem}
+.gate{font-size:.9rem; padding:.55rem .8rem; border-left:3px solid var(--amber);
+  background:var(--amber-wash); border-radius:0 .25rem .25rem 0; color:var(--ink-2)}
+
+ul{margin:0 0 1rem; padding-left:1.2rem} li{margin:.32rem 0}
+footer{margin-top:4rem; padding-top:1.25rem; border-top:1px solid var(--line);
+  font-family:"IBM Plex Mono",monospace; font-size:.75rem; color:var(--ink-3); line-height:1.7}
+footer a{color:var(--ink-3)}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">STRYKE · Capture Plan · ARKit + LiDAR</div>
+  <h1>The phone<br>already knows</h1>
+  <p class="standfirst">Every quantity the ball-trajectory fit has been guessing at —
+  focal length, tilt, camera height, ground plane — is a property iOS measures and
+  hands over for free. This is the plan to stop guessing.</p>
+  <div class="meta">
+    <span><b>Drafted</b> 2026-08-26</span>
+    <span><b>Status</b> plan, nothing built</span>
+    <span><b>Gate</b> Phase 0 drift test</span>
+    <span><b>Est. build</b> ~3 weeks to metric trajectory</span>
+  </div>
+</header>
+
+<div class="hero">
+  <span class="k">One unknown, and iOS knows it</span>
+  <p>The published trajectory can't name a speed. It gives a family: <b>44 km/h at
+  f&nbsp;=&nbsp;500, 105 km/h at f&nbsp;=&nbsp;1300</b>. Not because the physics is weak,
+  but because a single camera cannot recover its own focal length from a goal viewed
+  head-on — the rectangle projects identically at every focal-and-depth pair.</p>
+  <p><b>ARKit publishes the exact intrinsics per frame.</b> fx, fy, cx, cy, measured by
+  the device that took the picture. The unknown doesn't get estimated better — it
+  stops being unknown.</p>
+</div>
+
+<section>
+<h2>What each iOS capability kills</h2>
+<div class="tw"><table>
+<tr><th>Unknown today</th><th>Cost of not knowing it</th><th>iOS source</th></tr>
+<tr>
+  <td><b>Focal length</b></td>
+  <td class="bad">Speed spans 44–105 km/h</td>
+  <td><span class="mono">ARCamera.intrinsics</span> — 3×3 K per frame</td>
+</tr>
+<tr>
+  <td><b>Camera tilt</b></td>
+  <td class="bad">4 solution basins, 7.7°–26.2°, all within 0.5 px RMS</td>
+  <td><span class="mono">.gravity</span> world alignment — Y axis is gravity, by construction</td>
+</tr>
+<tr>
+  <td><b>Camera height</b></td>
+  <td class="bad">Trades against tilt; degenerate together</td>
+  <td>Plane detection + raycast to the ground plane</td>
+</tr>
+<tr>
+  <td><b>Goal dimensions</b></td>
+  <td>Assumed 7.32 × 2.44 m (confirmed to 0.15% from projection — but assumed)</td>
+  <td>LiDAR at close range, ±1–3 cm</td>
+</tr>
+<tr>
+  <td><b>Goal distance</b></td>
+  <td class="bad">The whole problem</td>
+  <td class="win">World-frame anchor — see below</td>
+</tr>
+</table></div>
+
+<h3>The identity, before and after</h3>
+<p>Today's measurements split into two classes. Lateral and vertical are focal-free,
+because the focal cancels:</p>
+<div class="eq">X = (x − c<sub>x</sub>) · D / d &nbsp;&nbsp;&nbsp; ← <b>f cancels. Already true metres.</b></div>
+<p>Depth does not cancel, and that one term poisons every speed:</p>
+<div class="eq">Z = <s>f</s> · D / d &nbsp;&nbsp;&nbsp; ← f unknown ⟹ a family, not a number</div>
+<p>With ARKit intrinsics, <span class="mono">f</span> is simply read from the frame.
+The family collapses. <b>Nothing else about the pipeline has to change</b> — the drag
+model, the tracker, the anchors all stay exactly as they are.</p>
+</section>
+
+<section>
+<h2>The LiDAR trap — and the way around it</h2>
+<div class="card stop">
+<h3>LiDAR cannot measure the goal from where you shoot</h3>
+<p>Effective range is <b>~5 m</b> (up to 10 m on iPhone 15 Pro and later), and
+<b>direct sunlight saturates the infrared band</b> and washes returns out entirely.
+A goal 33 m away on a sunny pitch is doubly out of reach. Any plan that points LiDAR
+at a distant goal fails.</p>
+</div>
+<p>The way around it is that <b>ARKit's world frame is the tape measure, not LiDAR's
+range.</b> Visual-inertial odometry maintains a gravity-aligned metric coordinate
+system as you walk. So:</p>
+<div class="pre">1.  Stand at the goal.        LiDAR scans the posts at 2–3 m → true dimensions
+                              ±1–3 cm, and drops a world anchor on the goal line.
+
+2.  Walk back to the spot.    ARKit tracks the walk. The goal anchor stays fixed
+                              in the world frame — metrically, the whole way.
+
+3.  Shoot.                    Camera pose is now known RELATIVE TO THE GOAL,
+                              in metres, with gravity down and f known per frame.</pre></div>
+<p>Nothing has to see the goal from 33 m. The distance is carried in the world frame
+across the walk. This is what ARKit is genuinely excellent at, and it sidesteps the
+range limit completely.</p>
+<div class="card warn">
+<h3>The risk this plan lives or dies on: VIO drift</h3>
+<p>Walking ~33 m and back accumulates tracking drift. If that drift is a few
+centimetres, the trajectory becomes exact. If it's a metre, the anchor is worthless
+and we're back to guessing. <b>Nobody has measured this on a pitch.</b> It is
+measurable in an afternoon, and it decides whether the rest of this plan is worth
+building — which is why it is Phase 0 and why nothing else starts until it passes.</p>
+</div>
+</section>
+
+<section>
+<h2>Second trap: intrinsics move</h2>
+<p><span class="mono">ARCamera.intrinsics</span> changes <b>per frame</b>, because
+autofocus physically moves the lens and refocusing changes the effective focal length.
+Recording one K at the start and applying it to the whole clip reintroduces exactly
+the error we set out to remove — quietly, and in the direction that looks fine.</p>
+<p>Two defences, use both: lock focus before the strike (<span class="mono">AVCaptureDevice
+.setFocusModeLocked</span>), <b>and</b> log K on every frame anyway. If a locked clip
+shows K drifting, that itself is the bug report.</p>
+<p class="mono" style="font-size:.86rem;color:var(--ink-3)">This is the same failure
+shape that has bitten this project repeatedly: a default value read as a measurement.
+A single K applied to 30 frames is a default wearing a measurement's clothes.</p>
+</section>
+
+<section>
+<h2>Build plan</h2>
+
+<div class="phase">
+  <div class="pn">0</div><div>
+  <h3>Prove the world anchor survives the walk</h3>
+  <div class="cost">~2 days · 1 phone · no pitch needed, a car park works</div>
+  <p>Minimal ARKit app: start session, drop an anchor, walk 35 m, walk back, measure
+  how far the anchor has moved from truth. Repeat on grass, in sun, in shade. Also
+  log whether K drifts under locked focus.</p>
+  <div class="gate"><b>Gate:</b> anchor error under ~10 cm at 35 m round trip. Above
+  ~50 cm, this approach is dead and we say so rather than building on it.</div>
+  </div>
+</div>
+
+<div class="phase">
+  <div class="pn">1</div><div>
+  <h3>Capture app — video plus truth</h3>
+  <div class="cost">~4 days · SwiftUI + ARKit</div>
+  <p>Records 4K30 video alongside a per-frame JSONL: timestamp, 3×3 intrinsics,
+  4×4 camera transform, gravity vector, tracking state, and the goal anchor. One
+  file the Python pipeline can read directly. Bundles the LiDAR goal scan from
+  step 1 of the walk.</p>
+  <div class="gate"><b>Deliverable:</b> a <span class="mono">.mp4</span> + <span class="mono">.jsonl</span>
+  pair that makes every camera parameter in <span class="mono">pipeline/ball.py</span> an input rather than a fit.</div>
+  </div>
+</div>
+
+<div class="phase">
+  <div class="pn">2</div><div>
+  <h3>Metric trajectory</h3>
+  <div class="cost">~3 days · Python, existing code</div>
+  <p>Feed known K, known pose, known gravity and known ground plane into the existing
+  fit. Delete the focal sweep, the tilt search and the basin ranking — all of it exists
+  only to grope for numbers the phone now supplies. Gravity stops being a fitted
+  nuisance and becomes a constant pointing the right way.</p>
+  <div class="gate"><b>Gate:</b> the speed band collapses to a single value with a
+  real error bar, and the two rulers (ball diameter, goal width) agree within ~5%.</div>
+  </div>
+</div>
+
+<div class="phase">
+  <div class="pn">3</div><div>
+  <h3>Validate against radar</h3>
+  <div class="cost">~$300 + one session · 100 paired kicks</div>
+  <p>The step that converts "self-consistent" into "correct". Nothing in this pipeline
+  has ever been checked against an instrument. Until it is, every speed is a claim.</p>
+  <div class="gate"><b>Gate:</b> agreement within ±3 km/h across the range, with no
+  systematic slope — a slope means a scale error still hiding somewhere.</div>
+  </div>
+</div>
+
+<div class="phase">
+  <div class="pn">4</div><div>
+  <h3>The same capture fixes match analytics</h3>
+  <div class="cost">~1 week · reuses everything above</div>
+  <p>The unexpected payoff. Amateur pitch calibration currently succeeds on
+  <b>~9%</b> of frames because the keypoint model was trained on TV angles and has
+  never seen a phone at pitch level. But if the operator walks the touchline once with
+  ARKit, the pitch geometry is measured directly — corners, centre circle, penalty
+  box, all as metric world anchors. <b>No keypoint model required at all.</b></p>
+  <div class="gate"><b>Why this matters:</b> it converts the single biggest blocker on
+  the match-analytics side from "retrain a model on footage we don't have" into
+  "walk the touchline once before kick-off".</div>
+  </div>
+</div>
+</section>
+
+<section>
+<h2>What this does not fix</h2>
+<ul>
+<li><b>Two-phone footage still has to be shot.</b> ARKit helps calibrate each phone; it does not film the match. Real two-camera frames processed remains <b>0</b>.</li>
+<li><b>Non-Pro iPhones have no LiDAR.</b> Intrinsics and world tracking work on all modern devices; only the goal scan needs a Pro. Fall back to assumed regulation dimensions, which projection already confirms to 0.15%.</li>
+<li><b>Sunlight still defeats the LiDAR scan.</b> Scan the goal in shade or on an overcast day, or accept the assumed dimensions.</li>
+<li><b>It is a custom app.</b> None of this is reachable from the stock Camera app — that metadata is not written to the video file. This is real iOS work, not a setting.</li>
+</ul>
+</section>
+
+<footer>
+Drafted 2026-08-26 by Claude Code · nothing on this page is built yet ·
+API behaviour verified against Apple developer documentation, not against a device ·
+companions: <a href="two-camera.html">two-camera fusion</a> ·
+<a href="how-trajectory-works.html">how the trajectory works today</a> ·
+<a href="goal-trajectory.html">the focal family</a>
+<br>Sources: Apple — <span class="mono">ARCamera.intrinsics</span>,
+<span class="mono">ARConfiguration.WorldAlignment</span>, Understanding World Tracking;
+LiDAR range and outdoor limits per published device testing.
+</footer>
+</div>
