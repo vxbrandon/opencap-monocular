@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>STRYKE — Progress</title>
+<style>
+:root{
+  color-scheme:light dark;
+  --ink:#12181b; --ink-2:#33413f; --ink-3:#63736e;
+  --paper:#f1f4f0; --surface:#ffffff; --line:#d8ded6; --line-soft:#e7ebe4;
+  --turf:#2e7d5b; --turf-deep:#1f5c42; --turf-wash:#e4efe8;
+  --amber:#8a6a1f; --amber-wash:#f6eeda;
+  --critical:#a4453a; --critical-wash:#f8e7e4;
+  --shadow:0 1px 2px rgba(18,24,27,.06),0 8px 24px -16px rgba(18,24,27,.35);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ink:#e8ece7; --ink-2:#a9b6b0; --ink-3:#7d8b85;
+    --paper:#0e1315; --surface:#161d1f; --line:#2a3436; --line-soft:#212a2c;
+    --turf:#5fb98c; --turf-deep:#8ad3ac; --turf-wash:#16302554;
+    --amber:#d7ad4e; --amber-wash:#33290f66;
+    --critical:#e08376; --critical-wash:#3a201c66;
+    --shadow:0 1px 2px rgba(0,0,0,.5),0 10px 28px -18px rgba(0,0,0,.9);
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#e8ece7; --ink-2:#a9b6b0; --ink-3:#7d8b85;
+  --paper:#0e1315; --surface:#161d1f; --line:#2a3436; --line-soft:#212a2c;
+  --turf:#5fb98c; --turf-deep:#8ad3ac; --turf-wash:#16302554;
+  --amber:#d7ad4e; --amber-wash:#33290f66;
+  --critical:#e08376; --critical-wash:#3a201c66;
+  --shadow:0 1px 2px rgba(0,0,0,.5),0 10px 28px -18px rgba(0,0,0,.9);
+}
+*{box-sizing:border-box;margin:0}
+body{background:var(--paper);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1040px;margin:0 auto;padding:44px 24px 96px}
+a{color:var(--turf);text-decoration:none}a:hover{text-decoration:underline}
+.crumbs{font-size:.8rem;color:var(--ink-3);margin-bottom:22px}
+.crumbs a{color:var(--ink-2)}
+header h1{font-size:2.2rem;letter-spacing:-.03em;line-height:1.05;font-weight:700}
+header h1 span{color:var(--turf)}
+header .sub{color:var(--ink-2);margin-top:10px;max-width:70ch;font-size:1.02rem}
+.meta{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:14px;color:var(--ink-3);font-size:.82rem}
+h2{font-size:1.05rem;margin:52px 0 12px;letter-spacing:-.01em;display:flex;align-items:baseline;gap:10px}
+h2 span{font-weight:400;color:var(--ink-3);font-size:.85rem}
+.lead{color:var(--ink-2);max-width:76ch;margin-bottom:14px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;box-shadow:var(--shadow)}
+.tile .v{font-size:1.5rem;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.tile .k{color:var(--ink-3);font-size:.78rem;margin-top:2px}
+.tile .n{color:var(--ink-2);font-size:.76rem;margin-top:6px}
+.tile .v.sm{font-size:1.15rem;line-height:1.3;padding-top:.25rem}
+.tile.ok .v{color:var(--turf)} .tile.warn .v{color:var(--amber)} .tile.bad .v{color:var(--critical)}
+.pill{display:inline-block;font-size:.68rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;border:1px solid;white-space:nowrap}
+.pill.done{color:var(--turf);border-color:var(--turf);background:var(--turf-wash)}
+.pill.next{color:var(--amber);border-color:var(--amber);background:var(--amber-wash)}
+.pill.gate{color:var(--critical);border-color:var(--critical);background:var(--critical-wash)}
+.pill.todo{color:var(--ink-3);border-color:var(--line)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;box-shadow:var(--shadow)}
+.card h3{font-size:.98rem;margin-bottom:6px}
+.card p{color:var(--ink-2);font-size:.9rem}
+.card.gate{border-left:4px solid var(--critical)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:820px){.grid2{grid-template-columns:1fr}}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.86rem;min-width:640px}
+th{text-align:left;color:var(--ink-3);font-weight:500;padding:6px 10px;border-bottom:1px solid var(--line)}
+td{padding:8px 10px;border-bottom:1px solid var(--line-soft);color:var(--ink-2);vertical-align:top}
+td:first-child{color:var(--ink);font-weight:600;white-space:nowrap}
+td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.timeline{list-style:none;padding:0;border-left:2px solid var(--line);margin-left:6px}
+.timeline li{position:relative;padding:0 0 14px 20px;font-size:.9rem;color:var(--ink-2)}
+.timeline li::before{content:"";position:absolute;left:-7px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--turf);border:2px solid var(--paper)}
+.timeline li.next::before{background:var(--amber)}
+.timeline li.todo::before{background:var(--paper);border-color:var(--line)}
+.timeline b{color:var(--ink)}
+.timeline .d{font-variant-numeric:tabular-nums;color:var(--ink-3);font-size:.78rem;margin-right:8px}
+.links{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.links a{display:block;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;color:var(--ink);box-shadow:var(--shadow)}
+.links a:hover{border-color:var(--turf);text-decoration:none}
+.links a b{display:block;margin-bottom:4px}
+.links a small{color:var(--ink-3)}
+.links a.primary{border-color:var(--turf);background:var(--turf-wash)}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.85em;background:var(--line-soft);padding:1px 5px;border-radius:4px}
+footer{margin-top:60px;color:var(--ink-3);font-size:.78rem;border-top:1px solid var(--line);padding-top:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="crumbs"><a href="index.html">OpenCap / HeroShot report</a> · <a href="stryke-analytics.html">Match analytics</a> · <b>STRYKE progress</b></div>
+
+<header>
+  <h1>STRYKE <span>· Progress</span></h1>
+  <p class="sub">One phone, a session of shots, one thing to change. iOS-first shooting analysis — this page is where the project stands and what gates what.</p>
+  <div class="meta"><span>Updated 2026-08-28</span><span>Repo <code>~/Desktop/programming/stryke</code></span><span>Design doc R1 · in review</span></div>
+</header>
+
+<h2>Right now <span>four things, at a glance</span></h2>
+<div class="tiles">
+  <div class="tile ok"><div class="v">Done</div><div class="k">Monorepo scaffold</div><div class="n"><code>make check</code> green · 10 tests · 4 import contracts kept</div></div>
+  <div class="tile ok"><div class="v">R1</div><div class="k">Design document</div><div class="n">6 authors → 6 critics → synthesis · every number tagged measured / target</div></div>
+  <div class="tile warn"><div class="v">Stage 0</div><div class="k">Next</div><div class="n">The demo + two falsification spikes · 3 wk · not started</div></div>
+  <div class="tile bad"><div class="v">2 gates</div><div class="k">Open</div><div class="n">Radar order · licence decision — both week-1 actions</div></div>
+</div>
+
+<h2>The two hard gates <span>nothing ships past these</span></h2>
+<div class="grid2">
+  <div class="card gate">
+    <h3><span class="pill gate">Gate 1</span> &nbsp;Radar before rankings</h3>
+    <p>Speed and placement error must be validated against a Pocket Radar (PR1000-BC, ~$300) and a physically measured goal. Until the acceptance set passes, percentiles stay unpublished and every speed on every screen is a <b>band</b>, never a number. <b>Action:</b> order the radar in week 1 — it has lead time and Stage 1 cannot start without it.</p>
+  </div>
+  <div class="card gate">
+    <h3><span class="pill gate">Gate 2</span> &nbsp;Licence before any build leaves the team</h3>
+    <p>GVHMR is non-commercial; SMPL/SMPL-X is research-only. No external TestFlight, no investor device, no App Store submission until a Meshcapade licence is signed <i>and</i> GVHMR's code question is answered in writing — or the SAM-3D-Body / GEM-X migration is merged and green. <b>Action:</b> open the decision in week 1.</p>
+  </div>
+</div>
+
+<h2>What the design rests on <span>measured, not asserted</span></h2>
+<p class="lead">The design doc tags every number. These are the ones the whole plan is built around — and the one everybody was quoting that turned out to be a target.</p>
+<div class="tiles">
+  <div class="tile"><div class="v">~17 s</div><div class="k">Ball lane, CPU</div><div class="n">5 s / 264-frame clip — measured</div></div>
+  <div class="tile"><div class="v">0.63 s</div><div class="k">GVHMR model stage</div><div class="n">but preprocess 39.3 s + model load 17.9–25 s</div></div>
+  <div class="tile"><div class="v">~199 s</div><div class="k">Cold end-to-end</div><div class="n">measured · the "~25 s warm" is a <b>target</b></div></div>
+  <div class="tile"><div class="v sm">[28.8, 76.6]</div><div class="k">km/h — only measured band</div><div class="n">on a real clip, after the gravity ruler was deleted</div></div>
+  <div class="tile"><div class="v">1 : 1</div><div class="k">Depth error → speed error</div><div class="n">accuracy is a scale problem, not tracking</div></div>
+  <div class="tile"><div class="v">7 of 7</div><div class="k">Shots before coaching fires</div><div class="n">"6 of 7" clears · "5 of 7" does not</div></div>
+</div>
+
+<h2>Where we are <span>what has been built, in order</span></h2>
+<ul class="timeline">
+  <li><span class="d">2026-08-12</span><b>OpenCap monocular fork validated</b> on an AWS A10G — WHAM → OpenSim IK, 21× real-time. Report on this site.</li>
+  <li><span class="d">2026-08-13</span><b>GVHMR beats WHAM</b> for the product (0.63 s vs ~47 s model stage). Hero renders: pearl mesh + hologram skeleton.</li>
+  <li><span class="d">2026-08-13</span><b>HeroShot backend shipped</b> — GVHMR → kick metrics → renders → PLY + FastAPI (<code>stryke-pipeline</code>). E2E on a real kick.</li>
+  <li><span class="d">2026-08-14</span><b>Ball speed + 3D trajectory spec v1</b> — MUST/SHOULD capture rules, each with the measured reason.</li>
+  <li><span class="d">2026-08-19</span><b>Accuracy verdict</b> — "±30% is a scale problem"; the fix is a radar gun, not an algorithm.</li>
+  <li><span class="d">2026-08-19</span><b>Two-phone match analytics</b> — fusion 0.637 m RMSE, beats both cameras. <a href="stryke-analytics.html">status page</a>.</li>
+  <li><span class="d">2026-08-26</span><b>Monorepo scaffolded</b> — <code>apps/{fe-mobile, be-api, be-vision}</code> + <code>contracts/</code>; architecture rules enforced by import-linter; fake vision pipeline so everything runs with no GPU.</li>
+  <li><span class="d">2026-08-28</span><b>Design doc R1</b> — 19 agents, ~6,300 lines of sections, ~3,600 lines of adversarial review, one merged document with every contradiction resolved.</li>
+  <li class="next"><span class="d">week 1</span><b>Order the radar · open the licence decision</b> — the two week-1 actions that cost zero critical-path weeks if done now.</li>
+  <li class="todo"><span class="d">weeks 1–3</span><b>Stage 0</b> — the demo on a real iPhone, and two falsification spikes.</li>
+</ul>
+
+<h2>Staged plan <span>~20 calendar weeks to a rankings launch</span></h2>
+<p class="lead">Seven parallel lanes: mobile-capture (Swift), mobile-app (Expo), be-api, be-vision, CV research, design, validation — plus a named JK content owner. Weeks are calendar weeks. 17 weeks of critical path + 15% slack.</p>
+<div class="tw"><table>
+  <tr><th>Stage</th><th>Weeks</th><th>Goal</th><th>Exit criterion</th><th>Status</th></tr>
+  <tr><td>0 · The demo</td><td class="num">3</td><td>Brief §10 end to end on one physical phone, Quick Mode, fake pipeline then one real pre-baked result. Two falsification spikes.</td><td>Run it twice in front of someone who has never seen it. No simulator, no localhost.</td><td><span class="pill next">next</span></td></tr>
+  <tr><td>1 · Ground truth</td><td class="num">3</td><td>Radar + placement rig. Every accuracy statement becomes a measurement. Concurrent with Stage 0.</td><td>A published report with the acceptance set graded.</td><td><span class="pill gate">gates 6</span></td></tr>
+  <tr><td>2 · Real pipeline</td><td class="num">4</td><td><code>ModalVisionPipeline</code> replaces the fake. GVHMR + <code>ball.py</code> on a GPU worker.</td><td>Timings over 20 consecutive real clips with per-stage numbers.</td><td><span class="pill todo">planned</span></td></tr>
+  <tr><td>3 · Honesty layer</td><td class="num">3</td><td>Every failure detected, surfaced with exact copy in both languages, recoverable.</td><td>A scripted adversarial session passes + green build.</td><td><span class="pill todo">planned</span></td></tr>
+  <tr><td>4 · Verified Ranked Mode</td><td class="num">5</td><td>Field registration, shooting zones, stability conditions, LiDAR-optional calibration.</td><td>Register once; shoot 10; two measured gates pass.</td><td><span class="pill todo">planned</span></td></tr>
+  <tr><td>5 · Depth ruler + licence</td><td class="num">6</td><td>Reach the monocular ceiling (±5–8%) and be commercially clean.</td><td>A second radar session against in-app capture.</td><td><span class="pill todo">planned</span></td></tr>
+  <tr><td>6 · Rankings launch</td><td class="num">2</td><td>Percentiles and leaderboards, only where the data supports them.</td><td>Stage 1 gate passed for the launch cell.</td><td><span class="pill gate">hard-gated</span></td></tr>
+  <tr><td>7 · Keeper sim + JK</td><td class="num">3</td><td>Goalkeeper Challenge with generic tiers; JK lessons, overlays, records.</td><td>Pick any ranked shot → keeper replay from multiple angles.</td><td><span class="pill todo">planned</span></td></tr>
+</table></div>
+
+<h2>Open decisions <span>need a human — the plan routes around none of them</span></h2>
+<p class="lead">Eleven, from design doc §11. Each names what it blocks and when it must land. The first four are week-1 or week-2 clocks.</p>
+<div class="tw"><table>
+  <tr><th>#</th><th>Decision</th><th>Blocks</th><th>Clock</th></tr>
+  <tr><td>D1</td><td><b>Body-mesh licensing.</b> Meshcapade licence + a written GVHMR commercial answer, or migrate to SAM 3D Body / GEM-X. Also: is the 2D-pose detector stack (Ultralytics/AGPL) itself licence-clean?</td><td>Which P0 scope we build; every build that leaves the team</td><td>Week 1 answer · week 2 quote + spike · hard gate at Stage 3 exit</td></tr>
+  <tr><td>D4</td><td><b>Which radar condition cells first.</b> The full matrix is 768 cells / 9,216 kicks; the OFAT baseline and three interaction cells are the open part.</td><td>The rankings gate, percentiles, point-value speed</td><td>Week 1, with the radar order</td></tr>
+  <tr><td>D3</td><td><b>Supabase vs own Postgres.</b> Design assumes Supabase; lock-in surface is thin but storage is ≈ 7.9 GB rolling + 1.5 GB/yr per active user.</td><td>Stage 2 infra work and cost model</td><td>Before Stage 2</td></tr>
+  <tr><td>D5</td><td><b>Hero style for v1</b> — pearl mesh, hologram, or selectable. One render per job, never two.</td><td>Render latency, GPU cost</td><td>Before Stage 2</td></tr>
+  <tr><td>D11</td><td><b>Does <code>stryke-pipeline</code> move into <code>apps/be-vision</code></b> or stay a separate repo consuming <code>stryke-contracts</code>?</td><td>Render-spec generator wiring</td><td>Before Stage 2</td></tr>
+  <tr><td>D6</td><td><b>JK's record library</b> — filmed before launch, at ≥ 2 registered field profiles so records are comparable.</td><td>Four P0 JK screens</td><td>Filming day no later than Stage 4</td></tr>
+  <tr><td>D8</td><td><b>Quick Mode clip import at P1</b> — allowed, or in-app capture only forever? Import re-opens the retime speed-error class.</td><td>The P1 growth loop</td><td>Before Stage 5</td></tr>
+  <tr><td>D7</td><td><b>Who curates the <code>stryke_verified</code> benchmark rung</b> and from what measurements. If unanswered the ladder ships with two rungs, not an unsourced number.</td><td>Middle rung of the P0 ladder</td><td>Before Stage 6 design freeze</td></tr>
+  <tr><td>D9</td><td><b>A Quick-only session-relative leaderboard</b>, separate from Ranked? Buildable today, needs no radar.</td><td>A rankings surface</td><td>Before Stage 6</td></tr>
+  <tr><td>D10</td><td><b>FTO review of USPTO 10796437</b> — "sits uncomfortably close to our claim set".</td><td>Any marketed speed number; Stage 6 exit</td><td>Commissioned Stage 1 wk 3 · closed before Stage 6</td></tr>
+  <tr><td>D2</td><td><b>Keeper rights.</b> Generic tiers forever, or pursue a named keeper's name + likeness + motion?</td><td>Whether a keeper name is ever served</td><td>Before Stage 7 content freeze</td></tr>
+</table></div>
+
+<h2>What is scaffolded <span>verified, not described</span></h2>
+<div class="grid2">
+  <div class="card">
+    <h3>Repo shape</h3>
+    <p><code>apps/fe-mobile</code> Expo dev-client · <code>apps/be-api</code> FastAPI, feature modules by bounded context · <code>apps/be-vision</code> GPU worker, own venv · <code>contracts/</code> the only shared surface · <code>specs/</code> · <code>architecture/decisions/</code> two ADRs.</p>
+  </div>
+  <div class="card">
+    <h3>Rules that fail the build</h3>
+    <p><code>core/</code> imports nothing app-internal · feature modules never reach into each other · be-api and be-vision never import each other · contracts depend on nothing but pydantic. Proven: a deliberate violation was inserted and CI went red.</p>
+  </div>
+</div>
+
+<h2>Read <span>the documents</span></h2>
+<div class="links">
+  <a class="primary" href="stryke-design.html"><b>STRYKE v1 — Design</b><small>PRD · flow · scope · architecture · calibration · data · APIs · validation · failures · plan · open decisions</small></a>
+  <a href="stryke-analytics.html"><b>Match analytics status</b><small>the two-phone system — what it measures and what it refuses to say</small></a>
+  <a href="index.html"><b>OpenCap / HeroShot report</b><small>monocular pose validation, GVHMR trial, hero renders</small></a>
+  <a href="mesh.html"><b>3D mesh viewer</b><small>animated body mesh + ball flight + goal</small></a>
+  <a href="goal-trajectory.html"><b>Goal trajectory</b><small>21 real detections in front of a measured full-size goal</small></a>
+  <a href="how-trajectory-works.html"><b>How the trajectory is computed</b><small>the two-stage detect → physics-fit recipe</small></a>
+</div>
+
+<footer>STRYKE progress · generated 2026-08-28 · sources: <code>stryke/specs/stryke-v1/</code>, <code>TBG-DOCS/plans/23-stryke-heroshoot</code>, <code>24-stryke-match-analytics</code></footer>
+</div>
+</body>
+</html>
