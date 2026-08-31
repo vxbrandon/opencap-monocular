@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Your Body Mesh · STRYKE</title>
+</head><body>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@400;500;600;700&family=Barlow+Semi+Condensed:wght@600&family=JetBrains+Mono:wght@400;600&display=swap');
+:root{--bg:#0D141A;--panel:#141C24;--line:#25313B;--fg:#EEF3F6;--mut:#9AA7B0;--lime:#C8FF00;--cyan:#55D9FF;--amber:#F4C95D;--red:#FF5A5F}
+*{box-sizing:border-box}html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 Barlow,system-ui,sans-serif}
+.wrap{max-width:900px;margin:0 auto;padding:40px 22px 100px}
+h1{font-family:Anton,Impact,sans-serif;font-size:clamp(46px,10vw,80px);line-height:.94;margin:0 0 10px;text-transform:uppercase;letter-spacing:.5px}
+h1 em{font-style:normal;color:var(--lime)}
+.eyebrow{font-family:'Barlow Semi Condensed',sans-serif;font-weight:600;font-size:12px;letter-spacing:2.4px;color:var(--mut);text-transform:uppercase;margin:0 0 12px}
+.lede{color:var(--mut);max-width:64ch;margin:0 0 4px}
+h2{font-family:Anton,Impact,sans-serif;font-size:26px;letter-spacing:.6px;text-transform:uppercase;margin:52px 0 8px;padding-top:20px;border-top:1px solid var(--line)}
+h2 .n{color:var(--lime);margin-right:10px}
+p{margin:0 0 13px;max-width:70ch}
+code{background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:13.5px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:0 0 14px}
+.card b.h{display:block;font-family:'Barlow Semi Condensed',sans-serif;letter-spacing:1.4px;text-transform:uppercase;font-size:12.5px;margin-bottom:7px;color:var(--mut)}
+.card.warn{border-left:3px solid var(--amber)}
+.card.yes{border-left:3px solid var(--lime)}
+.vgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:0 0 20px}
+@media(max-width:720px){.vgrid{grid-template-columns:1fr}}
+.vid{background:#000;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.vid video{display:block;width:100%;height:auto}
+.vid .cap{padding:9px 12px;font-family:'Barlow Semi Condensed',sans-serif;letter-spacing:1.3px;text-transform:uppercase;font-size:11.5px;color:var(--mut);border-bottom:1px solid var(--line)}
+.vid .cap b{color:var(--lime);font-weight:600}
+table{width:100%;border-collapse:collapse;margin:0 0 18px;font-size:14.5px}
+th,td{text-align:left;padding:9px 11px;border-bottom:1px solid var(--line)}
+th{font-family:'Barlow Semi Condensed',sans-serif;letter-spacing:1.2px;text-transform:uppercase;font-size:11.5px;color:var(--mut);font-weight:600}
+td b{color:var(--lime)}
+ul{margin:0 0 14px;padding-left:20px}li{margin:0 0 7px;max-width:68ch}
+footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--line);color:var(--mut);font-size:13px}
+</style>
+
+<div class="wrap">
+<p class="eyebrow">STRYKE · body mesh from a real clip</p>
+<h1>Your <em>Mesh</em></h1>
+<p class="lede">This is not a demo asset. Every frame below was recovered from your own 5-second free-kick clip (734×1074, 2026-08-13): a full SMPL-X body per frame, in world coordinates, ground at y=0. The mesh never needed the ball solve — it is a separate lane, and it already works.</p>
+
+<h2><span class="n">01</span>The renders</h2>
+<div class="vgrid">
+  <div class="vid"><div class="cap"><b>Overlay</b> · mesh on your footage</div><video src="mesh/overlay.mp4" controls muted playsinline preload="metadata"></video></div>
+  <div class="vid"><div class="cap"><b>Hologram</b> · your motion, stylised</div><video src="mesh/hero_hologram.mp4" controls muted playsinline loop preload="metadata"></video></div>
+  <div class="vid"><div class="cap"><b>Mesh</b> · your motion, shaded</div><video src="mesh/hero_mesh.mp4" controls muted playsinline loop preload="metadata"></video></div>
+  <div class="vid"><div class="cap"><b>Hero render</b> · server renderer, generic body — see the caveat</div><video src="mesh/hero_render.mp4" controls muted playsinline loop preload="metadata"></video></div>
+</div>
+<div class="card warn"><b class="h">Which of these is actually you</b>The first three are <b>your motion</b> — SMPL-X recovered from your clip, frame by frame; contact is frame 71 of 264 at 52.6 fps. The fourth is the new server renderer (full mesh density, opencap-grade shading) driving a <b>generic body on a generic kick</b> — its own captions say so on-frame. The obvious next step is wiring your recovered frames into that renderer, so the pretty one and the true one become the same video.</div>
+
+<h2><span class="n">02</span>What was measured from it</h2>
+<table>
+<tr><th>Metric</th><th>Value</th><th>Status</th></tr>
+<tr><td>Kicking foot</td><td><b>right</b></td><td>measured</td></tr>
+<tr><td>Peak foot speed</td><td><b>73.7 km/h</b></td><td>measured, from the mesh joints</td></tr>
+<tr><td>Knee flexion (backswing)</td><td><b>108.7°</b></td><td>measured</td></tr>
+<tr><td>Trunk lean at contact</td><td><b>4.3°</b></td><td>measured</td></tr>
+<tr><td>Shoulder–hip rotation (X-factor)</td><td><b>39.7°</b></td><td>measured</td></tr>
+<tr><td>Approach speed</td><td><b>7.4 km/h</b></td><td>measured</td></tr>
+<tr><td>Ball speed</td><td><b>null</b></td><td>not claimed — the ball solve is a separate question</td></tr>
+</table>
+<p>That last row is the honesty rule working: the body pipeline measured what it could and wrote a real <code>null</code> for what it could not, rather than a plausible number.</p>
+
+<h2><span class="n">03</span>Straight answers</h2>
+<div class="card yes"><b class="h">"Can we avoid using the ball radius?" — mostly, yes</b>For the designed capture (goal in frame, ball struck from the ground), the radius is already statistically almost irrelevant: the Fisher analysis puts the plane-and-goal routes at ~2.6% on speed with the radius contributing next to nothing — the ground plane is 13.5× tighter per pixel of noise, because its lever arm is the camera height (~1.5 m) rather than the ball's 0.11 m. The radius keeps exactly two jobs it cannot be fired from: it is the <b>only witness against a wrong goal size</b> (the +46%/+144% guard works through it), and it is one of the few depth hints left for a ball that never touches the ground. So: demoted, not deleted.</div>
+<div class="card yes"><b class="h">"I just want to see the body mesh" — it never needed the ball</b>Pose recovery and ball solving are independent lanes. The mesh above came from a clip whose ball speed is <em>null</em>. What the mesh lane does need is a GPU (it is a minutes-per-clip job on a GPU box; this Mac has no CUDA and no GVHMR checkout), a close, well-lit subject — and your 5 s clip is exactly that. The long 1024×576 training video is the opposite: distant, small, blurred figures, which is poor input for body recovery for the same reason it is hard for the ball.</div>
+
+<footer>
+STRYKE · body mesh from the 2026-08-13 E2E run · SMPL-X output is research-licensed; these renders are for development, and the licence swap is tracked before anything ships.
+</footer>
+</div>
+</body></html>
