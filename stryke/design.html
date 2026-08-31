@@ -57,7 +57,8 @@ footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--line);color:v
 <p class="eyebrow">STRYKE · design targets vs the build</p>
 <h1>The <em>Design</em></h1>
 <p class="lede">The eight screens we are building toward, each next to what the app actually renders today. The gap is the point of the page — this is a working document, not a portfolio.</p>
-<p class="lede" style="font-size:13.5px;margin-top:14px">Build screenshots are unretouched simulator captures after <b>three rounds</b> of the design-QA loop, 31 Aug 2026. The score on each screen is that round's adversarial fidelity rating against its mockup. <b>Average 43/100, and not one screen passed.</b></p>
+<p class="lede" style="font-size:13.5px;margin-top:14px">Build screenshots refreshed <b>1 Sep 2026, 03:35&ndash;03:53</b> — after the clean-capture rescore (true average 49/100), a simulator-verified fix round, the static shot-map scene, and the leaderboard going live against the seeded API. Scores shown are the last adversarial ratings; captures are newer than the scores, so treat scores as a floor.</p>
+<div style="background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px 14px;margin:14px 0"><img src="design/logo-lockup.jpg" alt="STRYKE lockup" style="display:block;width:100%;max-width:560px;height:auto;margin:0 auto"><p style="text-align:center;color:var(--mut);font-size:12px;margin:6px 0 2px">New brand lockup &mdash; the kit&rsquo;s ballistic trail and impact star promoted to the mark, set in Pretendard Black</p></div>
 
 <h2><span class="n">01</span>The colour system</h2>
 <p>Five colours, and that is the whole palette. The most important rule here is the last one: amber is not decoration.</p>
@@ -137,13 +138,14 @@ footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--line);color:v
 </div>
 
 <div class="scr">
-<h3>06 · Rankings <span style="color:var(--mut);font-weight:400">랭킹</span> <span class="tag t-part">40/100</span></h3>
+<h3>06 · Rankings <span style="color:var(--mut);font-weight:400">랭킹</span> <span class="tag t-ok">live · seeded</span></h3>
 <div class="pair">
   <div class="shot"><div class="cap tgt">Target</div><img src="design/mock-06.jpg" alt="Rankings target"></div>
   <div class="shot"><div class="cap now">Build</div><img src="design/build-ranking.jpg" alt="Rankings build"></div>
 </div>
 <ul class="gaps">
-<li><b>상위 7% is cut and stays cut.</b> A percentile is a claim about a population; a rank is a fact about an ordered list. We can honestly say 12th. We cannot say top 7%.</li>
+<li><b>Now live against the real API.</b> Nine seeded accounts, server tie-ranks rendered verbatim (1, 2, 3, 3, 5&hellip;), every seeded row carrying a visible SEED label plus a footnote, my-rank showing 랭킹 없음 rather than an invented place. An unreachable server renders 연결 없음 with retry — deliberately different copy from an empty board.</li>
+<li><b>상위 7% is cut and stays cut.</b> A percentile is a claim about a population; a rank is a fact about an ordered list.</li>
 <li>The leaderboard is real, filled by seeded test accounts. Every seeded row is flagged in the API and must be <b>visibly labelled</b> in the UI — a demo entry that announces itself is a demo entry, the same row unlabelled is a fake record.</li>
 <li>Only verified records enter, which the target already states in its own footer (<span style="color:var(--fg)">인증된 기록만 랭킹에 반영됩니다</span>). In the schema that is <code>claim_point_speed</code> — a refused or band-only shot cannot be ranked.</li>
 <li>A user with no verified record has <b>no rank at all</b>, not last place.</li>
@@ -189,7 +191,7 @@ footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--line);color:v
 </ul>
 
 <footer>
-STRYKE · design targets vs build, 31 Aug 2026 · Targets are the supplied mockups. Build screenshots are the running app on the simulator, unretouched, including the parts that do not match.
+STRYKE · design targets vs build, updated 1 Sep 2026 · Targets are the supplied mockups. Build screenshots are the running app on the simulator, unretouched, including the parts that do not match.
 </footer>
 </div>
 </body></html>
