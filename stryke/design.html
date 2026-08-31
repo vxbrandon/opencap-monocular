@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Design · STRYKE</title>
+</head><body>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@400;500;600;700&family=Barlow+Semi+Condensed:wght@600&family=JetBrains+Mono:wght@400;600&display=swap');
+:root{--bg:#0D141A;--panel:#141C24;--panel2:#1A242D;--line:#25313B;--fg:#EEF3F6;--mut:#9AA7B0;--lime:#C8FF00;--cyan:#55D9FF;--amber:#F4C95D;--red:#FF5A5F;--grey:#5E6B75}
+*{box-sizing:border-box}html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 Barlow,system-ui,sans-serif}
+.wrap{max-width:1080px;margin:0 auto;padding:40px 22px 100px}
+h1{font-family:Anton,Impact,sans-serif;font-size:clamp(46px,10vw,80px);line-height:.94;margin:0 0 10px;text-transform:uppercase;letter-spacing:.5px}
+h1 em{font-style:normal;color:var(--lime)}
+.eyebrow{font-family:'Barlow Semi Condensed',sans-serif;font-weight:600;font-size:12px;letter-spacing:2.4px;color:var(--mut);text-transform:uppercase;margin:0 0 12px}
+.lede{color:var(--mut);max-width:64ch;margin:0 0 4px}
+h2{font-family:Anton,Impact,sans-serif;font-size:26px;letter-spacing:.6px;text-transform:uppercase;margin:52px 0 8px;padding-top:20px;border-top:1px solid var(--line)}
+h2 .n{color:var(--lime);margin-right:10px}
+p{margin:0 0 13px;max-width:70ch}
+code{background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:13.5px}
+.tag{display:inline-block;border-radius:4px;padding:1px 7px;font-size:11px;letter-spacing:.8px;text-transform:uppercase;font-family:'Barlow Semi Condensed',sans-serif;font-weight:600;white-space:nowrap}
+.t-ok{background:#1A2A10;color:var(--lime);border:1px solid #2E4416}
+.t-part{background:#2A2412;color:var(--amber);border:1px solid #443A1C}
+.t-no{background:#2A1416;color:var(--red);border:1px solid #4A2226}
+.t-wip{background:#122630;color:var(--cyan);border:1px solid #1D3D4C}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:0 0 14px}
+.card b.h{display:block;font-family:'Barlow Semi Condensed',sans-serif;letter-spacing:1.4px;text-transform:uppercase;font-size:12.5px;margin-bottom:7px;color:var(--mut)}
+.card.warn{border-left:3px solid var(--amber)}
+.card.no{border-left:3px solid var(--red)}
+.card.yes{border-left:3px solid var(--lime)}
+ul{margin:0 0 14px;padding-left:20px}li{margin:0 0 7px;max-width:68ch}
+footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--line);color:var(--mut);font-size:13px}
+/* palette */
+.pal{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 20px}
+.sw{border:1px solid var(--line);border-radius:10px;overflow:hidden;width:118px}
+.sw i{display:block;height:56px}
+.sw span{display:block;padding:7px 9px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--mut);background:var(--panel)}
+.sw b{display:block;font-family:'Barlow Semi Condensed',sans-serif;font-size:11.5px;letter-spacing:1.2px;color:var(--fg);text-transform:uppercase}
+/* screen pairs */
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:0 0 12px}
+@media(max-width:720px){.pair{grid-template-columns:1fr}}
+.shot{background:var(--panel2);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.shot img{display:block;width:100%;height:auto}
+.shot .cap{padding:9px 12px;font-family:'Barlow Semi Condensed',sans-serif;letter-spacing:1.3px;text-transform:uppercase;font-size:11.5px;color:var(--mut);border-bottom:1px solid var(--line)}
+.shot .cap.tgt{color:var(--lime)}
+.shot .cap.now{color:var(--cyan)}
+.shot.absent{display:grid;place-items:center;min-height:260px;color:var(--red);font-family:'Barlow Semi Condensed',sans-serif;letter-spacing:2px;text-transform:uppercase;font-size:13px;text-align:center;padding:24px}
+.scr{margin:0 0 34px}
+.scr h3{margin:22px 0 8px;font-size:19px;font-weight:700;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.scr .gaps{font-size:14.5px;color:var(--mut);margin:6px 0 0}
+.scr .gaps li{margin-bottom:5px}
+</style>
+
+<div class="wrap">
+<p class="eyebrow">STRYKE · design targets vs the build</p>
+<h1>The <em>Design</em></h1>
+<p class="lede">The eight screens we are building toward, each next to what the app actually renders today. The gap is the point of the page — this is a working document, not a portfolio.</p>
+<p class="lede" style="font-size:13.5px;margin-top:14px">Build screenshots are from the simulator at 19:00 on 31 Aug 2026, captured by the design-QA loop. A second round is running now; where a screen says a fix is in progress, that is what is meant.</p>
+
+<h2><span class="n">01</span>The colour system</h2>
+<p>Five colours, and that is the whole palette. The most important rule here is the last one: amber is not decoration.</p>
+<div class="pal">
+  <div class="sw"><i style="background:#C8FF00"></i><span><b>Lime</b>#C8FF00</span></div>
+  <div class="sw"><i style="background:#55D9FF"></i><span><b>Cyan</b>#55D9FF</span></div>
+  <div class="sw"><i style="background:#0D141A"></i><span><b>Dark</b>#0D141A</span></div>
+  <div class="sw"><i style="background:#9AA7B0"></i><span><b>Grey</b>#9AA7B0</span></div>
+  <div class="sw"><i style="background:#F4C95D"></i><span><b>Amber</b>#F4C95D</span></div>
+</div>
+<ul>
+<li><b>Lime</b> is the single brand accent — CTA fills, active tab, the live trajectory arc.</li>
+<li><b>Cyan</b> is functional, not decorative: 3D wireframe geometry, and the benchmark you are being compared against.</li>
+<li><b>Amber</b> marks <b>low confidence only</b>. If it ever appears because a screen needed a warm colour, that is a bug.</li>
+</ul>
+<p>Typography: <b>Pretendard</b> for everything carrying language (including 한글), <b>Inter Tight</b> for numerals. Both are already loaded in the build, and the palette is already in <code>theme.ts</code> — that part of the kit landed.</p>
+
+<h2><span class="n">02</span>Screen by screen</h2>
+<p>Left is the target, right is the build. Where the right side is missing, the screen does not exist yet.</p>
+
+<div class="scr">
+<h3>01 · Discover <span style="color:var(--mut);font-weight:400">디스커버</span> <span class="tag t-part">partial</span></h3>
+<div class="pair">
+  <div class="shot"><div class="cap tgt">Target</div><img src="design/mock-01.jpg" alt="Discover target"></div>
+  <div class="shot"><div class="cap now">Build</div><img src="design/build-discover.jpg" alt="Discover build"></div>
+</div>
+<ul class="gaps">
+<li>The measured session (5:17) sits far down the session list and never surfaces in 최근 세션, so the screen's own stats have nothing to point at.</li>
+<li>The session list mixes 라이브 badges and em-dash placeholder speeds in with real measured rows — a reader cannot tell which is which at a glance.</li>
+</ul>
+</div>
+
+<div class="scr">
+<h3>02 · Setup <span style="color:var(--mut);font-weight:400">세팅</span> <span class="tag t-part">partial</span></h3>
+<div class="pair">
+  <div class="shot"><div class="cap tgt">Target</div><img src="design/mock-02.jpg" alt="Setup target"></div>
+  <div class="shot"><div class="cap now">Build</div><img src="design/build-setup.jpg" alt="Setup build"></div>
+</div>
+<ul class="gaps">
+<li>The target's readiness chips (골대 감지 · 거리 확인 · 안정성) are the honest core of this screen: each one is a real check, not a progress animation. They must never show a green tick for a check that has not run.</li>
+</ul>
+</div>
+
+<div class="scr">
+<h3>03 · Shot map <span style="color:var(--mut);font-weight:400">숏 맵</span> <span class="tag t-part">partial</span></h3>
+<div class="pair">
+  <div class="shot"><div class="cap tgt">Target</div><img src="design/mock-03.jpg" alt="Shot map target"></div>
+  <div class="shot"><div class="cap now">Build</div><img src="design/build-shotmap.jpg" alt="Shot map build"></div>
+</div>
+<ul class="gaps">
+<li>This mockup gets the honesty pattern <b>right</b>, and it should be copied to every other screen: the speed carries an <b>추정</b> chip, and the confidence grade reads <b>랭킹 없음</b>. That is a number that admits what it is.</li>
+<li>The 분석 중 row in the target matters too — a shot still being solved is a visible state, not an empty cell.</li>
+</ul>
+</div>
+
+<div class="scr">
+<h3>04 · Keeper replay <span style="color:var(--mut);font-weight:400">키퍼 리플레이</span> <span class="tag t-part">partial</span></h3>
+<div class="pair">
+  <div class="shot"><div class="cap tgt">Target</div><img src="design/mock-04.jpg" alt="Keeper target"></div>
+  <div class="shot"><div class="cap now">Build</div><img src="design/build-keeper.jpg" alt="Keeper build"></div>
+</div>
+<ul class="gaps">
+<li>The simulation disclaimer card at the bottom of the target is <b>load-bearing</b> and must not be trimmed for space. We do not detect the real keeper at all, so every number on this screen describes a simulated one.</li>
+<li>The build has no back control — the screen can only be left by an edge swipe.</li>
+</ul>
+</div>
+
+<div class="scr">
+<h3>05 · Records <span style="color:var(--mut);font-weight:400">기록</span> <span class="tag t-no">does not exist</span></h3>
+<div class="pair">
+  <div class="shot"><div class="cap tgt">Target</div><img src="design/mock-05.jpg" alt="Records target"></div>
+  <div class="shot absent">Not built<br><span style="color:var(--mut);letter-spacing:1px">no such screen in the app</span></div>
+</div>
+<ul class="gaps">
+<li>The whole screen is missing. When it is built, an empty history must render an empty state — never sample curves.</li>
+</ul>
+</div>
+
+<div class="scr">
+<h3>06 · Rankings <span style="color:var(--mut);font-weight:400">랭킹</span> <span class="tag t-wip">being built now</span></h3>
+<div class="pair">
+  <div class="shot"><div class="cap tgt">Target</div><img src="design/mock-06.jpg" alt="Rankings target"></div>
+  <div class="shot absent">Not built<br><span style="color:var(--mut);letter-spacing:1px">API and seed accounts in progress</span></div>
+</div>
+<ul class="gaps">
+<li><b>상위 7% is cut and stays cut.</b> A percentile is a claim about a population; a rank is a fact about an ordered list. We can honestly say 12th. We cannot say top 7%.</li>
+<li>The leaderboard is real, filled by seeded test accounts. Every seeded row is flagged in the API and must be <b>visibly labelled</b> in the UI — a demo entry that announces itself is a demo entry, the same row unlabelled is a fake record.</li>
+<li>Only verified records enter, which the target already states in its own footer (<span style="color:var(--fg)">인증된 기록만 랭킹에 반영됩니다</span>). In the schema that is <code>claim_point_speed</code> — a refused or band-only shot cannot be ranked.</li>
+<li>A user with no verified record has <b>no rank at all</b>, not last place.</li>
+</ul>
+</div>
+
+<div class="scr">
+<h3>07 · Shot detail <span style="color:var(--mut);font-weight:400">숏 02</span> <span class="tag t-part">partial</span></h3>
+<div class="pair">
+  <div class="shot"><div class="cap tgt">Target</div><img src="design/mock-07.jpg" alt="Shot detail target"></div>
+  <div class="shot"><div class="cap now">Build</div><img src="design/build-shotdetail.jpg" alt="Shot detail build"></div>
+</div>
+<ul class="gaps">
+<li>영상 / 3D toggle, the insight pair, and the 이전 최고와 비교 strip are the structure to match.</li>
+<li>Same honesty pattern as the shot map — 추정 chip present, no ranking claimed.</li>
+</ul>
+</div>
+
+<div class="scr">
+<h3>08 · Compare <span style="color:var(--mut);font-weight:400">비교</span> <span class="tag t-no">does not exist</span></h3>
+<div class="pair">
+  <div class="shot"><div class="cap tgt">Target</div><img src="design/mock-08.jpg" alt="Compare target"></div>
+  <div class="shot absent">Not built<br><span style="color:var(--mut);letter-spacing:1px">no such screen in the app</span></div>
+</div>
+<ul class="gaps">
+<li>Lime versus cyan body mesh, plant-foot distance 124 vs 112 cm, chest angle −6° vs 0°. This is the clearest expression of the product's actual thesis: measure, compare, explain — and change one thing next time.</li>
+<li>Every difference shown here must be traceable to a real measurement on both sides. A comparison against a pose we did not measure is not a comparison.</li>
+</ul>
+</div>
+
+<h2><span class="n">03</span>What the design gets right that the code has to catch up to</h2>
+<div class="card yes"><b class="h">The mockups already respect the measurement rules</b>Screens 03 and 07 pair the speed with an <b>추정</b> chip and <b>랭킹 없음</b>; screen 04 carries an explicit simulation disclaimer; screen 06's footer restricts the leaderboard to verified records. None of that was imposed on the design after the fact — it is already in the drawings, and it is the pattern the rest of the app should copy.</div>
+<div class="card no"><b class="h">Three things on the board cannot be built as drawn</b><b>상위 7%</b> — a percentile over a population we do not have. Cut.<br><br><b>A bare point speed</b> — legal only when a metric reference is solved and the time base allows one. The component has to be able to render a band and an explicit refusal, or it will force a fabricated number the first time it meets a real clip.<br><br><b>A confidence meter that always reads high</b> — legal only when driven by the solver's real refusal state. A decorative gauge is worse than no gauge.</div>
+
+<h2><span class="n">04</span>Honest status</h2>
+<ul>
+<li><b>Landed:</b> the five-colour palette and both typefaces are in <code>theme.ts</code>. The kit's foundation is real.</li>
+<li><b>Two screens do not exist at all</b> — Records and Compare. A third, Rankings, is being built now with its API and seeded accounts.</li>
+<li><b>Round 1 of the design loop found the gaps and applied none of them</b> — the fix lane was killed by a usage limit before it wrote a line. Round 2 is running now, so the build screenshots above are the <em>pre-fix</em> state.</li>
+</ul>
+
+<footer>
+STRYKE · design targets vs build, 31 Aug 2026 · Targets are the supplied mockups. Build screenshots are the running app on the simulator, unretouched, including the parts that do not match.
+</footer>
+</div>
+</body></html>
