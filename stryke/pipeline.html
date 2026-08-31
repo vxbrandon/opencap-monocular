@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>The Pipeline · STRYKE</title>
+</head><body>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@400;500;600;700&family=Barlow+Semi+Condensed:wght@600&family=JetBrains+Mono:wght@400;600&display=swap');
+:root{--bg:#0D141A;--panel:#141C24;--panel2:#1A242D;--line:#25313B;--fg:#EEF3F6;--mut:#9AA7B0;--lime:#C8FF00;--cyan:#55D9FF;--amber:#F4C95D;--red:#FF5A5F;--grey:#5E6B75}
+*{box-sizing:border-box}html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 Barlow,system-ui,sans-serif}
+.wrap{max-width:900px;margin:0 auto;padding:40px 22px 100px}
+h1{font-family:Anton,Impact,sans-serif;font-size:clamp(46px,10vw,80px);line-height:.94;margin:0 0 10px;text-transform:uppercase;letter-spacing:.5px}
+h1 em{font-style:normal;color:var(--lime)}
+.eyebrow{font-family:'Barlow Semi Condensed',sans-serif;font-weight:600;font-size:12px;letter-spacing:2.4px;color:var(--mut);text-transform:uppercase;margin:0 0 12px}
+.lede{color:var(--mut);max-width:64ch;margin:0 0 4px}
+h2{font-family:Anton,Impact,sans-serif;font-size:26px;letter-spacing:.6px;text-transform:uppercase;margin:52px 0 8px;padding-top:20px;border-top:1px solid var(--line)}
+h2 .n{color:var(--lime);margin-right:10px}
+h3{font-size:17px;margin:26px 0 6px;font-weight:700}
+p{margin:0 0 13px;max-width:70ch}
+.eq{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--lime);border-radius:10px;padding:14px 18px;margin:0 0 16px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:14px;line-height:1.7;overflow-x:auto;white-space:pre}
+.eq b{color:var(--lime);font-weight:600}
+.eq i{color:var(--red);font-style:normal}
+code{background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:13.5px}
+table{width:100%;border-collapse:collapse;margin:0 0 18px;font-size:14.5px;display:block;overflow-x:auto}
+th,td{text-align:left;padding:10px 11px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:'Barlow Semi Condensed',sans-serif;letter-spacing:1.2px;text-transform:uppercase;font-size:11.5px;color:var(--mut);font-weight:600;white-space:nowrap}
+td b{color:var(--lime)}
+.tag{display:inline-block;border-radius:4px;padding:1px 7px;font-size:11px;letter-spacing:.8px;text-transform:uppercase;font-family:'Barlow Semi Condensed',sans-serif;font-weight:600;white-space:nowrap}
+.t-ok{background:#1A2A10;color:var(--lime);border:1px solid #2E4416}
+.t-part{background:#2A2412;color:var(--amber);border:1px solid #443A1C}
+.t-no{background:#2A1416;color:var(--red);border:1px solid #4A2226}
+.t-wip{background:#122630;color:var(--cyan);border:1px solid #1D3D4C}
+.t-lic{background:#241C2E;color:#C39BEA;border:1px solid #3B2D4C}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:0 0 14px}
+.card b.h{display:block;font-family:'Barlow Semi Condensed',sans-serif;letter-spacing:1.4px;text-transform:uppercase;font-size:12.5px;margin-bottom:7px;color:var(--mut)}
+.card.warn{border-left:3px solid var(--amber)}
+.card.no{border-left:3px solid var(--red)}
+.card.yes{border-left:3px solid var(--lime)}
+.card.cy{border-left:3px solid var(--cyan)}
+ul{margin:0 0 14px;padding-left:20px}li{margin:0 0 7px;max-width:68ch}
+.big{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:0 0 18px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:15px}
+.stat b{font-family:Anton,sans-serif;font-size:30px;display:block;color:var(--lime);letter-spacing:.4px;line-height:1.1}
+.stat.cy b{color:var(--cyan)}.stat.am b{color:var(--amber)}.stat.rd b{color:var(--red)}
+.stat span{color:var(--mut);font-size:11.5px;letter-spacing:1.6px;text-transform:uppercase;display:block;margin-top:5px}
+footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--line);color:var(--mut);font-size:13px}
+/* flow */
+.flow{margin:0 0 22px}
+.stage{display:grid;grid-template-columns:34px 1fr;gap:14px;position:relative}
+.stage:not(:last-child)::before{content:"";position:absolute;left:16px;top:34px;bottom:-10px;width:2px;background:var(--line)}
+.dot{width:34px;height:34px;border-radius:50%;background:var(--panel2);border:2px solid var(--line);display:grid;place-items:center;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:var(--mut);z-index:1}
+.stage.ok .dot{border-color:#2E4416;color:var(--lime)}
+.stage.part .dot{border-color:#443A1C;color:var(--amber)}
+.stage.no .dot{border-color:#4A2226;color:var(--red)}
+.stage.wip .dot{border-color:#1D3D4C;color:var(--cyan)}
+.sbody{padding-bottom:22px;min-width:0}
+.sbody h4{margin:5px 0 4px;font-size:16.5px;font-weight:700;display:flex;gap:9px;align-items:baseline;flex-wrap:wrap}
+.sbody p{font-size:14.5px;color:var(--mut);margin:0 0 7px}
+.sbody p.im{color:var(--fg)}
+.fn{font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--grey)}
+.legend{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 26px}
+</style>
+
+<div class="wrap">
+<p class="eyebrow">STRYKE · the measurement pipeline, end to end</p>
+<h1>The <em>Pipeline</em></h1>
+<p class="lede">Every stage between a phone pointing at a ball and a number on screen — what each one does, which ones are built, and which ones are the reason your training footage does not work yet. Written to be argued with.</p>
+<p class="lede" style="font-size:13.5px;margin-top:14px">Status as of 31 Aug 2026. Anything marked <span class="tag t-ok">built</span> has run on a real clip; anything else says plainly what it is.</p>
+
+<div class="legend" style="margin-top:22px">
+<span class="tag t-ok">built &amp; run</span>
+<span class="tag t-part">built, limited</span>
+<span class="tag t-wip">in progress</span>
+<span class="tag t-no">missing</span>
+<span class="tag t-lic">licence-blocked</span>
+</div>
+
+<h2><span class="n">01</span>The flow</h2>
+<p>Left column is the stage number. The chain runs top to bottom; a stage that refuses stops the chain rather than passing a guess down it.</p>
+
+<div class="flow">
+
+<div class="stage ok"><div class="dot">1</div><div class="sbody">
+<h4>Capture <span class="tag t-ok">built</span></h4>
+<p class="im">On-device recording with a rolling buffer. A kick is detected from its <b>audio transient</b>, and the clip is cut around it — one second before, two and a half after.</p>
+<p>Writes <code>shot_&lt;n&gt;.mov</code> plus a <code>shot_&lt;n&gt;.json</code> sidecar carrying the real camera intrinsics, the presentation timestamp of every frame, and a device-attitude track. See §3 — this is the single biggest accuracy lever we have.</p>
+<p class="fn">stryke-capture/ios/{CaptureController,ShotDetector,SegmentRing,ClipCutter,SidecarTracks}.swift</p>
+</div></div>
+
+<div class="stage no"><div class="dot">2</div><div class="sbody">
+<h4>Offline shot detection &amp; auto-cut <span class="tag t-no">missing</span></h4>
+<p class="im">This is the gap that matters most to you. The <em>only</em> shot detector is the Swift one above — it runs on-device, from audio, while the app is recording. For a video file that already exists, there is no path at all.</p>
+<p>A 2.6-minute training video with a dozen shots in it cannot currently be analysed. A crude frame-difference scan over <code>MovingBallShots.MP4</code> found 13 high-activity windows, but a person walking trips it exactly as readily as a struck ball. That is proof the problem is tractable, not proof of a solution.</p>
+</div></div>
+
+<div class="stage ok"><div class="dot">3</div><div class="sbody">
+<h4>Time-base assessment <span class="tag t-ok">built</span></h4>
+<p class="im">Speed scales 1:1 with the frame clock, so a wrong clock is a wrong speed — and re-encoded video lies about its clock constantly.</p>
+<p>Three container rates are cross-checked against each other and against duplicate-frame ratio. Disagreement does not widen the band quietly; it <b>refuses the point value</b> by name. Real per-frame stamps from the sidecar upgrade this from an inference to a measurement.</p>
+<p class="fn">ball.py · assess_timebase() · probe_container_timebase()</p>
+</div></div>
+
+<div class="stage ok"><div class="dot">4</div><div class="sbody">
+<h4>Stabilisation <span class="tag t-ok">built</span></h4>
+<p class="im">Camera shake is removed before anything is tracked: corner flow on background features, RANSAC affine per frame pair, composed into a transform to the contact frame. On-screen UI is auto-masked so a static overlay is not mistaken for static ground.</p>
+<p class="fn">ball.py · stabilize()</p>
+</div></div>
+
+<div class="stage part"><div class="dot">5</div><div class="sbody">
+<h4>Ball acquisition <span class="tag t-part">dead-ball only</span></h4>
+<p class="im">The wall. The pipeline finds the ball by first finding it <b>at rest</b> — a white circle that holds still, then departs. Free kicks and penalties work. Everything else raises before a single measurement is attempted.</p>
+<div class="eq" style="margin:10px 0 8px">find_rest_ball()                  <span style="color:var(--mut)"># Hough circles + whiteness</span>
+track_rest_until_departure()      <span style="color:var(--mut)"># template match until it leaves</span>
+<i>RuntimeError: no rest-ball candidate produced a departing track</i></div>
+<p>Three of the four segments cut from your own footage died on that line. The fourth ran and returned 9.9–13.8 km/h — walking pace, i.e. it had locked onto the wrong object entirely.</p>
+</div></div>
+
+<div class="stage wip"><div class="dot">6</div><div class="sbody">
+<h4>Impact detection <span class="tag t-wip">just rebuilt</span></h4>
+<p class="im">Finding <em>when</em> the ball was struck. Contact is <code>t=0</code> for the whole flight fit, so an error here is an error in every number downstream.</p>
+<p>Until today, contact came from the rest-ball departure, with a refinement that looked for the biggest jump in <b>speed</b>. That is correct for a dead ball and wrong for a moving one: a ball rolling in at 6 px/frame and returned at 7 px/frame has almost no speed jump and a complete reversal of direction. The new detector keys on the change in the <b>velocity vector</b>, which catches both with one quantity.</p>
+<div class="eq" style="margin:10px 0 8px">delta[i] = | v[i] − v[i−1] |        <span style="color:var(--mut)"># the impulse</span>
+contact  = argmax delta              <span style="color:var(--mut)"># ball is AT the contact point</span></div>
+<p>It reports <code>sharpness</code> (peak over the next-best rival), <code>prominence</code> (peak over the track's own noise floor) and <code>frames_uncertain</code>, and refuses outright when no candidate stands out. The noise-floor test earned its place immediately: without it, the detector confidently reported a contact on a synthetic track where nothing was ever struck.</p>
+<p class="fn">pipeline/impact.py — new, 11 tests passing</p>
+</div></div>
+
+<div class="stage ok"><div class="dot">7</div><div class="sbody">
+<h4>Tracking <span class="tag t-ok">built · the strong part</span></h4>
+<p class="im">Once seeded, this is genuinely good and is not being replaced. Three independent trackers run every frame and are fused per frame:</p>
+<ul style="font-size:14.5px;color:var(--mut)">
+<li>double frame-difference blobs, for the fast-moving frames</li>
+<li>white mask + Hough circles, for the slow and sharp ones</li>
+<li>optical-flow template match, for continuity through both</li>
+</ul>
+<p>Plus outlier re-search against a local quadratic fit. The overlay you liked — fused dots, reprojected 3D fit — comes from here.</p>
+<p class="fn">ball.py · track_ball() · _refit_pass() · render_overlay()</p>
+</div></div>
+
+<div class="stage ok"><div class="dot">8</div><div class="sbody">
+<h4>Metric scale: the goal is the ruler <span class="tag t-ok">built</span></h4>
+<p class="im">A camera sees pixels. Metres require one object of known real size in frame — the goal mouth, 7.32 m × 2.44 m. Its four corners plus the camera's focal length give depth through PnP.</p>
+<p>Two consequences worth arguing about: <b>the whole goal must be visible</b>, and a dead-on straight shot is geometrically degenerate (a rectangle projects as a rectangle at any focal/depth pair), which is why we ask for 30–60° off the shot line.</p>
+<p class="fn">ball.py · detect_goal() — now scans a window of frames around contact, since the kicker often occludes a post on the contact frame itself</p>
+</div></div>
+
+<div class="stage ok"><div class="dot">9</div><div class="sbody">
+<h4>Flight fit <span class="tag t-ok">built</span></h4>
+<p class="im">A physical model, not a curve through points: quadratic drag with the drag-crisis Reynolds transition, plus a Magnus term for topspin. Multiple solution basins are enumerated rather than the first one being reported as if it were unique.</p>
+<p class="fn">ball.py · fit_flight() · integrate_flight() · DragModel</p>
+</div></div>
+
+<div class="stage ok"><div class="dot">10</div><div class="sbody">
+<h4>The band <span class="tag t-ok">built</span></h4>
+<p class="im">The product is an interval, not a midpoint dressed as a fact. It is assembled by re-solving under every perturbation we know we have, and taking the envelope.</p>
+<div class="eq" style="margin:10px 0 8px">speeds = primary
+       + per-anchor solves (gravity / diameter / goal)
+       + focal × 0.85 and × 1.15      <span style="color:var(--mut)"># the ±15% intrinsics guess</span>
+       + tilt ± 5°
+       + every surviving solution basin
+       + the alternate model class
+band   = [min, max] × (1 ± frame-rate uncertainty)</div>
+<p>The next term to enter this list is contact-instant uncertainty from stage 6 — re-fitting at contact ± <code>frames_uncertain</code> and folding those speeds in. That is what will make a moving-ball band honestly wider than a dead-ball one.</p>
+</div></div>
+
+<div class="stage ok"><div class="dot">11</div><div class="sbody">
+<h4>Refusal <span class="tag t-ok">built</span></h4>
+<p class="im">Refusals are named, never folded into a quietly wider band. A better input may remove an error; it may never silently remove a refusal.</p>
+<p class="fn">focal_from_diagonal_heuristic_pm15pct · camera_rotation_exceeds_compensation_limit · goal_fronto_parallel · impact_indistinguishable_from_track_noise · …</p>
+</div></div>
+
+<div class="stage no"><div class="dot">12</div><div class="sbody">
+<h4>Keeper detection <span class="tag t-no">missing</span></h4>
+<p class="im">There is a keeper in green in your goal, and we do not detect him. The app currently ships a constant stance position — an assumption about a person who was never actually measured. Nothing that depends on keeper reach means anything until this is real.</p>
+</div></div>
+
+<div class="stage part"><div class="dot">13</div><div class="sbody">
+<h4>Body mesh / pose <span class="tag t-part">built</span> <span class="tag t-lic">licence-blocked</span></h4>
+<p class="im">World-frame SMPL-X body recovery works and has produced real meshes. The obstacle is not code — it is that the model chain is non-commercial and cannot ship in a paid app. The fix is a licence-clean swap, not a third pose stack.</p>
+<p class="fn">pipeline/motion.py · pose2d.py</p>
+</div></div>
+
+</div>
+
+<h2><span class="n">02</span>What actually happened on your footage</h2>
+<p>Measured, not estimated — this is the run that prompted the current work.</p>
+<div class="big">
+  <div class="stat rd"><b>3 of 4</b><span>segments refused outright</span></div>
+  <div class="stat am"><b>9.9–13.8</b><span>km/h · the one that ran</span></div>
+  <div class="stat cy"><b>4,760</b><span>frames · 158.7 s · 30 fps</span></div>
+</div>
+<div class="card no"><b class="h">Read that middle number again</b>The segment that did not refuse was <em>worse</em> than the ones that did. 9.9–13.8 km/h is walking pace: the tracker locked onto something that was not the ball and the pipeline had no way to notice. A refusal is a good outcome; a confident wrong answer is the failure mode we are actually designing against.</div>
+
+<h2><span class="n">03</span>Yes — the app already records the gyroscope</h2>
+<p>You asked what the camera gives us. It gives us considerably more than the video, and the capture module already writes all of it. Nothing here needs new app work; the gap is that the <em>solver</em> does not yet consume all of it.</p>
+<table>
+<tr><th>What</th><th>Recorded</th><th>Why it matters</th></tr>
+<tr><td><b>Device attitude</b><br><span class="fn">quaternion + rotation rate</span></td><td><span class="tag t-ok">yes</span></td><td>CoreMotion attitude, time-aligned to the video clock via <code>CMSyncConvertTime</code>. Lets a small camera rotation be compensated <em>exactly</em> (pure rotation maps through K·R·K⁻¹ with no depth term) and a large one refused, instead of being absorbed into the geometry as a wrong speed.</td></tr>
+<tr><td><b>Camera intrinsics</b><br><span class="fn">real K matrix</span></td><td><span class="tag t-ok">yes</span></td><td>The ±15% focal guess is the single largest error term in the whole budget, and it transfers 1:1 into every speed. The phone knows the true value and hands it over per clip.</td></tr>
+<tr><td><b>Per-frame timestamps</b></td><td><span class="tag t-ok">yes</span></td><td>Turns the frame clock from an inference into a measurement — the gate between a band and a point value.</td></tr>
+<tr><td><b>Exposure, ISO, lens position</b></td><td><span class="tag t-ok">yes</span></td><td>Exposure duration is the one to watch: it sets motion-blur streak length, which is a possible <em>independent</em> speed cross-check. Under investigation.</td></tr>
+<tr><td><b>Zoom, stabilisation state, lens ID</b></td><td><span class="tag t-ok">yes</span></td><td>Each is a refusal trigger. Digital zoom or active video stabilisation silently changes the geometry, so they are named and refused rather than ignored.</td></tr>
+</table>
+<div class="card warn"><b class="h">The catch, and it is a real one</b>All of the above exists <em>only</em> for clips recorded inside the app. An imported file — anything from the Camera app, AirDrop, or a share sheet — arrives with none of it, keeps the ±15% focal warning, and gets the wider band. That is the honest cost of importing, and it is the strongest practical argument for shooting in-app once the capture path is proven on a real device.</div>
+
+<h2><span class="n">04</span>What is being decided right now</h2>
+<div class="card cy"><b class="h">Ball acquisition — a decision pending evidence</b>A learned ball detector (WASB, MIT-licensed, 6 MB, already implemented here in a CUDA-free form) would give a ball position <em>per frame with no rest assumption</em>, which is exactly what stage 5 lacks. Its published recall is poor on distant balls — 48.8% on broadcast, ~7% on amateur wide-angle — but every one of those measurements is on a ball 3–14 pixels wide, and ours are close-range kicks where the ball is large. That is a reason for optimism, not evidence, so it is being measured against our own known-good track before anything is wired in.</div>
+<div class="card warn"><b class="h">Licensing is a design constraint, not paperwork</b>The obvious off-the-shelf detectors for players and pitch keypoints are AGPL, and the licence string is inside the weights themselves — exporting to another format does not launder it. They are usable to prove a feature works and cannot ship in a paid app. This is why keeper detection is a "which permissive model" question rather than a "wire it up" one.</div>
+
+<h2><span class="n">05</span>The shortest honest summary</h2>
+<p>The middle of the pipeline — tracking, physics, geometry, the band, the refusals — is in good shape and is not the problem. Both ends are.</p>
+<ul>
+<li><b>The front end</b> cannot find shots in a video you already have, and cannot start from a ball that is already moving. That is why your training footage does not work.</li>
+<li><b>The far end</b> does not see the keeper, so anything about reach or coverage is currently an assumption wearing a number.</li>
+<li><b>The accuracy ceiling</b> is set by a focal length we guess at ±15% while the phone already knows the true value — and by the fact that no measurement here has yet been checked against a radar.</li>
+</ul>
+
+<footer>
+STRYKE · pipeline status, 31 Aug 2026 · Numbers on this page are measured outputs from real clips, not projections. Where something has not been measured, it says so.
+</footer>
+</div>
+</body></html>
