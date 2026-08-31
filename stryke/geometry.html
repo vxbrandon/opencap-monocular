@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Four Problems · STRYKE</title>
+</head><body>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@400;500;600;700&family=Barlow+Semi+Condensed:wght@600&family=JetBrains+Mono:wght@400;600&display=swap');
+:root{--bg:#0D141A;--panel:#141C24;--panel2:#1A242D;--line:#25313B;--fg:#EEF3F6;--mut:#9AA7B0;--lime:#C8FF00;--cyan:#55D9FF;--amber:#F4C95D;--red:#FF5A5F;--grey:#5E6B75}
+*{box-sizing:border-box}html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 Barlow,system-ui,sans-serif}
+.wrap{max-width:900px;margin:0 auto;padding:40px 22px 100px}
+h1{font-family:Anton,Impact,sans-serif;font-size:clamp(46px,10vw,80px);line-height:.94;margin:0 0 10px;text-transform:uppercase;letter-spacing:.5px}
+h1 em{font-style:normal;color:var(--lime)}
+.eyebrow{font-family:'Barlow Semi Condensed',sans-serif;font-weight:600;font-size:12px;letter-spacing:2.4px;color:var(--mut);text-transform:uppercase;margin:0 0 12px}
+.lede{color:var(--mut);max-width:64ch;margin:0 0 4px}
+h2{font-family:Anton,Impact,sans-serif;font-size:26px;letter-spacing:.6px;text-transform:uppercase;margin:52px 0 8px;padding-top:20px;border-top:1px solid var(--line)}
+h2 .n{color:var(--lime);margin-right:10px}
+h3{font-size:17px;margin:26px 0 6px;font-weight:700}
+p{margin:0 0 13px;max-width:70ch}
+.eq{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--lime);border-radius:10px;padding:14px 18px;margin:0 0 16px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:14px;line-height:1.7;overflow-x:auto;white-space:pre}
+.eq b{color:var(--lime);font-weight:600}
+.eq i{color:var(--red);font-style:normal}
+code{background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:13.5px}
+table{width:100%;border-collapse:collapse;margin:0 0 18px;font-size:14.5px;display:block;overflow-x:auto}
+th,td{text-align:left;padding:10px 11px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:'Barlow Semi Condensed',sans-serif;letter-spacing:1.2px;text-transform:uppercase;font-size:11.5px;color:var(--mut);font-weight:600;white-space:nowrap}
+td b{color:var(--lime)}
+.tag{display:inline-block;border-radius:4px;padding:1px 7px;font-size:11px;letter-spacing:.8px;text-transform:uppercase;font-family:'Barlow Semi Condensed',sans-serif;font-weight:600;white-space:nowrap}
+.t-ok{background:#1A2A10;color:var(--lime);border:1px solid #2E4416}
+.t-part{background:#2A2412;color:var(--amber);border:1px solid #443A1C}
+.t-no{background:#2A1416;color:var(--red);border:1px solid #4A2226}
+.t-wip{background:#122630;color:var(--cyan);border:1px solid #1D3D4C}
+.t-lic{background:#241C2E;color:#C39BEA;border:1px solid #3B2D4C}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:0 0 14px}
+.card b.h{display:block;font-family:'Barlow Semi Condensed',sans-serif;letter-spacing:1.4px;text-transform:uppercase;font-size:12.5px;margin-bottom:7px;color:var(--mut)}
+.card.warn{border-left:3px solid var(--amber)}
+.card.no{border-left:3px solid var(--red)}
+.card.yes{border-left:3px solid var(--lime)}
+.card.cy{border-left:3px solid var(--cyan)}
+ul{margin:0 0 14px;padding-left:20px}li{margin:0 0 7px;max-width:68ch}
+.big{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:0 0 18px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:15px}
+.stat b{font-family:Anton,sans-serif;font-size:30px;display:block;color:var(--lime);letter-spacing:.4px;line-height:1.1}
+.stat.cy b{color:var(--cyan)}.stat.am b{color:var(--amber)}.stat.rd b{color:var(--red)}
+.stat span{color:var(--mut);font-size:11.5px;letter-spacing:1.6px;text-transform:uppercase;display:block;margin-top:5px}
+footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--line);color:var(--mut);font-size:13px}
+/* flow */
+.flow{margin:0 0 22px}
+.stage{display:grid;grid-template-columns:34px 1fr;gap:14px;position:relative}
+.stage:not(:last-child)::before{content:"";position:absolute;left:16px;top:34px;bottom:-10px;width:2px;background:var(--line)}
+.dot{width:34px;height:34px;border-radius:50%;background:var(--panel2);border:2px solid var(--line);display:grid;place-items:center;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:var(--mut);z-index:1}
+.stage.ok .dot{border-color:#2E4416;color:var(--lime)}
+.stage.part .dot{border-color:#443A1C;color:var(--amber)}
+.stage.no .dot{border-color:#4A2226;color:var(--red)}
+.stage.wip .dot{border-color:#1D3D4C;color:var(--cyan)}
+.sbody{padding-bottom:22px;min-width:0}
+.sbody h4{margin:5px 0 4px;font-size:16.5px;font-weight:700;display:flex;gap:9px;align-items:baseline;flex-wrap:wrap}
+.sbody p{font-size:14.5px;color:var(--mut);margin:0 0 7px}
+.sbody p.im{color:var(--fg)}
+.fn{font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--grey)}
+.legend{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 26px}
+</style>
+
+<div class="wrap">
+<p class="eyebrow">STRYKE · the four problems, and what each one can honestly return</p>
+<h1>Four <em>Problems</em></h1>
+<p class="lede">Your decomposition, taken seriously and priced. For each of the four: what is mathematically possible from one static phone camera, what is actually built, what the dominant error term is, and what we refuse to claim regardless of how good the inputs get.</p>
+<p class="lede" style="font-size:13.5px;margin-top:14px">Every number is labelled. <b style="color:var(--lime)">MEASURED</b> means it came out of this repo's own artifacts or a hand-checked track. <b style="color:var(--cyan)">DERIVED</b> means it is arithmetic or a Fisher/Monte-Carlo analysis run against the module's own <code>project</code>, <code>integrate_flight</code> and <code>backproject_to_height</code>, with noise levels taken from the measured ones. <b style="color:var(--amber)">ASSUMED</b> and <b style="color:var(--red)">UNMEASURED</b> say so. <b>Nothing on this page is a validated accuracy figure — there is still no radar.</b></p>
+
+<div class="legend" style="margin-top:22px">
+<span class="tag t-ok">built &amp; run</span>
+<span class="tag t-part">built, limited</span>
+<span class="tag t-wip">changed today</span>
+<span class="tag t-no">missing</span>
+<span class="tag t-lic">licence-blocked</span>
+</div>
+
+<h2><span class="n">00</span>The framing correction, before anything else</h2>
+<p>The decomposition is right. One phrase inside it is not, and it is the phrase that decides the architecture.</p>
+
+<div class="card no"><b class="h">There is no such thing as the ball's 3D position in frame 47</b>
+A single view of a sphere gives a <em>ray</em>, not a point. Depth along that ray has to come from somewhere else, and every available "somewhere else" is either a plane the ball is not on, a rectangle whose absolute size is declared rather than seen, or an apparent radius of eight pixels. Solve frame-by-frame and you get a chain of independently noisy depths — each with 7&ndash;25% error — and then you differentiate that chain to get a speed, which amplifies the noise instead of cancelling it.
+<br><br><b>The correct object is one trajectory, fitted to the whole clip at once.</b> A drag-and-Magnus flight has roughly nine free numbers. A clip has thirty or forty ball detections, each contributing two pixel residuals, plus a radius. Sixty-plus observations against nine unknowns is a strongly over-determined estimation problem, and the physics is what does the averaging. That is why <code>fit_flight</code> exists and why there is no <code>position_at(frame)</code> function anywhere in the codebase.</div>
+
+<p>This is not a stylistic preference. It changes what "error" even means. Per-frame, the question is <em>how wrong is this depth</em>. Trajectory-wide, the question is <b>which directions in parameter space are unconstrained by the data</b> — and that question has an exact answer, computed from the Hessian, which the rest of section 01 is about.</p>
+
+<div class="eq">The estimate is not a point per frame. It is:
+
+  <b>argmin</b><sub>θ</sub>  Σ<sub>t</sub> ‖ project( integrate_flight(θ, t) ) − uv<sub>obs</sub>(t) ‖²   / σ<sub>px</sub>²
+        + Σ<sub>t</sub> ( f·R / Z(θ,t) − r<sub>obs</sub>(t) )² / σ<sub>r</sub>²
+        + anchor residuals   + weak priors
+
+  θ = ( h, tilt, v0, el, az, g_eff, aL, <b>t0</b> )      <span style="color:var(--mut)"># 8 today, 10 in the recommendation</span></div>
+
+<p>Read the pieces in that order and the four problems fall out of it naturally: <b>problem 1</b> is where the metres come from and which directions of θ the data cannot see; <b>problem 2</b> is the definition of <code>t0</code>; <b>problem 3</b> runs on a completely different, scale-free measurement chain; <b>problem 4</b> consumes the fitted trajectory and adds one deterministic model on top.</p>
+
+<h2><span class="n">01</span>Problem one · 2D pixels &rarr; metric 3D</h2>
+<p class="lede" style="margin-bottom:18px">The centrepiece. Everything downstream inherits this section's error, and none of it can be recovered later.</p>
+
+<h3>1.1 &nbsp;The proposed chain is not wrong. It is inverted.</h3>
+<div class="eq">proposed:   goal geometry + K &rarr; R,t ;  ball centre &rarr; ray ;  <i>apparent size &rarr; depth</i></div>
+<p>The last step is the <b>weakest</b> of the available depth routes, and the chain omits the one that is actually load-bearing. The accurate statement is:</p>
+<div class="card yes"><b class="h">What the goal is actually for</b>The goal does not exist to give you <code>R,t</code>. It exists to give you the <b>horizon line</b> and <b>one known depth</b>. The ground plane then converts a ball pixel into a depth with a lever arm of the camera height (~1.5 m) instead of the ball radius (0.11 m). Apparent size is the fallback for the interval in which the ball is <em>not</em> on a known plane — which is the entire flight.</div>
+
+<p>Two facts reorder the whole ranking.</p>
+
+<p><b>Fact one — reprojection residuals alone have an exact gauge freedom.</b> Run the Fisher analysis with only image residuals, <code>h</code> and <code>tilt</code> free: the Hessian carries a null eigenvalue at <b>1e&minus;11</b> relative to its largest, with soft direction <code>v0 +0.91, g_eff +0.37</code>. That is the scale gauge, and it costs <b>&sigma;<sub>v0</sub> = 2552%</b> (DERIVED). Pinning the launch onto the ground plane does <em>not</em> break it, because <code>h</code> is unknown and scales with everything else. The 0.11 m ball radius inside <code>backproject_to_height()</code> breaks it only at the 1e&minus;11 level. <b>The plane constraint is not a ruler — it is an amplifier that turns knowledge of the camera height into depth.</b></p>
+
+<p><b>Fact two — goal PnP is an excellent depth ruler and a terrible height ruler.</b> Monte Carlo over <code>detect_goal</code>'s own <code>solvePnP(SOLVEPNP_IPPE)</code> with Hough-grade corner noise (DERIVED):</p>
+<table>
+<tr><th>Goal at</th><th>Corner &sigma;</th><th>&sigma;(depth)/depth</th><th>&sigma;(h)/h</th></tr>
+<tr><td>18 m, 25&deg; oblique</td><td>2 px</td><td><b>0.5 %</b></td><td>22.7 %</td></tr>
+<tr><td>18 m, 25&deg; oblique</td><td>4 px</td><td>1.0 %</td><td>46.6 %</td></tr>
+<tr><td>18 m, 8&deg; oblique</td><td>4 px</td><td>2.1 %</td><td>92.2 %</td></tr>
+<tr><td>30 m, 25&deg; oblique</td><td>4 px</td><td>2.8 %</td><td>96.7 %</td></tr>
+<tr><td>10 m, 25&deg; oblique</td><td>4 px</td><td><b>0.3 %</b></td><td>16.4 %</td></tr>
+</table>
+<p><code>h</code> is <code>Z·sin(small angle)</code>, and that angle carries <code>&sigma;_corner / post_px</code> — so a 1% depth becomes a 20&ndash;100% height. <b><code>ball.py</code> already sidesteps this trap and does not say so anywhere.</b> The goal enters the fit as a single scalar residual:</p>
+<div class="eq">backproject_to_height( uv_goal_base, 0.0, h, tilt )[2]  ==  depth_m      <span style="color:var(--mut)">weight 6.0</span></div>
+<p>That derives <code>h</code> from <b>depth plus the goal base's pixel row</b> rather than from the PnP rotation — which is 10&ndash;40&times; better. Right now it reads like an arbitrary anchor, and it is one refactor away from being "simplified" into a 23&ndash;100% height error.</p>
+
+<h3>1.2 &nbsp;The scale routes, ranked by information per unit of trust</h3>
+<p>Not the order the code lists them in. The order they actually deserve.</p>
+
+<div class="flow">
+
+<div class="stage part"><div class="dot">c-i</div><div class="sbody">
+<h4>Ball on the ground at contact <span class="tag t-part">strongest, conditional</span></h4>
+<p class="im"><code>Z = f·(h &minus; y&#8320;) / (v &minus; v_horizon)</code> &mdash; the resting ball projected onto a known plane. Three separable sensitivity terms.</p>
+<p><b style="color:var(--fg)">Pixel noise.</b> At f = 1175 and h = 1.6 m, the resting ball sits <b>194 px below the horizon at Z = 9 m</b>. One pixel is 0.51%; three pixels 1.5% (DERIVED). The diameter route on the <em>same, sharpest</em> ball (r = 14.5 px, MEASURED from the hand-checked track) costs 3.4% for half a pixel.</p>
+<div class="eq" style="margin:10px 0 8px">plane / diameter  =  (h − R) / R  =  1.49 m / 0.11 m  =  <b>13.5×</b>
+
+that ratio IS the whole argument. it is just the lever arm.</div>
+<p><b style="color:var(--fg)">Height.</b> <code>dZ/Z = dh/(h &minus; y&#8320;)</code>. &plusmn;0.05 m &rarr; 3.4%. The module's current prior of &plusmn;0.7 m &rarr; <b>47%</b>.</p>
+<p><b style="color:var(--fg)">Tilt — the killer.</b> With the goal residual enforcing <code>h</code> from (depth, base row), solving <code>h</code> at deliberately wrong tilts and reading back the launch depth (DERIVED, using <code>ball.py</code>'s own functions):</p>
+</div></div>
+</div>
+
+<table>
+<tr><th>Assumed tilt</th><th>Solved h</th><th>Z at launch</th><th>Error on depth</th></tr>
+<tr><td>4&deg;</td><td>0.34 m</td><td>2.93 m</td><td><b style="color:var(--red)">&minus;70.7 %</b></td></tr>
+<tr><td><b>8&deg; (truth)</b></td><td>1.60 m</td><td>10.00 m</td><td>0</td></tr>
+<tr><td>12&deg;</td><td>2.88 m</td><td>12.51 m</td><td><b style="color:var(--red)">+25.1 %</b></td></tr>
+<tr><td>20&deg;</td><td>5.53 m</td><td>14.52 m</td><td>+45.2 %</td></tr>
+</table>
+
+<div class="card warn"><b class="h">≈6–8 % of launch depth per degree of tilt</b>This is <em>the basin ambiguity</em>, in one table. It is not an optimiser curiosity: <code>h</code> and <code>tilt</code> slide along a curve of constant reprojection cost, which is exactly why the module carries an <code>_H_LATTICE</code> / <code>_TILT_LATTICE_DEG</code> enumeration to walk that curve. A &plusmn;10&deg; tilt prior is therefore a <b>&plusmn;80% prior on the plane route</b>.
+<br><br>And the operational sting: <b>both reference clips emit <code>goal_fronto_parallel</code></b> (MEASURED, in both <code>ball_flight.json</code> outputs), meaning the pose half of PnP is discarded and only scale survives. On every clip this repo has actually run, route (c) has been running on the &plusmn;10&deg; prior.</div>
+
+<p><b>When it evaporates, exactly:</b> (i) the instant the ball leaves the ground, i.e. <code>t = 0&#8314;</code> — it constrains one sample, never the flight; (ii) when the ball was never on the ground (§1.4); (iii) when the horizon is unpinned; (iv) on sloped ground — a 1&deg; camber at 10 m is 0.17 m of height error, 12% of depth, and nothing in the pipeline can see it (UNMEASURED).</p>
+
+<div class="flow">
+<div class="stage no"><div class="dot">c-ii</div><div class="sbody">
+<h4>Ball crossing the goal plane <span class="tag t-no">not implemented</span></h4>
+<p class="im">The cheapest win left on the table. The goal's vertical plane is known to 0.5&ndash;3% the moment PnP succeeds. Identifying the frame at which the ball crosses it gives a <b>second known depth at a known time</b> — a metric baseline spanning the flight, not just t=0.</p>
+<p><code>ball.py</code> never does this. The goal contributes exactly one scalar and it constrains the <em>camera</em>, never the ball.</p>
+</div></div>
+</div>
+
+<table>
+<tr><th>Residual set (dead-ball scenario, DERIVED)</th><th>&sigma;<sub>v0</sub></th></tr>
+<tr><td>radii + goal &nbsp;<span class="fn">== ball.py today</span></td><td>2.64 %</td></tr>
+<tr><td>&nbsp;+ ball depth at the goal plane to &plusmn;0.3 m</td><td><b>1.59 %</b></td></tr>
+<tr><td>&nbsp;+ ball depth at the goal plane to &plusmn;0.1 m</td><td><b>0.76 %</b></td></tr>
+</table>
+<p>A 40% reduction in the statistical term for a residual that is three lines of code. The honest caveat: it measures depth at the <em>end</em> of the arc, so converting it into launch speed passes through the drag model — and drag is where the physics constants bite (§1.6).</p>
+
+<div class="flow">
+<div class="stage ok"><div class="dot">a</div><div class="sbody">
+<h4>Known goal size + PnP <span class="tag t-ok">built</span> <span class="tag t-part">reference, not ruler</span></h4>
+<p class="im">Statistically this barely matters: <code>radii + tilt ±0.3°</code> gives 2.65% against <code>radii + goal</code> at 2.64% (DERIVED). <b>The goal's job is not variance reduction. It is the only cross-check on systematics we have.</b></p>
+<p>A wrong declared size gives a <em>perfect</em> PnP at the wrong depth, because a rectangle's absolute size is unobservable from one view. 5 m 7-a-side declared as 7.32 m is <b>+46%</b> on every speed; 3 m futsal is <b>+144%</b> (MEASURED). Now caught above 35% ruler disagreement.</p>
+<p><b style="color:var(--fg)">The blind spot, confirmed:</b> 12&times;4 ft five-a-side has aspect 3.00 — identical to regulation 7.32&times;2.44. Nothing geometric can tell them apart. The only discriminator is the ball-diameter anchor, <em>which is the noisier ruler</em>. A 3.66 m goal declared as regulation is +100%, and it is caught only because the diameter anchor disagrees by 100% — the guard works, but it works through the very ruler the module elsewhere refuses to trust. That coupling should be in the refusal text.</p>
+</div></div>
+
+<div class="stage part"><div class="dot">b</div><div class="sbody">
+<h4>Apparent ball diameter + focal <span class="tag t-part">bias-dominated</span></h4>
+<p class="im"><code>Z = f·R/r</code>, so <code>dZ/Z = −dr/r</code> — one pixel of radius error is one pixel of radius error, undiluted. This is <b>the only route that works while the ball is airborne</b>, which is why it cannot be dropped, and why its bias sets the ceiling.</p>
+</div></div>
+</div>
+
+<table>
+<tr><th>Where</th><th>Diameter (MEASURED)</th><th>Z</th><th>1 px error</th><th>2 px</th></tr>
+<tr><td>resting ball</td><td>29.0 px</td><td>8.9 m</td><td>3.4 %</td><td>6.9 %</td></tr>
+<tr><td>median in flight</td><td>13.5 px</td><td>19.1 m</td><td>7.4 %</td><td>14.8 %</td></tr>
+<tr><td>at the goal</td><td>10.5 px</td><td>24.6 m</td><td>9.5 %</td><td>19.0 %</td></tr>
+<tr><td>far tail</td><td>8.0 px</td><td>32.3 m</td><td><b style="color:var(--red)">12.5 %</b></td><td><b style="color:var(--red)">25.0 %</b></td></tr>
+</table>
+
+<div class="card no"><b class="h">The 6× gap that is the real story</b>Statistically, twenty such observations give <b>&sigma;<sub>v0</sub> = 4.02%</b> (DERIVED). But the literature figure this repo already cites — Van Zandycke &amp; De Vleeschouwer, CVPRW 2022, Table 2 — is <b>24&ndash;28% relative depth error</b> for Hough diameters. That 6&times; gap is not variance. It is <b>bias</b>: motion blur inflates the streak, <code>Z = f·R/r</code> comes out under-estimated, and the anchor reads low. The sign was audited and corrected on 2026-08-19. On top of that sit size-4 vs size-5 (0.205 vs 0.22 m = 7%), inflation state (&plusmn;1%), and the assumption that a blob centroid is the ball's centre.
+<br><br>This is the same finding as the WASB result from the other direction. <b>The ball is 29 px only at rest — median 10 px in flight, 7.5 px at the goal. Blur, not size, is the binding constraint.</b></div>
+
+<p>Three structural notes on how the fit consumes this route, each of which changes what a refusal means:</p>
+<ul>
+<li><code>_filter_radii</code> <b>exempts <code>src == "seed"</code></b> from demotion. That is correct for a dead ball — it is the one blur-free radius in the clip — but it means that <b>on a no-goal clip the entire metric scale is one number with no falsifier.</b> <code>per_anchor["diameter_kmh"]</code> is essentially that single measurement.</li>
+<li>The rest radius enters at <code>r_conf 1.5</code>, the highest weight anywhere in the fit.</li>
+<li>The per-anchor isolation is by <em>reweighting</em>, not removal: <code>lam_r = 6.0</code> for the diameter anchor against <code>0.5</code> for the goal anchor. Neither "anchor" solve is pure, and the anchor spread should be read with that in mind.</li>
+</ul>
+
+<div class="flow">
+<div class="stage no"><div class="dot">d</div><div class="sbody">
+<h4>Gravity / arc curvature <span class="tag t-no">removed 2026-08-21 · not defensible</span></h4>
+<p class="im">I went looking for a defence of reinstating this and there is not one. Three independent reasons, each with a number.</p>
+</div></div>
+</div>
+
+<p><b>Precision.</b> &sigma; on the fitted quadratic coefficient of the vertical pixel track (DERIVED):</p>
+<table>
+<tr><th>Window</th><th>n</th><th>&sigma;<sub>px</sub></th><th>Total gravity sag</th><th>&sigma;<sub>g</sub>/g = &sigma;<sub>scale</sub></th></tr>
+<tr><td><b>0.44 s</b> &mdash; the real flight segment</td><td>13</td><td>6</td><td>84 px</td><td><b style="color:var(--red)">22.9 %</b></td></tr>
+<tr><td>0.63 s</td><td>20</td><td>6</td><td>208 px</td><td>7.9 %</td></tr>
+<tr><td>0.63 s</td><td>20</td><td>3</td><td>208 px</td><td>3.9 %</td></tr>
+<tr><td>1.0 s</td><td>30</td><td>3</td><td>523 px</td><td>1.3 %</td></tr>
+<tr><td>2.0 s</td><td>60</td><td>3</td><td>2093 px</td><td>0.2 %</td></tr>
+</table>
+<p>Real strikes are the top rows, not the bottom ones. On the actual reference flight the ruler's own precision is <b>23%</b>.</p>
+
+<p><b>Bias.</b> The vertical acceleration an arc shows is <code>g &plusmn; drag_vertical &plusmn; Magnus_vertical</code>, and neither companion is small (DERIVED from the module's own <code>drag_cd</code>):</p>
+<div class="eq">drag, vertical component   1.3 – 1.8 m/s²      <span style="color:var(--mut)">el 10–20°, v 15–35 m/s</span>
+Cd through the drag crisis  0.15 – 0.45         <span style="color:var(--mut)">a 3× range, at 54–81 km/h</span>
+  → at 22 m/s, a_drag        3.93 – 11.79 m/s²   <span style="color:var(--mut)">= <b>0.40 g to 1.20 g</b></span>
+Magnus, vertical, struck ball        up to ~1 g
+
+reference clip's own fitted g_eff   <i>14.69 m/s²  =  1.50 g</i>   <span style="color:var(--mut)">MEASURED</span></div>
+<p>Pinning <code>g = 9.81</code> against a true effective 14.69 scales depth by 0.668 &rarr; <b>&minus;33% on speed</b>. Signal-to-contamination &asymp; 0.2. And the current outputs are worse still: one reference run has <code>g_eff = 20.0</code> <b>railed at its upper bound</b> alongside <code>v0 = 60.0</code> also railed — the box answered, not the data.</p>
+
+<p><b>It would need what monocular cannot give.</b> Making g a ruler requires separating it from drag and Magnus. The finding already recorded in the module docstring is that angular-momentum parameters are unidentifiable from single-view 2D residuals. You would need an arc longer than 1 s <em>and</em> an independent spin measurement. Neither exists.</p>
+
+<div class="card warn"><b class="h">But two things about the removal are incomplete, and both are real</b>
+<b>Gravity survives as a <em>box</em>.</b> <code>_P_BOUNDS["g_eff"] = (3.0, 20.0)</code>. A rail is a hard constraint, not a prior — when <code>g_eff</code> sits on 20.0 the bound is setting the scale. And <code>RAILED_SHAPE_REFUSE = 3</code> means a <em>lone</em> <code>g_eff</code> rail does not refuse a point speed, even though <code>g_eff</code> is the one parameter the module's own comment says "absorbs metric-scale error 1:1". <b>A <code>g_eff</code> rail alone should refuse.</b> It is a pure statement about scale, unlike an elevation or azimuth rail.
+<br><br><b>The soft gravity prior survived the removal — and it is honest.</b> <code>_P_PRIOR["g_eff"] = (9.81, 0.5·9.81)</code> contributes <code>((g−9.81)/4.905)²</code>, which at g = 14.69 is <b>exactly 1.0 residual unit</b> against a reprojection cost of ~30 samples &times; (9 px)² &asymp; 2400 — <b>0.04% of the cost</b>. The prior is not secretly doing the work. The box is.</div>
+
+<div class="flow">
+<div class="stage no"><div class="dot">e</div><div class="sbody">
+<h4>CoreMotion attitude <span class="tag t-no">loaded, then discarded</span></h4>
+<p class="im">The biggest unused observable in the system, and the framing "rotation but neither translation nor scale" is correct but incomplete — the incompleteness is the whole point.</p>
+<p>The sidecar contract states the reference frame as <code>CMAttitudeReferenceFrame.xArbitraryZVertical</code>. <b>Z is vertical — aligned to gravity.</b> Only the yaw about vertical is arbitrary. So the attitude quaternion carries the <b>absolute pitch and roll of the device relative to the gravity vector</b> — which <em>is</em> the horizon line, the exact quantity the tilt table above prices at 6&ndash;8% of depth per degree.</p>
+<p>Today <code>sidecar.py</code> uses it for two things: <code>rotation_compensation</code> composes a <em>relative</em> rotation (<code>K R K⁻¹</code>, in which the reference frame cancels), and <code>motion_assessment</code> gates stillness. <code>analyze_frames</code> never passes an absolute tilt to the fit; <code>tilt</code> stays free with a &plusmn;10&deg; prior. <b>The absolute orientation is loaded, resampled onto frame times, cross-checked against the pixels — and then thrown away.</b></p>
+</div></div>
+</div>
+
+<table>
+<tr><th>Constraint set (DERIVED)</th><th>&sigma;<sub>v0</sub></th></tr>
+<tr><td>image only, no radii, no goal &nbsp;<span class="fn">the gauge freedom</span></td><td><b style="color:var(--red)">2552 %</b></td></tr>
+<tr><td>&nbsp;+ tilt &plusmn;0.3&deg;</td><td>491 %</td></tr>
+<tr><td>&nbsp;+ tilt &plusmn;0.3&deg; <b>and</b> h &plusmn;0.05 m</td><td>7.69 %</td></tr>
+<tr><td>radii only &nbsp;<span class="fn">ball.py, no goal</span></td><td>4.02 %</td></tr>
+<tr><td><b>radii + tilt &plusmn;0.3&deg;</b> &nbsp;<span class="fn">gyro, no goal in frame</span></td><td><b>2.65 %</b></td></tr>
+<tr><td>radii + goal &nbsp;<span class="fn">ball.py with goal</span></td><td><b>2.64 %</b></td></tr>
+</table>
+
+<div class="card cy"><b class="h">Tilt from gravity reproduces the entire statistical benefit of the goal anchor</b>2.65% against 2.64% — on every clip, with no goal in frame. It does <em>not</em> replace the goal: the goal remains the only <b>reference</b>, the only thing that can catch a wrong ball size or a wrong focal. But it collapses the h/tilt seesaw that produces the basin ambiguity, everywhere, for free.
+<br><br>Two honest caveats. The device&rarr;camera mounting must be resolved, and the contract says ties are the normal case for pure pan/roll — though for <em>absolute tilt</em> the video itself disambiguates, since the ground is at the bottom of the frame. And CoreMotion's absolute pitch accuracy for a near-stationary device is <b>UNMEASURED here</b>; I am not going to quote a vendor figure. It needs one bench measurement — phone on a digital level, compare reported pitch. That is an afternoon, and it gates the largest single available reduction in the geometry term.</div>
+
+<h3>1.3 &nbsp;Where the Hessian actually goes singular</h3>
+<p>Six degeneracies, in the order they will bite you.</p>
+<table>
+<tr><th>#</th><th>Degeneracy</th><th>Evidence</th><th>Broken by</th></tr>
+<tr><td>1</td><td><b>Global scale gauge</b> &mdash; exact null direction in (h, v0, g_eff)</td><td>eigenvalue 1e&minus;11 (DERIVED)</td><td>ONLY the radius, goal-depth or goal-plane residuals. Never by image, tilt, non-penetration or priors.</td></tr>
+<tr><td>2</td><td><b>h &harr; y&#8320;</b> &mdash; exactly collinear when radii are absent</td><td>soft dir <code>h +0.72, y&#8320; +0.70</code>, eigenvalue 3.2e&minus;8, cond 1.3e14 (DERIVED, on the real track)</td><td>Radius observations. This <em>is</em> the moving-ball singularity.</td></tr>
+<tr><td>3</td><td><b>h &harr; tilt seesaw</b> &mdash; the basin curve</td><td>not formally singular, but flat to &lt;0.4 px RMS on a track carrying 10&ndash;25 px of centroid error. MEASURED: 4 basins within 0.1 px, h from 1.4 to 3.1 m</td><td>Absolute tilt from the gyro.</td></tr>
+<tr><td>4</td><td><b>v0 &harr; g_eff &harr; aL</b></td><td>persistent soft dir <code>v0 −0.72, g_eff +0.32, aL −0.62</code> in every well-conditioned run</td><td><b>Nothing available.</b> This is the residual 2.6% and it is irreducible without more samples — speed, vertical curvature and lateral curvature all write into the same short arc.</td></tr>
+<tr><td>5</td><td><b>Fronto-parallel goal PnP</b> &mdash; focal and depth trade freely</td><td>post-length symmetry &lt;4%, bar angle &lt;2.5&deg;</td><td>Already detected and downgraded to scale-only. Correct as built.</td></tr>
+<tr><td>6</td><td><b>Down-the-axis (az &rarr; 0)</b> &mdash; depth change stops writing into pixels</td><td>2.33% at az&rarr;0 vs <b>1.18%</b> at az = 45&deg; (DERIVED)</td><td>Standing side-on. Worth ~2&times; and it is the cheapest thing a user can do.</td></tr>
+</table>
+
+<h3>1.4 &nbsp;The missing degree of freedom, priced</h3>
+<p><code>_launch_state</code> is unconditional on every path, including the moving-ball path:</p>
+<div class="eq">p_launch = backproject_to_height( uv0, <i>ball_r</i>, p["h"], p["tilt"], cam )
+
+<i>y₀ is hard-pinned at 0.11 m with zero slack.</i>
+no y₀ in MODEL_PARAMS. no prior. no residual. it is baked into the parameterisation.</div>
+<p>An airborne ball projects <em>higher</em> in the image; back-projecting that row onto the ground puts it <em>farther</em>; so the speed is <b>over</b>-estimated. Holding true depth at 10 m (DERIVED):</p>
+<table>
+<tr><th>True y&#8320;</th><th>True Z</th><th>Z assumed by the pin</th><th>Speed error</th></tr>
+<tr><td>0.11 m &nbsp;<span class="fn">dead ball</span></td><td>10.11 m</td><td>10.00 m</td><td>&minus;1 %</td></tr>
+<tr><td>0.30 m &nbsp;<span class="fn">bobble</span></td><td>10.08 m</td><td>11.46 m</td><td><b style="color:var(--red)">+14 %</b></td></tr>
+<tr><td>0.50 m &nbsp;<span class="fn">knee</span></td><td>10.06 m</td><td>13.55 m</td><td><b style="color:var(--red)">+35 %</b></td></tr>
+<tr><td>0.90 m &nbsp;<span class="fn">volley</span></td><td>10.00 m</td><td>21.29 m</td><td><b style="color:var(--red)">+113 %</b></td></tr>
+</table>
+<p><b>And freeing it is nearly free.</b> With a solved camera and radius observations, <code>y&#8320;</code> is <em>identifiable</em>: the ray gives the direction, the radius gives the range, their intersection gives the height.</p>
+<table>
+<tr><th>Configuration (DERIVED)</th><th>&sigma;<sub>v0</sub></th></tr>
+<tr><td>y&#8320; pinned at 0.11 &nbsp;<span class="fn">today</span></td><td>2.77 %</td></tr>
+<tr><td><b>y&#8320; free</b>, radii + goal + tilt</td><td><b>2.80 %</b></td></tr>
+<tr><td>y&#8320; free + prior &plusmn;0.15 m</td><td>2.80 %</td></tr>
+<tr><td>y&#8320; free, radii only</td><td>4.06 %</td></tr>
+<tr><td>y&#8320; free, <b>no radii</b> (goal + tilt only)</td><td><b style="color:var(--red)">491 %</b></td></tr>
+</table>
+<div class="card warn"><b class="h">0.03 percentage points of variance, against a bias of up to +113 %</b>The last row is the honest boundary: without radii the moving-ball problem is genuinely unsolvable, because the plane constraint is one equation in two unknowns (Z, y&#8320;) and there is no second ground contact.
+<br><br>The instrument for this already exists — <code>ground_contact_test</code> — and its <code>inconclusive</code> verdict is honest ("at r = 5 px, 25 m away, free fall is 0.5 px/frame², inside the centroid noise"). But look at what it gates: it blocks <code>claims.point_speed</code> and <code>claims.apex</code>, and <b>it does not block the band</b>. <code>speed_band_kmh</code> is still emitted, computed by a fit that hard-asserts <code>y&#8320; = 0.11</code>. Given that the band <em>is</em> the product, that band is a band around a false constraint.
+<br><br><b>Free <code>y&#8320;</code>, give it a prior widened by the verdict</b> (&plusmn;0.05 m on <code>on_ground</code>, &plusmn;0.5 m on <code>inconclusive</code>), <b>and let the band cover it</b> — instead of a hard constraint plus a refusal on a field nobody reads.</div>
+
+<h3>1.5 &nbsp;The joint optimisation I would actually recommend</h3>
+<p><code>fit_flight</code> already has the skeleton: basin enumeration, per-anchor isolation, model-class cross-check, band as an envelope, rail reporting, curl from residual sign. Every change below is additive.</p>
+<div class="eq">θ = h, tilt, <b>roll</b>, v0, el, az, g_eff, aL, <b>y₀</b>, t0, Z_scale_nuisance</div>
+<p><code>roll</code> because <code>_cam_axes</code> currently hard-codes <code>right = (1,0,0)</code>; a hand-held phone is never at zero roll, and roll rotates the horizon — the quantity §1.2 prices at 6&ndash;8% per degree.</p>
+<table>
+<tr><th>#</th><th>Residual</th><th>&sigma;</th><th>Status</th></tr>
+<tr><td>1</td><td>reprojection, per-frame confidence-weighted</td><td>3 px sharp / 10&ndash;25 px blurred (MEASURED)</td><td><span class="tag t-ok">present</span></td></tr>
+<tr><td>2</td><td>radius <code>f·R/Z − r_obs</code>, per-frame <code>r_conf</code></td><td>0.25 px rest / 0.6 px sharp / 1.5 px streaked</td><td><span class="tag t-ok">present</span></td></tr>
+<tr><td>3</td><td>goal base-row &harr; PnP depth (pins h given tilt)</td><td>0.3 m</td><td><span class="tag t-ok">present, 1 scalar</span></td></tr>
+<tr><td>4</td><td><b>absolute tilt &amp; roll from the CoreMotion gravity vector</b></td><td>&plusmn;0.3&deg; ASSUMED &mdash; needs the bench measurement</td><td><span class="tag t-no">missing</span></td></tr>
+<tr><td>5</td><td><b>ball depth at goal-plane crossing</b></td><td>&plusmn;0.1&ndash;0.3 m</td><td><span class="tag t-no">missing</span></td></tr>
+<tr><td>6</td><td><b>ground non-penetration <code>y(t) &ge; ball_r</code></b>, one-sided hinge</td><td>&mdash;</td><td><span class="tag t-no">missing</span> &mdash; <code>traj</code> truncates <em>output</em> only; the fit can put the ball underground</td></tr>
+<tr><td>7</td><td><b>y&#8320; prior, width from <code>ground_contact_test</code></b></td><td>0.05 / 0.5 m</td><td><span class="tag t-no">missing</span></td></tr>
+<tr><td>8</td><td>goal-size prior, and a <b>second reference</b> when one exists</td><td>&mdash;</td><td><span class="tag t-part">declared-only</span></td></tr>
+<tr><td>9</td><td>weak priors on h, tilt, aL, aV</td><td>as today</td><td><span class="tag t-ok">present</span></td></tr>
+</table>
+<p>Residual 6 is worth more than it looks: on a low drive it makes an entire solution basin <em>arithmetically illegal</em>, for free.</p>
+
+<div class="card warn"><b class="h">The reporting change that makes all of the above visible</b><code>speed_band_kmh</code> is currently a <b>min/max over refits</b>. That is defensible as an honesty device, but it has no statistical meaning and — critically — <b>it will not shrink correctly as constraints are added</b>. Adding residual 5 halves the covariance and may not move a min/max envelope at all. Once the residual set above is in, the band should become a <b>profile-likelihood interval on <code>v0</code></b>, with the anchor disagreement carried as an explicit systematic added in quadrature. Otherwise every improvement on this page is invisible in the output.</div>
+
+<h3>1.6 &nbsp;The literal answer: what accuracy is achievable</h3>
+<p><b>Best case</b> means: tripod, side-on (az &ge; 25&deg;), goal fully in frame and genuinely oblique, capture sidecar present, 40+ detections at 60 fps, correct declared goal size.</p>
+<div class="big">
+  <div class="stat"><b>≈ 4.1 %</b><span>dead-ball 1&sigma; · best case</span></div>
+  <div class="stat am"><b>≈ 15 %</b><span>same shot, no sidecar</span></div>
+  <div class="stat rd"><b>8–12 %</b><span>moving ball · today refused</span></div>
+</div>
+<table>
+<tr><th>Dead-ball error term</th><th>1&sigma;</th><th>Provenance</th></tr>
+<tr><td>geometry / statistical &nbsp;<span class="fn">v0 &harr; g_eff &harr; aL</span></td><td>1.9 % @ 60fps&middot;40det<br>2.6 % @ 30fps&middot;20det</td><td>DERIVED</td></tr>
+<tr><td><b>focal length</b></td><td><b>2.0 %</b> with device intrinsics<br><b style="color:var(--red)">15 %</b> without</td><td>ASSUMED &mdash; Apple publishes no accuracy figure</td></tr>
+<tr><td>drag model / Cd through the crisis</td><td>2&ndash;3 % at 50&ndash;80 km/h, ~1 % above</td><td>DERIVED</td></tr>
+<tr><td>actual ball diameter (size, inflation)</td><td>~1.5 %</td><td>ASSUMED</td></tr>
+<tr><td>time base</td><td>~0 with sidecar PTS; refused otherwise</td><td>MEASURED</td></tr>
+<tr><td>contact timing</td><td>~0 &mdash; the ball is demonstrably still</td><td>by construction</td></tr>
+<tr><td><b>RSS</b></td><td><b>&asymp; 4.1 %</b></td><td></td></tr>
+</table>
+
+<div class="card no"><b class="h">Geometry is not the dominant term. Read that again.</b>With the goal in frame and a sidecar present, the pipeline's uncertainty is set by <b>physics constants and an unvalidated intrinsics bound</b>, not by the vision. The focal length dominates, and once a sidecar exists it is <em>tied</em> with the drag constant.
+<br><br>Three things make 4.1% conditional rather than achieved. <b>Without a sidecar it is ~15%</b>, focal-dominated, biased in the same direction on every shot. <b>If the goal is fronto-parallel</b> — which both reference clips are, MEASURED — the pose half is discarded, tilt falls back to &plusmn;10&deg;, the basins reopen, and the practical figure degrades toward 10&ndash;25%. And <b>you cannot validate 4%</b>: the radar reference has its own CV of 4.0&ndash;5.4% on soccer kicks, so below ~5&ndash;6% you are comparing two unknowns. Plan the ground-truth set as <em>n</em> kicks, not one — the reference's mean tightens as &radic;n, the bias does not.</div>
+
+<h3>1.7 &nbsp;What we refuse to claim</h3>
+<ul>
+<li><b>A 3D position for any single frame.</b> Not as an API, not as a debug field, not as an overlay number. It does not exist as a measurement; only the trajectory does.</li>
+<li><b>A point speed without a solved metric reference AND a permitting timebase.</b> The band is the product.</li>
+<li><b>Gravity as a metric ruler.</b> Removed 2026-08-21, and this page is the argument for keeping it removed. Any proposal to reinstate it must first explain the 14.69 m/s&sup2; measurement.</li>
+<li><b>A speed on a clip whose declared goal size disagrees with the ball-diameter anchor by more than 35%.</b> Including the honest admission that the guard runs through the noisier ruler.</li>
+<li><b>Any use of a learned ball detector as the fix.</b> WASB scored <b>zero true positives</b> against our own hand-checked track, median error 190&ndash;260 px, and found the 6 px stationary spare ball while missing the 40 px foreground one. Size was never the constraint.</li>
+</ul>
+
+<h2><span class="n">02</span>Problem two · the moment of impact</h2>
+<p class="lede" style="margin-bottom:18px">Contact is <code>t = 0</code>. Until today it was also the <em>anchor</em> of the fit, which made it the largest error term in the system.</p>
+
+<h3>2.1 &nbsp;What the detector actually returns on the one labelled shot</h3>
+<p>Run against <code>data/kick_goal_ball_track.csv</code> — the only hand-checked track in the repo (MEASURED):</p>
+<div class="eq">Impact( frame=3349, kind='speed_jump', sharpness=<b>1.270</b>, prominence=9.74,
+        <i>frames_uncertain=0</i>, ambiguous=False,
+        speed_in_px=4.21, speed_out_px=15.14, turn_deg=31.7,
+        warnings=['impact_weakly_pinned_1.27x_runner_up'] )</div>
+<p>The frame is right in the sense that it is the last frame the ball was seen before contact. But <b>the ball is not detected at all for source frames 3350&ndash;3357</b> — an 8-frame hole, <b>254 ms</b>, straddling contact. The peak is computed across a segment spanning nine frames, so true contact is anywhere in that window, and the module reports <code>frames_uncertain = 0</code>. That is a false zero on the only ground truth we have.</p>
+<p>Two more facts from the same run: <b>1.270 clears the ambiguity threshold of 1.25 by 1.6%</b> — the real shot is two percent of a threshold away from being refused — and its "runner-up" at frame 3363 is a mid-flight tracking artefact, not a rival explanation of the strike.</p>
+
+<div class="card no"><b class="h">The bug, and it would have silently narrowed a shipped band</b><code>detect_impact</code> divides by the frame gap when forming velocities — correct, and guarded by a test. But it never propagates that gap into <code>frames_uncertain</code>, which counts only neighbouring samples within half the peak. The correct rule already exists one file over, in <code>entry_moving_ball</code>: <code>unc = max(MB_CONTACT_UNCERTAINTY_FRAMES, gap_frames)</code>. It was lost when the kinematic half was extracted into <code>impact.py</code>.
+<br><br>On the labelled track the fix turns <code>frames_uncertain = 0</code> into <b>8</b>, and <b>&plusmn;0 ms into &plusmn;143 ms</b>. A better input removing a refusal is exactly what the honesty rules forbid.</div>
+
+<h3>2.2 &nbsp;What changed today: the fit no longer hangs off an integer</h3>
+<p>The fit integrated from <code>t = 0</code> with <code>obs_t = (frame − contact)/fps</code>. The answer was welded to an integer. It was worse than expected, because the seed observation does <b>double duty</b>: it <em>defines</em> the launch point (back-projected onto the ground plane) <em>and</em> it is a reprojection residual at <code>t = 0</code>. Move the contact frame and the two roles contradict each other, and least-squares pays for the contradiction out of <code>v0</code>, amplified by the height/tilt basin freedom.</p>
+<table>
+<tr><th>Perturbing the contact frame at the fit boundary (MEASURED)</th><th>Pinned &minus;1 / +1 frame</th><th>Free intercept</th></tr>
+<tr><td>synthetic v0 = 15 m/s</td><td><b style="color:var(--red)">&minus;36.91 % / +70.03 %</b></td><td>&minus;0.02 % / +0.00 %</td></tr>
+<tr><td>synthetic v0 = 25 m/s</td><td><b style="color:var(--red)">&minus;31.26 % / +48.44 %</b></td><td>&minus;0.00 % / +0.01 %</td></tr>
+</table>
+<p>At &plusmn;2 frames — what the test suite permits the detector to be wrong by — the old model spans <b>&minus;39.6% to +183.3%</b>. This supersedes the &plusmn;13&ndash;16%-per-frame figure quoted on the Pipeline page; the real number was larger.</p>
+<div class="eq">t0 joins the parameter vector.  _flight_times clamps:
+
+  <b>np.maximum( obs_t − t0, 0.0 )</b>
+
+before t0 the model holds the ball AT the launch point — which is
+exactly what a dead ball does — and after it, it flies.
+
+box  ±0.067 s  (±2 frames @30fps, ±4 @60)     weak prior σ = 0.04 s</div>
+<p>A pre-launch sample now says "the ball had not left yet", bounding <code>t0</code> from below while saying nothing about <code>v0</code>, instead of fighting the model. <code>t0</code> is identifiable precisely <em>because</em> the launch <b>point</b> is pinned to a measured pixel: a line through a fixed <code>(t0, p_launch)</code> cannot be refitted through the same samples from another t-intercept. Regression gate held — 54.5 km/h against 54.0 truth (0.9%), band [49.8, 59.5] still contains truth. <span class="tag t-wip">committed a5b7b25</span></p>
+<div class="card yes"><b class="h">And the band term was re-derived, not deleted</b>Sliding the whole t-axis — the old perturbation — is now a <b>no-op by construction</b>, because a free intercept absorbs an axis shift exactly. Leaving it in would have measured the estimator's own invariance and reported it as certainty the clip has not earned. So what now moves is what is still uncertain: <code>t0</code> is pinned <code>contact_uncertainty_frames</code> away from where the fit put it, the launch point held, everything else re-solved. That yields the <b>drag-term sensitivity, ~1%/frame</b>, instead of the anchor artefact. The reported instant is named explicitly in a new <code>launch.speed_instant</code> field rather than left implicit.</div>
+
+<h3>2.3 &nbsp;What the fusion may and may not do</h3>
+<p>The tempting design — <code>contact_score(t) = proximity + accel + foot_velocity</code> — is a weighted sum of three different units with three weights nobody can calibrate on n = 1 labelled shot. And its output is exactly the object the codebase already refuses to surface elsewhere: an internal confidence score.</p>
+<div class="card warn"><b class="h">The kinematic term stays the sole estimator. Everything else is a witness.</b>A witness may only <b>eliminate a candidate, widen the interval, or declare itself powerless</b> — <code>supports | contradicts | no_power</code>, never a number. This mirrors the two patterns already in the codebase: <code>validate_goal</code> is purely subtractive, and <code>ground_contact_test</code> returns a real three-valued null rather than a nudge.
+<br><br>The load-bearing rule: <b>an ambiguous kinematic verdict is a refusal that no witness may lift.</b> Supporting verdicts get recorded and change nothing.</div>
+<p>Three proposed terms, each with its verdict:</p>
+<ul>
+<li><b>"Sudden ball acceleration" is already the built term.</b> <code>delta[i] = ‖v[i] − v[i−1]‖</code> <em>is</em> per-frame ball acceleration times dt. Adding it again double-counts one measurement.</li>
+<li><b>Foot position is not available in a usable form.</b> The one function that runs, <code>detect_shooter</code>, returns the horizontal centroid of the whole body silhouette at the bbox bottom — a <em>stance point</em>, not a boot, and 0.5&ndash;1 m away in the world at exactly the moment we care about. Worse, it takes the contact frame <em>as an input</em>; it exists as a falsifier ("if no body is beside the ball at the frame we call contact, contact is wrong"). Feeding its output back in turns the falsifier into a co-author.</li>
+<li><b>Reverse tracing fails on the one clip we can check.</b> "Find the first fast frame, walk backward to the foot&ndash;ball minimum" enters the 8-frame hole where the ball has no position at all. And where the ball <em>is</em> detected, minimum distance is attained on the frame where the boot silhouette merges with the ball blob — <b>minimum foot&ndash;ball distance and maximum detector failure are the same frame, by construction.</b></li>
+</ul>
+
+<h3>2.4 &nbsp;Sub-frame refinement: adopt, narrowly</h3>
+<p>The "40 cm at 10 m/s and 25 fps" argument is arithmetically right and attributed to the wrong stage. The contact frame does not <em>place</em> the ball; it sets <code>t = 0</code>, and the fit re-solves against it. The documented sensitivity is ~3% per frame at 30 fps, so eliminating quantisation buys back at most ~1.5%. Against the &plusmn;35% anchor-disagreement tolerance and the +46%/+144% wrong-goal-size errors, <b>quantisation alone does not justify the work</b>.</p>
+<p>What justifies it is statistical power and gaps. An integer argmax cannot answer <em>inside</em> a hole, and it uses three samples where a two-segment fit uses ~16 — <code>delta[peak]</code> is a second difference, so its noise is &sigma;&radic;6. Monte Carlo, 300 trials, synthetic strike with an exposure-averaged straddle frame (DERIVED):</p>
+<table>
+<tr><th>Centroid &sigma;</th><th>detect_impact refuses</th><th>median |err| when it answers</th><th>two-segment fit, median |err|</th></tr>
+<tr><td>0.25 px</td><td>0 %</td><td>0.27 frame</td><td>0.05 frame</td></tr>
+<tr><td>1 px</td><td><b style="color:var(--amber)">78 %</b></td><td>0.16 frame</td><td>0.14 frame</td></tr>
+<tr><td>3 px</td><td><b style="color:var(--red)">100 %</b></td><td>&mdash;</td><td>0.36 frame</td></tr>
+</table>
+<div class="card warn"><b class="h">That power gain is precisely how you break the honesty contract by accident</b>Swapping a 3-sample statistic for a 16-sample fit converts refusals into answers. <b>Rule: the sub-frame fit may only refine a contact that <code>detect_impact</code> has already admitted.</b> It may never answer where the detector refused, and it may never narrow an ambiguous verdict. Its power is spent on the <em>interval</em>, not the pass rate.
+<br><br>Two implementation points that are load-bearing: two 2D curves generically do not intersect, so the estimator is <b>closest approach</b>, not intersection; and the post-contact window must stay bounded at ten frames, because over ninety frames even a real ball leaves the quadratic (perspective + drag) and an unbounded fit measures track <em>length</em>, not object identity.</div>
+
+<h3>2.5 &nbsp;Expected accuracy, in milliseconds</h3>
+<table>
+<tr><th>Condition</th><th>30 fps &nbsp;<span class="fn">33.3 ms/frame</span></th><th>120 fps &nbsp;<span class="fn">8.33 ms/frame</span></th></tr>
+<tr><td>Quantisation floor, argmax</td><td>8 ms median, 15 ms p90</td><td>2.1 ms median, 3.8 ms p90</td></tr>
+<tr><td>Sub-frame fit, model-mismatch bias floor &nbsp;<span class="fn">DERIVED</span></td><td>~7 ms</td><td>~0.5 ms</td></tr>
+<tr><td><b>Realistic clean clip</b>, contact bracketed by adjacent detections</td><td><b>&plusmn;33 ms</b></td><td><b>&plusmn;8 ms</b></td></tr>
+<tr><td>3-frame detection gap</td><td>&plusmn;50 ms</td><td>&plusmn;12 ms</td></tr>
+<tr><td>The one labelled shot's measured 9-frame gap</td><td><b style="color:var(--red)">&plusmn;143 ms</b></td><td>&mdash;</td></tr>
+</table>
+<p>The bias floor is DERIVED from a MEASURED constant: a 4.26 px systematic residual of a quadratic over the reference clip's first ten post-contact samples, against ~20 px/frame post-contact pixel speed, gives 0.21 frame &asymp; 7 ms at 30 fps.</p>
+<div class="card cy"><b class="h">Two consequences worth naming</b><b>At 30 fps, sub-frame refinement does not beat whole-frame argmax on a gap-free clip</b> — 7 ms of model bias against 8 ms of quantisation. It pays inside gaps, and it pays at high frame rate.
+<br><br><b>Above ~60 fps the error is set by occlusion duration, not frame rate.</b> A boot occlusion lasts ~30&ndash;60 ms whatever the camera does; at 120 fps that is 4&ndash;8 dropped frames instead of 1&ndash;2, so the gap in <em>frames</em> goes up while the gap in <em>seconds</em> stays flat. This is why the contact interval must carry milliseconds derived from real per-frame durations, not a frame count — otherwise a 120 fps clip reports a worse number than a 30 fps clip for the identical physical event.</div>
+
+<h3>2.6 &nbsp;What we refuse to claim</h3>
+<ul>
+<li><b>A contact <em>time</em> in milliseconds on a timebase that has not earned one.</b> On the labelled clip itself, three consecutive-frame intervals are 63.3 ms against a 31.7 ms median — the reference clip's own PTS are non-uniform by 2&times; on individual frames.</li>
+<li><b>Audio may never eliminate a kinematic candidate.</b> iOS automatic gain control compresses the exact ratio the onset detector keys on, so a missed transient is a <em>silent</em> miss with no diagnostic — and a lane that misses silently cannot be allowed to contradict. Separately, the container A/V slop bound is 1.0 s, which is 30 frames at 30 fps and wider than the entire search horizon; audio is a window proposer, never a timer.</li>
+<li><b>Strengthening the turn test.</b> The one labelled strike turns the velocity only <b>31.7&deg;</b> — struck down the camera axis, most of its energy in depth. Any tightening refuses the only shot we can check.</li>
+<li><b>A sub-frame contact as a frame <em>index</em>.</b> Everything downstream is integer-frame-indexed; the sub-frame quantity belongs on the time axis, which is now exactly what <code>t0</code> is.</li>
+</ul>
+
+<h2><span class="n">03</span>Problem three · how to kick like a pro</h2>
+<p class="lede" style="margin-bottom:18px">Measure &rarr; compare &rarr; explain, with an explicit refusal to treat the pro average as the correct pose. The shape is right and is already the product's law. Everything underneath it is not ready.</p>
+
+<div class="card yes"><b class="h">The strategic point in this lane's favour, and the trap inside it</b><b>Angles are scale-free.</b> The biomechanics lane runs on pose and does not depend on the resting ball, the declared goal size, or the removed gravity ruler. It is structurally immune to the entire error class that dominates problem 1, and it is potentially the most honest surface in the product.
+<br><br><b>That advantage is destroyed the instant a metric quantity enters the comparison.</b> Peak foot and ankle speed are m/s; plant-foot position and centre of mass are metres. Every one of them re-imports the whole scale budget from section 01. Split the feature set on this axis before anything else:
+<br><br><b>Compare directly:</b> knee flexion, support-knee flexion, hip flexion, trunk lean, arm angle, shoulder&ndash;hip rotation. Dimensionless, and they transfer across body sizes.
+<br><b>Compare only after a normalisation that is itself tagged and whose tag reaches the screen:</b> ankle velocity, foot trajectory, plant-foot position, COM. Normalising ankle speed by leg length is an unmeasured modelling assumption about how speed scales with limb length — not a neutral transformation.</div>
+
+<h3>3.1 &nbsp;What breaks first, in order</h3>
+<table>
+<tr><th>#</th><th>Blocker</th><th>Detail</th></tr>
+<tr><td>a</td><td><b>The pro side does not exist</b></td><td>The comparison module ships a literal refusal reason for it: the reference set has not been filmed. Worse, broadcast pro video is a <em>different capture regime</em> — unknown intrinsics, unknown fps, motion blur, cropping, moving camera — so a pro angle and a user angle do not share an error model at all. The scope enum tops out at "across subjects"; it has <b>no rung for this</b>. You need a fourth scope in which only very large, disjoint differences may speak.</td></tr>
+<tr><td>b</td><td><b>Features are bare floats</b></td><td>Every angle exits <code>metrics.py</code> through <code>round(float(x), 1)</code> — no interval, no provenance wrapper, no refusal path. And <code>MetricValue</code> in the contracts has <b>no interval field at all</b>. So a "difference" between user and pro is today a difference between two point estimates with unknown error &mdash; precisely what the comparison module already refuses to do for speed. <b>Shipping this before angles are banded means making a claim the speed surface would refuse.</b></td></tr>
+<tr><td>c</td><td><b>The two specified refusals are unimplemented</b></td><td>The spec says <code>metrics.py</code> refuses any angle whose defining joints were not tracked at contact, and refuses shoulder&ndash;hip rotation when that line is within 15&deg; of the camera axis. Neither exists in code: all six angles are computed unconditionally, and the rotation comes from a two-joint line with no camera-axis check. Near that degeneracy the yaw difference is dominated by depth noise. This is a <b>false-feature generator</b>, and X-factor is one of the eight features you want to compare on.</td></tr>
+<tr><td>d</td><td><b>Contact is <code>argmax(foot_speed)</code>, and the spec says the opposite</b></td><td>Its own docstring calls it a proxy. Peak foot speed <em>leads</em> ball contact, because the foot decelerates through impact. Five of the six angles are evaluated at that single frame &mdash; so <b>one contact-frame error is the common-mode error of five features simultaneously</b>, and any composite that sums them treats one timing mistake as five agreeing observations. At 60 fps, one frame during the fastest part of the swing moves trunk lean by several degrees. The repo currently carries two contact frames; a pose-fused third would make three.</td></tr>
+<tr><td>e</td><td><b>"Comparable body proportions" is weakly identified</b></td><td>Monocular shape fits are weakly constrained and correlate with camera distance. Usable as a <em>retrieval filter</em> (whom to show). Not usable as a <em>licence</em> ("this pro is your body type, so his angle is your target").</td></tr>
+<tr><td>f</td><td><b>Dominant foot is inferred, not registered</b></td><td>Picked by max foot speed. Mirroring a left-footer onto a right-footer is a further assumption — human bodies are not symmetric. It must be tagged.</td></tr>
+</table>
+
+<div class="card"><b class="h">And the licence question is about placement, not availability</b><span class="tag t-lic">licence-blocked</span> The pose chain is a custom non-commercial licence for the code and a research-only licence for the body model, and the readiness check in the repo already answers "can this run here" with <b>no</b>. Today the pose chain touches only presentation — both droppable at launch with zero effect on any number.
+<br><br><b>If the contact frame becomes a function of a pose term, then <code>t = 0</code> is a derivative of non-commercially-licensed code — and <code>t = 0</code> is the axis every speed, every angle and every band is measured from.</b> You cannot swap that out later; you would be re-deriving every metric. Keep the pose chain strictly on the presentation side of the line, exactly as the readiness note already says.</div>
+
+<h3>3.2 &nbsp;The provenance rule for a <em>difference</em></h3>
+<table>
+<tr><th>Tag</th><th>When a user &harr; reference difference earns it</th></tr>
+<tr><td><b>MEASURED</b></td><td>Both sides come from the <b>same measurement chain</b>, the quantity is <b>scale-free</b>, and the two intervals are <b>disjoint</b>. In practice: user-vs-user, same session, angles only. It will almost never mean user-vs-pro.</td></tr>
+<tr><td><b>DERIVED</b></td><td>Scale-free but the sides come from different chains, or any normalisation was applied. Inherits the weaker side's confidence and <b>names the normalisation</b> in its source note.</td></tr>
+<tr><td><b>UNMEASURED</b></td><td>Either side lacks an interval; a defining joint was untracked at contact; the shoulder/hip line is within 15&deg; of the camera axis; or the contact sources disagreed beyond tolerance. A real null, with the reason.</td></tr>
+</table>
+<p><b>And the audit that makes it falsifiable:</b> every served difference must answer <em>"what would have to be true for this to vanish?"</em> If shifting the contact frame by one frame flips its sign, it is not a difference — and that test is cheap to compute.</p>
+
+<h3>3.3 &nbsp;The build order that makes it honest</h3>
+<div class="flow">
+<div class="stage part"><div class="dot">1</div><div class="sbody"><h4>Band every feature</h4><p class="im">Replace bare floats with value + interval + provenance. The cheapest defensible interval is a bootstrap over a &plusmn;1-frame contact window plus pose jitter. Requires adding an interval shape to <code>MetricValue</code>, which does not have one today.</p></div></div>
+<div class="stage part"><div class="dot">2</div><div class="sbody"><h4>Implement the two refusals that are already written down</h4><p class="im">Untracked joints at contact, and the 15&deg; camera-axis degeneracy for shoulder&ndash;hip rotation.</p></div></div>
+<div class="stage part"><div class="dot">3</div><div class="sbody"><h4>Move contact off <code>argmax(foot_speed)</code></h4><p class="im">Onto ball departure, carrying the pose-contact agreement flag, and refuse at-contact features when the sources disagree.</p></div></div>
+<div class="stage wip"><div class="dot">4</div><div class="sbody"><h4>Run the repeatability study &mdash; this is the unblocker</h4><p class="im">Film one player taking the same shot n times; report each feature's <b>within-player standard deviation</b>. <b>Any user-vs-pro difference smaller than that SD is not a difference.</b></p><p>This is the single measurement that unlocks the entire surface. It needs no pro, no rights, and no new capture rig — one player and a phone, this week. It is also what the coaching module is already waiting on: its per-player baseline SD is named UNMEASURED in the code today.</p></div></div>
+<div class="stage no"><div class="dot">5</div><div class="sbody"><h4>Only then film the reference set</h4><p class="im">In the same capture regime as users — or accept the cross-regime scope and its much higher bar.</p></div></div>
+<div class="stage no"><div class="dot">6</div><div class="sbody"><h4>Explanation layer</h4><p class="im">Rules over disjoint, provenance-tagged differences. The language model writes prose only for a difference the maths has already licensed, and must be <b>structurally</b> unable to invent one — pass it the licensed differences and nothing else, never the raw feature vectors. Hold it to the limiting-factor frame with a copy lint, not a prompt instruction.</p></div></div>
+</div>
+
+<h3>3.4 &nbsp;What we refuse to claim</h3>
+<ul>
+<li><b>"Pros lean 6&deg; less."</b> Banned by name in the design law. A pro average is not a target pose.</li>
+<li><b>Any composite similarity score, form grade, or distance-in-feature-space served to the user.</b> A similarity search is one refactor away from producing exactly the single-number gauge the spec retires by name. Rank internally for retrieval if you must; never serve the number.</li>
+<li><b>Any difference smaller than the within-player repeatability SD</b> — which we have not measured yet, so today: any difference at all.</li>
+<li><b>Percentiles or ranks against anyone.</b></li>
+</ul>
+
+<h2><span class="n">04</span>Problem four · ball flight, and beating a pro keeper</h2>
+<p class="lede" style="margin-bottom:18px">The flight half is the best-built thing in the repo. The keeper half is already on the right side of the line and mostly needs defending against its own future.</p>
+
+<h3>4.1 &nbsp;The flight</h3>
+<p>A physical model, not a curve through points: quadratic drag with the drag-crisis Reynolds transition, plus a Magnus term. Multiple solution basins are enumerated rather than the first one being reported as unique. The band is assembled by re-solving under every perturbation we know we have and taking the envelope.</p>
+<div class="eq">speeds = primary
+       + per-anchor solves (diameter / goal)          <span style="color:var(--mut)"># reweighted, not isolated</span>
+       + focal × provenance-sized bound               <span style="color:var(--mut)"># 2% with intrinsics, 15% without</span>
+       + tilt ± prior
+       + every surviving solution basin
+       + the alternate model class
+       + <b>t0 ± contact_uncertainty_frames</b>               <span style="color:var(--mut)"># now ~1%/frame, not the anchor artefact</span>
+band   = [min, max] × (1 ± frame-rate uncertainty)</div>
+<p><b>Dominant error:</b> the focal length (2% with device intrinsics, 15% without), tied with the drag constant once a sidecar exists. Not the vision. See §1.6.</p>
+
+<h3>4.2 &nbsp;Where the line sits on the keeper — stated so it cannot be evaded by renaming</h3>
+<p>"Constant vs distribution" is the right instinct but the wrong statement of the rule. The precise rule is three conditions, all of which must hold:</p>
+<div class="eq"><b>1.</b>  ONE parameter vector, not a measure over parameter vectors.
+    every component visible in the output.
+
+<b>2.</b>  Deterministic and hand-checkable.
+    output = f(measured shot, θ). the reader can redo it with a calculator.
+
+<b>3.</b>  The codomain is NOT a frequency.
+    metres and a sign. never a share, rate, fraction, or anything
+    a reader completes with "…of the time."</div>
+<p>Making reaction time a distribution breaks all three, but <b>(3) is the fatal one</b>: integrating f over p(&theta;) yields P(reach) &isin; [0,1], and that <em>is</em> a save probability no matter what it is called. "Reach likelihood", "envelope coverage", "share of parameter sets that reach", "confidence that it beats him" — the same forbidden object. <b>The test is not whether the word "probability" appears. It is whether the output is a number in [0,1] that a reader will read as a frequency.</b></p>
+<p>The shipped keeper module passes all three: reach radius, distance to crossing, margin in metres, and a four-valued verdict whose sign is pinned to the margin by a contract validator that greps for the banned vocabulary. That is the right enforcement level — a lint, not a convention.</p>
+
+<div class="card warn"><b class="h">The subtle door into the same room, and it is currently open</b>The <em>shot</em> side has uncertainty too. Crossing point and time-to-goal-plane arrive as bare floats, and <code>MetricValue</code> has no interval field. So the keeper surface today serves a <b>point margin computed off a solve whose speed the product refuses to serve as a point</b> — problem 1's own failure in a different costume.
+<br><br>The tempting fix is the forbidden one: propagate the band and report "outside the envelope across 68% of the crossing-point band". That is a probability again, sourced from the measurement rather than from keeper behaviour, but identical on the screen.
+<br><br><b>The honest fix: evaluate the deterministic model at the band endpoints and report a verdict interval with no weight attached.</b> Three outcomes — outside under both, inside under both, or <b>STRADDLES</b> ("the solve's own uncertainty spans the envelope boundary; these measurements cannot tell you which"). Straddles is a refusal, and refusals are cheap. Never count endpoints. Never weight them.</div>
+
+<p><b>What <em>is</em> allowed</b> is a named scenario, shown, never aggregated — the "what if he had been a metre off his line" mechanism the module already implements for stance, which returns a full verdict with an amended source note. Two hard constraints on extending it: <b>never show two scenarios' verdicts side by side with a count</b> ("2 of 3 reach it" is a probability with n = 3), and do not ship a pre-baked ladder of reaction times, which is invented deltas wearing a tier name.</p>
+
+<h3>4.3 &nbsp;The 3D replay is where the probability gets re-added</h3>
+<p>This is the part most likely to break the rule, because a rendering asserts things prose does not.</p>
+<ul>
+<li><b>The avatar must be a rendering of &theta;, not a motion asset.</b> Every frame's hand position must be reconstructible from the same closed-form dive-distance function. A keyframed or mocap-driven dive depicts motion nobody computed — the picture then claims more than the maths, and the user believes the picture.</li>
+<li><b>Draw the disc, not just the body.</b> The envelope is an isotropic disc, and the module states that this is <em>generous to the keeper</em>. Render only an avatar and the avatar's arm length silently becomes the claim while the caveat goes invisible. The disc, the crossing point and the labelled gap in metres are the primary objects; the avatar is decoration on them.</li>
+<li><b>Terminate the replay at the goal plane. Do not animate an outcome.</b> A glove touching the ball is a save probability of 1.0 rendered as art; the ball sailing into a rippling net is 0.0. <b>Rendering an outcome is the same violation as printing one, and it is far easier to ship by accident.</b> No net ripple, no dive-and-catch, no SAVED/GOAL caption, no crowd.</li>
+<li><b>Ghost, never solid</b> — a solid one implies we filmed him.</li>
+</ul>
+
+<h3>4.4 &nbsp;What may be claimed while no keeper is detected</h3>
+<p>Verified current state: the stance constant is <b>0.0, tagged TARGET-UNMEASURED</b>, with the source note "a person who was not filmed", and the model limitations always include "no keeper is detected in the clip". A <code>detect_keeper</code> function exists in the pipeline, returns provenance and seven named refusals, and carries an explicit caller contract — <b>and it is not wired into the API. There is no import of it anywhere in the backend.</b> In the shipping app there is currently no path to a measured stance at all.</p>
+<div class="card cy"><b class="h">May claim / may not claim</b><b>May:</b> a fully subjunctive statement about the <em>model</em>, not about a person in the video — "a keeper standing centred with a hand 1.10 m up could have covered a 1.7 m disc; your ball crossed 2.1 m from that point." The assumed stance must render <b>on</b> the number, not behind a tap.
+<br><br><b>May not:</b> anything with a definite article about a real person ("the keeper couldn't reach that"), any name, any likeness, any tier ladder implying we know real keepers' numbers.
+<br><br><b>The acute failure mode, currently unguarded:</b> if the clip <em>shows</em> a keeper and we compute against an assumed centred one, the render puts a ghost in the wrong place beside a real body, and the user's eye reads the ghost as a measurement of that man. No caption survives that. The pipeline can already distinguish "empty goal" from "keeper present but not measurable"; the API cannot, because it has only a constant. <b>When a keeper is visibly present but not measurable, refuse. Do not assume the centre.</b></div>
+
+<h3>4.5 &nbsp;What changes when a real keeper IS detected — less than you would expect</h3>
+<ul>
+<li>The stance becomes MEASURED (pixels) + DERIVED (metres), and the source note changes from "assumed" to "measured, frame N, detection rate X".</li>
+<li><b>The verdict does not get stronger.</b> Five of the six kinematic parameters — reaction time, dive acceleration, capped hand speed, standing reach, stance height — remain TARGET-UNMEASURED. Detecting the stance removes <b>one assumption out of six</b>. Say this explicitly in the release, because the instinct will be to treat "we detect the keeper now" as licence for a firmer claim.</li>
+<li>"Keeper absent" becomes a first-class answer: not applicable, the goal was empty. A verdict about nobody is not a verdict.</li>
+<li><b>The wiring rule, verbatim from the pipeline's own caller contract: when the detection is UNMEASURED, serve UNMEASURED. Never fall back to 0.0.</b> A silent 0.0 and a measured 0.0 are indistinguishable at the API, and a keeper on his near post would be reported as centred. This is the single most important line in the integration.</li>
+<li><b>The refusal ratchet holds.</b> Detection <em>adds</em> a gate. It removes none — not the tier floor, not the timebase gate, not the basin gate.</li>
+<li>Still no probability. A detected stance is one sample of one keeper's set position, not a distribution over his behaviour.</li>
+</ul>
+
+<div class="card no"><b class="h">Live defect: the save probability is still approved copy in five documents</b>The design law supersedes it and the keeper module implements the supersession — but the string <b>"Under the Elite Keeper reaction model, this shot beats the keeper about 64% of the time"</b> still stands as <em>approved</em> copy in five spec documents, with only the phrase "64% save probability" listed as banned. One of those five is the honesty law itself. One of them carries it as a named statement template.
+<br><br>"Beats the keeper about 64% of the time" <b>is</b> a save probability; the modal framing changes nothing about what the reader takes away. They also name a keeper tier that does not ship. <b>Redline all five, or the rule that lives in one document loses to the four that contradict it</b> — whoever writes the copy lint will read the law and encode the violation.</div>
+
+<h3>4.6 &nbsp;What we lose by refusing, plainly</h3>
+<ul>
+<li>The single most shareable object the product could have had: "you beat the keeper 6 times out of 10." Gone, permanently.</li>
+<li>Any ranking of shots by save-difficulty, any leaderboard, any "you now beat keepers more often" progress arc.</li>
+<li>A <b>cliff at the boundary</b>: two shots 5 cm apart get opposite binary labels where a probability would have graded smoothly. Only partly mitigable — always print the margin in metres beside the label, so the cliff reads as "0.03 m outside" instead of hiding behind a word.</li>
+<li>Most of the time, no answer at all. The refusal path requires the goal frame, a trusted timebase, a positive flight time, an unambiguous basin and a tier floor. Today "indeterminate" is the common case, not the edge case.</li>
+</ul>
+
+<h2><span class="n">05</span>The ranked list — all no-hardware, all this week</h2>
+<div class="flow">
+<div class="stage no"><div class="dot">1</div><div class="sbody"><h4>Free <code>y&#8320;</code> with a verdict-widened prior</h4><p class="im">Removes a <b>+113%</b> silent bias for <b>0.03 percentage points</b> of variance. The band currently asserts a constraint the refusal text says is unpinned.</p></div></div>
+<div class="stage no"><div class="dot">2</div><div class="sbody"><h4>Feed absolute tilt and roll from the CoreMotion gravity vector into the fit</h4><p class="im">The data is already loaded, resampled and cross-checked against the pixels — and then discarded. Worth the entire statistical value of the goal anchor (2.65% vs 2.64%), on every clip, with no goal in frame. <b>Needs one bench measurement of CoreMotion pitch accuracy first</b>, or it is an unvalidated bound exactly like the 2% focal.</p></div></div>
+<div class="stage no"><div class="dot">3</div><div class="sbody"><h4>Goal-plane-crossing depth residual</h4><p class="im">2.64% &rarr; 1.59% at &plusmn;0.3 m, or 0.76% at &plusmn;0.1 m. Three lines.</p></div></div>
+<div class="stage no"><div class="dot">4</div><div class="sbody"><h4>Propagate the detection gap into <code>frames_uncertain</code></h4><p class="im">The false zero on the only labelled shot. &plusmn;0 ms becomes &plusmn;143 ms. Blocking, because a better input must never quietly remove a refusal.</p></div></div>
+<div class="stage no"><div class="dot">5</div><div class="sbody"><h4>One-sided ground non-penetration <code>y(t) &ge; ball_r</code></h4><p class="im">May kill an entire solution basin arithmetically, for free. Listed in the docs as planned, never shipped.</p></div></div>
+<div class="stage no"><div class="dot">6</div><div class="sbody"><h4>Make a lone <code>g_eff</code> rail refuse a point speed</h4><p class="im">The one parameter that absorbs scale error 1:1 currently gets through on its own, because the shape-refusal threshold is three.</p></div></div>
+<div class="stage no"><div class="dot">7</div><div class="sbody"><h4>Run the within-player repeatability study</h4><p class="im">One player, one phone, n repeats of the same shot. Unblocks the entire biomechanics surface and the coaching baseline. No pro, no rights, no rig.</p></div></div>
+<div class="stage no"><div class="dot">8</div><div class="sbody"><h4>Replace the min/max band with a profile-likelihood interval plus explicit systematics</h4><p class="im">Otherwise every improvement above is invisible in the output.</p></div></div>
+<div class="stage no"><div class="dot">9</div><div class="sbody"><h4>Redline the save probability out of all five spec documents</h4><p class="im">And add the copy lint, so the next writer cannot re-introduce it from the law itself.</p></div></div>
+<div class="stage no"><div class="dot">10</div><div class="sbody"><h4>Comment <em>why</em> the goal is consumed as depth-plus-base-row rather than as a PnP pose</h4><p class="im">A 10&ndash;40&times; correct decision that currently looks arbitrary and is one refactor away from being "simplified" into a 23&ndash;100% height error.</p></div></div>
+</div>
+
+<div class="card no"><b class="h">Deliberately not on that list</b><b>A learned ball detector.</b> WASB scored zero true positives against our own hand-checked track; the ball is 7.5&ndash;13.5 px in flight and blur, not size, is the binding constraint.
+<br><br><b>Reinstating gravity as a metric ruler.</b> The reference clip's own effective g came back at 14.69 m/s&sup2;, and the ruler's own precision on a real 0.44 s flight segment is 23%. Any proposal must confront both numbers first.</div>
+
+<h2><span class="n">06</span>The shortest honest summary</h2>
+<p>Your four-problem split is the right split, and three of the four have a clear next move that costs days rather than months.</p>
+<ul>
+<li><b>Problem 1</b> is a trajectory optimisation, not a per-frame reconstruction, and its dominant error is the <em>focal length</em> — not the vision. The largest available win is a sensor the phone already writes to disk and the solver already loads and then throws away.</li>
+<li><b>Problem 2</b> was the largest error in the system until today, at &minus;36.9%/+70.0% per frame; the fit now solves for the launch instant instead of hanging off an integer. What is left is one false zero on the only labelled shot.</li>
+<li><b>Problem 3</b> is the most honest surface available — because angles are scale-free — and it is blocked behind one measurement nobody has made, which needs one player and one phone.</li>
+<li><b>Problem 4</b>'s maths is already on the right side of the line. The risk is not the model; it is the 3D replay animating an outcome, and five documents still carrying "beats the keeper about 64% of the time" as approved copy.</li>
+</ul>
+<p>And the constraint that outranks all of it: <b>no measurement here has been checked against a radar.</b> Everything above is a variance budget, not a validated accuracy.</p>
+
+<footer>
+STRYKE · four-problem decomposition, 31 Aug 2026 · Every figure is labelled MEASURED, DERIVED, ASSUMED or UNMEASURED at the point it appears. Where something has not been measured, it says so. Supersedes the &plusmn;13&ndash;16%-per-frame contact-anchor estimate on the Pipeline page.
+</footer>
+</div>
+</body></html>
