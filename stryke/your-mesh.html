@@ -48,9 +48,16 @@ footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--line);color:v
   <div class="vid"><div class="cap"><b>Overlay</b> · mesh on your footage</div><video src="mesh/overlay.mp4" controls muted playsinline preload="metadata"></video></div>
   <div class="vid"><div class="cap"><b>Hologram</b> · your motion, stylised</div><video src="mesh/hero_hologram.mp4" controls muted playsinline loop preload="metadata"></video></div>
   <div class="vid"><div class="cap"><b>Mesh</b> · your motion, shaded</div><video src="mesh/hero_mesh.mp4" controls muted playsinline loop preload="metadata"></video></div>
-  <div class="vid"><div class="cap"><b>Hero render</b> · server renderer, generic body — see the caveat</div><video src="mesh/hero_render.mp4" controls muted playsinline loop preload="metadata"></video></div>
+  <div class="vid"><div class="cap"><b>Hero render</b> · server renderer, <b>your motion</b></div><video src="mesh/hero_render_real.mp4" controls muted playsinline loop preload="metadata"></video></div>
 </div>
-<div class="card warn"><b class="h">Which of these is actually you</b>The first three are <b>your motion</b> — SMPL-X recovered from your clip, frame by frame; contact is frame 71 of 264 at 52.6 fps. The fourth is the new server renderer (full mesh density, opencap-grade shading) driving a <b>generic body on a generic kick</b> — its own captions say so on-frame. The obvious next step is wiring your recovered frames into that renderer, so the pretty one and the true one become the same video.</div>
+<div class="card yes"><b class="h">All four are you now</b>The fourth video used to be the server renderer driving a <b>generic body on a generic kick</b> — the placeholder, with "NOT YOUR MOTION" burnt into every frame. That gap is closed: it is now the same renderer (full mesh density, opencap-grade shading, 720×900 at 52.642 fps) playing <b>your own 34 solved SMPL-X meshes</b>, contact landing on output frame 71 exactly as it does in the clip. What the captions still refuse to claim is listed below, and none of it is about the motion.</div>
+<div class="card warn"><b class="h">What the new render still will not claim</b>
+<ul>
+<li><b>The shape is an estimate, not a scan.</b> SMPL-X fits body proportions to video. Your motion being real does not make the proportions measured, and the caption keeps the two apart.</li>
+<li><b>The body steps at 7 meshes/second, not 52.6.</b> The export is every 8th frame (plus contact), so the renderer <b>holds</b> each solved mesh instead of blending between them. That is a measurement, not taste: frames 64 and 72 are 8 apart and frame 71 sits inside that gap, so blending 64→72 can be checked against the mesh that was actually solved at 71 — it is off by up to <b>0.315 m</b>, 17% of body height, at the exact instant of contact. Interpolating would have invented a pose you never held, so the clip steps and says it steps.</li>
+<li><b>There is no ball.</b> Not a faint one, not a borrowed one. This clip's ball speed is <code>null</code>, so nothing in the frame touches the ball and the caption says so.</li>
+<li><b>It cannot ship.</b> SMPL-X is research-licensed, so this is a development artifact — burnt into the frame, not just written here.</li>
+</ul></div>
 
 <h2><span class="n">02</span>What was measured from it</h2>
 <table>
