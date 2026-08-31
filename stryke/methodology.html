@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>How STRYKE Measures · STRYKE</title>
+</head><body>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@400;500;600;700&family=Barlow+Semi+Condensed:wght@600&family=JetBrains+Mono:wght@400;600&display=swap');
+:root{--bg:#0D141A;--panel:#141C24;--panel2:#1A242D;--line:#25313B;--fg:#EEF3F6;--mut:#9AA7B0;--lime:#C8FF00;--cyan:#55D9FF;--amber:#F4C95D;--red:#FF5A5F}
+*{box-sizing:border-box}html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 Barlow,system-ui,sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:40px 22px 100px}
+h1{font-family:Anton,Impact,sans-serif;font-size:clamp(46px,10vw,80px);line-height:.94;margin:0 0 10px;text-transform:uppercase;letter-spacing:.5px}
+h1 em{font-style:normal;color:var(--lime)}
+.eyebrow{font-family:'Barlow Semi Condensed',sans-serif;font-weight:600;font-size:12px;letter-spacing:2.4px;color:var(--mut);text-transform:uppercase;margin:0 0 12px}
+.lede{color:var(--mut);max-width:64ch;margin:0 0 4px}
+h2{font-family:Anton,Impact,sans-serif;font-size:26px;letter-spacing:.6px;text-transform:uppercase;margin:52px 0 8px;padding-top:20px;border-top:1px solid var(--line)}
+h2 .n{color:var(--lime);margin-right:10px}
+h3{font-size:17px;margin:26px 0 6px;font-weight:700}
+p{margin:0 0 13px;max-width:70ch}
+.eq{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--lime);border-radius:10px;padding:14px 18px;margin:0 0 16px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:14.5px;line-height:1.7;overflow-x:auto}
+.eq b{color:var(--lime);font-weight:600}
+code{background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:13.5px}
+table{width:100%;border-collapse:collapse;margin:0 0 18px;font-size:14.5px;display:block;overflow-x:auto}
+th,td{text-align:left;padding:10px 11px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:'Barlow Semi Condensed',sans-serif;letter-spacing:1.2px;text-transform:uppercase;font-size:11.5px;color:var(--mut);font-weight:600;white-space:nowrap}
+td b{color:var(--lime)}
+.tag{display:inline-block;border-radius:4px;padding:1px 7px;font-size:11px;letter-spacing:.8px;text-transform:uppercase;font-family:'Barlow Semi Condensed',sans-serif;font-weight:600;white-space:nowrap}
+.t-meas{background:#1A2A10;color:var(--lime);border:1px solid #2E4416}
+.t-der{background:#122630;color:var(--cyan);border:1px solid #1D3D4C}
+.t-tgt{background:#2A2412;color:var(--amber);border:1px solid #443A1C}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:0 0 14px}
+.card b.h{display:block;font-family:'Barlow Semi Condensed',sans-serif;letter-spacing:1.4px;text-transform:uppercase;font-size:12.5px;margin-bottom:7px;color:var(--mut)}
+.card.warn{border-left:3px solid var(--amber)}
+.card.no{border-left:3px solid var(--red)}
+.card.yes{border-left:3px solid var(--lime)}
+ul{margin:0 0 14px;padding-left:20px}li{margin:0 0 7px;max-width:68ch}
+.big{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:0 0 18px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:15px}
+.stat b{font-family:Anton,sans-serif;font-size:30px;display:block;color:var(--lime);letter-spacing:.4px;line-height:1.1}
+.stat.cy b{color:var(--cyan)}.stat.am b{color:var(--amber)}
+.stat span{color:var(--mut);font-size:11.5px;letter-spacing:1.6px;text-transform:uppercase;display:block;margin-top:5px}
+footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--line);color:var(--mut);font-size:13px}
+</style>
+<div class="wrap">
+<p class="eyebrow">STRYKE · measurement methodology</p>
+<h1>How We<br><em>Measure</em></h1>
+<p class="lede">Every number the app shows, where it comes from, and — just as important — every number it refuses to show and why. If you only read one section, read the last one.</p>
+
+<h2><span class="n">01</span>Distance: the goal is the ruler</h2>
+<p>A camera sees pixels. To get metres you need one object in frame whose real size you already know. That object is the goal.</p>
+<div class="eq">goal mouth = <b>7.32 m</b> × <b>2.44 m</b>  (regulation, declared)
+detected in-frame → posts + crossbar → 4 image points
+solvePnP(object points, image points, K) → <b>depth</b> in metres</div>
+<p>Every distance in the app descends from that one solve. It is why <b>the whole goal must be in frame</b> — with a post cut off there are no four corners, no PnP, and no metres.</p>
+<div class="card warn"><b class="h">The subtlety that bites</b>When the goal faces the camera dead-on, the rectangle projects as a rectangle at <em>any</em> focal/depth pair — PnP cannot separate them. The code detects this (<code>goal_fronto_parallel</code>) and falls back to scale-only depth rather than pretending the pose is solved. It's another reason to shoot from 30–60° off the shot line.</div>
+
+<h2><span class="n">02</span>Focal length: measured, not guessed</h2>
+<p>PnP needs the camera's focal length. Until recently the pipeline inferred it from the image diagonal and tagged the result <code>focal_from_diagonal_heuristic_pm15pct</code> — a ±15% error that transfers 1:1 into every distance and speed.</p>
+<div class="eq">clip recorded in-app → sidecar carries the real intrinsic matrix
+K = <b>[[fx, s, cx], [0, fy, cy], [0, 0, 1]]</b>   ← from AVFoundation, per clip
+camera.source = "device_intrinsics"  (was: "diagonal_heuristic")</div>
+<p>A clip that arrives without a sidecar still works — it just keeps the ±15% warning and the wider band. That is the honest cost of an imported clip.</p>
+
+<h2><span class="n">03</span>Speed: why it is a band</h2>
+<div class="eq">speed = <b>distance ÷ time</b></div>
+<p>Two independent rulers, two independent errors. The metres come from the goal solve; the seconds come from the video's frame clock. Speed scales <b>1:1</b> with frame rate — a clock wrong by 30% gives a speed wrong by 30%.</p>
+<p>So the app fits the flight, propagates both uncertainties, and publishes the interval that covers the truth — not the midpoint dressed as a fact.</p>
+<div class="big">
+  <div class="stat"><b>43–83</b><span>km/h · the band</span></div>
+  <div class="stat cy"><b>60.1</b><span>goal-anchored estimate</span></div>
+  <div class="stat am"><b>refused</b><span>point value</span></div>
+</div>
+<p class="lede" style="font-size:14px">Real output from a real clip. The band is the product; the estimate is diagnostic.</p>
+
+<h2><span class="n">04</span>Why a point speed gets refused</h2>
+<p>This is the mechanism people ask about most. A screen recording of a video carries a broken clock, and the file says so three ways at once:</p>
+<table>
+<tr><th>Signal</th><th>Value</th><th>What it means</th></tr>
+<tr><td><code>duplicate_frame_ratio</code></td><td><b>0.416</b></td><td>42% of frames are the same picture repeated</td></tr>
+<tr><td><code>avg_frame_rate</code> vs <code>r_frame_rate</code></td><td><b>57.06 vs 75.0</b></td><td>the container contradicts itself</td></tr>
+<tr><td><code>retimed_suspected</code></td><td><b>true</b></td><td>re-timed after recording</td></tr>
+</table>
+<p>A file has one true frame rate. This one claims two, 31% apart. Picking either would be inventing the answer, so the point value is withheld and the band stands.</p>
+<div class="card no"><b class="h">Proof that the refusal is right</b>We stripped the duplicates and rebuilt a clean 30 fps clock. The pipeline then produced <b>154.8 km/h</b> — absurd for a free kick whose goal-anchored estimate is ~60. That is exactly what papering over a broken clock buys you.</div>
+<h3>Every refusal reason</h3>
+<table>
+<tr><th>Reason</th><th>Trigger</th></tr>
+<tr><td><code>retimed_suspected</code></td><td>duplicate frames / container rate disagreement</td></tr>
+<tr><td><code>too_few_detections</code></td><td>the ball wasn't tracked in enough frames</td></tr>
+<tr><td><code>solver_railed</code></td><td>the fit hit a parameter bound — the flight isn't determined</td></tr>
+<tr><td><code>no metric reference</code></td><td>no goal in frame; scale would rest on the ball's assumed size alone</td></tr>
+<tr><td><code>camera_rotation_exceeds_compensation_limit</code></td><td>&gt;4° across the clip or &gt;10°/s — the phone moved</td></tr>
+<tr><td><code>sidecar_video_stabilization_active</code></td><td>stabilisation warps geometry per frame; the pinhole model no longer holds</td></tr>
+<tr><td><code>sidecar_zoom_not_unity</code></td><td>any zoom invalidates the recorded lens calibration</td></tr>
+</table>
+<div class="card warn"><b class="h">Camera motion refuses; it does not widen</b>A panning clip produced a confident <b>5.8–9.0 km/h</b> for a struck free kick. The tempting fix is to widen the band instead — but nobody has measured what the widening factor should be, so inventing one is the same error in a different costume. It refuses.</div>
+
+<h2><span class="n">05</span>Placement, distance, and the rest of the shot</h2>
+<p>Once the flight is fitted in metres, these fall out of the same solve. Each ships with a provenance tag and a real <code>null</code> when unsupported — never a plausible default.</p>
+<table>
+<tr><th>Metric</th><th>How</th><th>Null when</th></tr>
+<tr><td><b>Goal-plane crossing</b> (x, y in m)</td><td>the fitted arc evaluated at the goal plane</td><td>frame B — no goal pose solved</td></tr>
+<tr><td><b>Placement zone</b></td><td>the crossing point binned into the 3×3 mouth</td><td>no crossing</td></tr>
+<tr><td><b>Distance</b></td><td>launch point to the goal plane</td><td>—</td></tr>
+<tr><td><b>Launch elevation / azimuth</b></td><td>the fitted velocity vector at contact</td><td>the apex claim hasn't cleared — they're hypotheses, not measurements</td></tr>
+<tr><td><b>Apex height + downrange</b></td><td>max <em>y</em> of the fitted arc</td><td>the max is an endpoint — the arc was still rising or already falling at the window edge, so it's extrapolation</td></tr>
+<tr><td><b>Swerve</b></td><td>path deviation from the launch chord</td><td>a planar fit can't represent it</td></tr>
+<tr><td><b>Confidence</b></td><td>solve-level score → tier A/B/C</td><td>—</td></tr>
+</table>
+<div class="card no"><b class="h">Swerve is not spin</b>Swerve is <em>path geometry</em> — how far the ball deviated from a straight chord. It is not an RPM and never becomes one. There is no spin rate anywhere in STRYKE, and the contract raises if anyone tries to set one.</div>
+
+<h2><span class="n">06</span>The keeper: geometry, never probability</h2>
+<p>"Would a pro have saved it?" is a probability question, and we have no measured distribution of keeper behaviour. So the app answers a <em>geometry</em> question instead, which it can actually defend:</p>
+<div class="eq">t_available = time from contact to the goal plane
+t_move      = t_available − <b>REACTION_TIME_S</b>
+reach       = STANDING_HAND_REACH + ∫ dive velocity dt   (capped at peak)
+margin      = |crossing − keeper start| − reach
+verdict     = <b>OUTSIDE</b> / <b>INSIDE</b> envelope / INDETERMINATE</div>
+<p>The envelope is a disc — isotropic, knowingly <b>generous to the keeper</b>, so an "outside" verdict is the conservative one. Below tier B, or on an untrusted clock, it returns <code>INDETERMINATE</code> rather than a verdict.</p>
+<h3>Every keeper constant is an assumption, and says so</h3>
+<table>
+<tr><th>Constant</th><th>Value</th><th>Tag</th></tr>
+<tr><td>Reaction time</td><td>0.20 s</td><td><span class="tag t-tgt">Target · unmeasured</span></td></tr>
+<tr><td>Dive acceleration</td><td>8.0 m/s²</td><td><span class="tag t-tgt">Target · unmeasured</span></td></tr>
+<tr><td>Peak hand velocity</td><td>4.5 m/s</td><td><span class="tag t-tgt">Target · unmeasured</span></td></tr>
+<tr><td>Standing hand reach</td><td>0.95 m</td><td><span class="tag t-tgt">Target · unmeasured</span></td></tr>
+<tr><td>Keeper start position</td><td>centred</td><td><span class="tag t-tgt">Assumed — we don't detect a keeper</span></td></tr>
+</table>
+
+<h2><span class="n">07</span>Comparison: overlapping bands are not a difference</h2>
+<p>Comparing two bands is where a lot of sports apps quietly lie. If your band is 43–83 and your last session was 47–86, you did <em>not</em> get worse — those intervals overlap and the honest answer is that they're indistinguishable.</p>
+<div class="eq">disjoint(A, B) → direction + separation, with both intervals as evidence
+overlapping   → <b>INDISTINGUISHABLE</b>
+fewer than N shots → the gate, not a verdict</div>
+<p>Four dimensions — speed, placement, distance, consistency — get four verdicts. There is deliberately <b>no single composite score</b>: "indistinguishable on all four" is a complete answer.</p>
+
+<h2><span class="n">08</span>What we do not compute, and why</h2>
+<p>This is the section that matters. Each of these is something you might reasonably expect to see, and the reason it is absent.</p>
+<table>
+<tr><th>Not computed</th><th>Why</th><th>Unblocked by</th></tr>
+<tr><td><b>Any point speed</b></td><td>server-gated until validated against ground truth. The band <em>is</em> the product.</td><td>a radar run</td></tr>
+<tr><td><b>Save probability</b></td><td>no measured distribution of keeper behaviour exists in a usable form. The number would be arithmetic wearing the typography of a measurement.</td><td>a keeper-response dataset — not planned</td></tr>
+<tr><td><b>Percentiles, "top 12%"</b></td><td>gated on the same validation as point speed</td><td>a radar run</td></tr>
+<tr><td><b>Spin rate</b></td><td>not derivable from a planar fit. Never shipped in any unit.</td><td>nothing planned</td></tr>
+<tr><td><b>Ball speed at the goal plane</b></td><td>derivable, but its band would borrow the launch band's width and understate drag-model error — a plausible number with a too-narrow interval</td><td>a measured drag residual</td></tr>
+<tr><td><b>Where the keeper stood</b></td><td>we don't detect a keeper in the clip at all</td><td>keeper detection in the vision lane</td></tr>
+<tr><td><b>Your body's pose</b></td><td>the pose lane isn't shipped. The 3D body is a generic model — the app says so on screen.</td><td>the mesh pipeline</td></tr>
+<tr><td><b>Placement error bars</b></td><td>the validation protocol hasn't run, so the crossing point has no validated error. This is why the keeper verdict refuses below tier B.</td><td>a validation protocol</td></tr>
+<tr><td><b>Per-metric uncertainty</b></td><td>one solve-level score exists; metrics inherit and name it, or serve null. No metric computes its own.</td><td>a propagation study</td></tr>
+<tr><td><b>A single "score"</b></td><td>deliberately retired. Four dimensions, four verdicts.</td><td>never</td></tr>
+</table>
+
+<h2><span class="n">09</span>The one thing that changes everything</h2>
+<div class="card yes"><b class="h">Ground truth</b>Almost every gate above unlocks with the same key: a <b>radar gun in frame</b> for ten shots. Until a measured reference exists, the app can only publish intervals it can defend. With one, the band becomes a calibrated instrument and the point value, the percentiles and the ranks all become answerable.</div>
+<p>Everything else in this document is engineering. That one is a purchase.</p>
+
+<footer>STRYKE · measurement methodology · every constant tagged, every refusal named, every null deliberate</footer>
+</div>
+
+</body></html>

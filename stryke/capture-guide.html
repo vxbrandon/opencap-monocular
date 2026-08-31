@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Pitch Capture Guide · STRYKE</title>
+</head><body>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@400;500;600;700&family=Barlow+Semi+Condensed:wght@600&display=swap');
+:root{--bg:#0D141A;--panel:#141C24;--line:#25313B;--fg:#EEF3F6;--mut:#9AA7B0;--lime:#C8FF00;--cyan:#55D9FF;--amber:#F4C95D}
+*{box-sizing:border-box}html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 Barlow,system-ui,sans-serif}
+.wrap{max-width:820px;margin:0 auto;padding:36px 20px 90px}
+h1{font-family:Anton,Impact,sans-serif;font-size:clamp(44px,10vw,74px);line-height:.95;margin:0 0 6px;text-transform:uppercase;letter-spacing:.5px}
+h1 em{font-style:normal;color:var(--lime)}
+.eyebrow{font-family:'Barlow Semi Condensed',sans-serif;font-weight:600;font-size:12px;letter-spacing:2.4px;color:var(--mut);text-transform:uppercase;margin:0 0 10px}
+.lede{color:var(--mut);margin:0 0 6px;max-width:62ch}
+h2{font-family:Anton,Impact,sans-serif;font-size:24px;letter-spacing:.6px;text-transform:uppercase;margin:44px 0 12px;padding-top:18px;border-top:1px solid var(--line)}
+h3{font-size:16px;margin:22px 0 6px;font-weight:700}
+p{margin:0 0 12px;max-width:68ch}
+code{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:2px 7px;font-size:14px;font-family:ui-monospace,SFMono-Regular,monospace}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;overflow-x:auto;margin:0 0 14px}
+pre code{background:none;border:0;padding:0;font-size:13.5px;line-height:1.6}
+ul{margin:0 0 14px;padding-left:20px}li{margin:0 0 7px;max-width:66ch}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin:0 0 14px}
+.card b{display:block;font-family:'Barlow Semi Condensed',sans-serif;letter-spacing:1.4px;text-transform:uppercase;font-size:13px;margin-bottom:6px}
+.good{border-left:3px solid var(--lime)}.bad{border-left:3px solid #FF6B6E}.note{border-left:3px solid var(--cyan)}
+table{width:100%;border-collapse:collapse;margin:0 0 16px;font-size:14.5px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:'Barlow Semi Condensed',sans-serif;letter-spacing:1.2px;text-transform:uppercase;font-size:12px;color:var(--mut);font-weight:600}
+td b{color:var(--lime)}
+.rule{display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:start;margin:0 0 12px}
+.num{font-family:Anton,sans-serif;color:var(--lime);font-size:20px;line-height:1.2}
+.tag{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--mut);font-family:'Barlow Semi Condensed',sans-serif;font-weight:600}
+.tag.on{background:var(--lime);border-color:var(--lime);color:#0A0C08}
+footer{margin-top:50px;padding-top:16px;border-top:1px solid var(--line);color:var(--mut);font-size:13px}
+</style>
+<div class="wrap">
+<p class="eyebrow">STRYKE · field protocol</p>
+<h1>Pitch<br><em>Capture</em></h1>
+<p class="lede">How to get the app onto your iPhone, what to film, and exactly why each rule exists. Follow the geometry rules and the app can measure; break them and it will honestly refuse.</p>
+
+<h2>1 · Install on your iPhone</h2>
+<h3><span class="tag on">Today</span> &nbsp;No Apple account needed</h3>
+<p>Plug the iPhone into the Mac, unlock it, and trust the computer. Then:</p>
+<pre><code>cd ~/Desktop/programming/stryke/apps/fe-mobile
+npx expo run:ios --device</code></pre>
+<p>Pick your phone from the list. At the signing prompt choose your <b>personal team</b> — a free Apple ID works. First build takes ~10 minutes.</p>
+<p>Then on the iPhone: <b>Settings → General → VPN &amp; Device Management → trust your developer certificate</b>. The app lasts <b>7 days</b>, then re-run the command.</p>
+<div class="card note"><b>Why this matters</b>The simulator has no camera. This is the step that turns STRYKE from a demo into a measuring instrument.</div>
+
+<h3><span class="tag">Later</span> &nbsp;TestFlight</h3>
+<p>Needs the Apple Developer Program ($99/yr). Full steps are in <code>docs/RELEASE.md</code>; the EAS project is already wired as <code>@aqin_tbg/stryke</code>.</p>
+
+<h2>2 · Camera position — the rules that decide everything</h2>
+<div class="rule"><div class="num">01</div><div><b>The whole goal must be in frame, all four corners.</b> The goal is the ruler. Its known 7.32 m × 2.44 m frame is what converts pixels into metres. If a post is cut off or hidden behind the keeper, there is no scale and every number degrades to a guess.</div></div>
+<div class="rule"><div class="num">02</div><div><b>Stand to the side of the shot line, 30–60° off it.</b> Straight behind the ball is the worst angle: the ball travels almost directly away from the lens, so its motion is nearly invisible and depth becomes ambiguous. From the side the flight sweeps across the frame and the solve is well-conditioned.</div></div>
+<div class="rule"><div class="num">03</div><div><b>The phone must not move.</b> Lean it on a bag, a bottle, a fence — anything rigid. A pan of a few degrees is enough to corrupt the scale: a real panning clip produced a confident <b>5.8–9.0 km/h</b> for a struck free kick. The app reads the gyroscope and will now refuse rather than lie, but a still phone is what actually gets you a measurement.</div></div>
+<div class="rule"><div class="num">04</div><div><b>Ball at rest, in frame, ~2 seconds before contact.</b> The solver needs to see the ball sitting still to lock onto it and to know exactly when contact happened. A ball that enters frame already moving loses the launch point.</div></div>
+<div class="rule"><div class="num">05</div><div><b>Landscape, 1× lens, no zoom.</b> Any zoom invalidates the recorded lens calibration. Stay on the main wide camera.</div></div>
+<div class="rule"><div class="num">06</div><div><b>Bright enough to freeze the ball.</b> Low light means long exposure means a smeared ball, and a smeared ball has no precise centre. Daylight or good floodlights; avoid shooting into the sun or a floodlight.</div></div>
+<div class="rule"><div class="num">07</div><div><b>Don't stop the recording between shots.</b> Let it run through a set. The app cuts each shot out itself and keeps the timing intact.</div></div>
+
+<h2>3 · What the app records for you automatically</h2>
+<p>You don't have to do anything for these — but they are the reason a phone recording beats a screen recording by a wide margin.</p>
+<table>
+<tr><th>Signal</th><th>What it fixes</th></tr>
+<tr><td><b>Camera intrinsics</b><br>the lens's true focal length</td><td>Today the solver <em>guesses</em> focal length from the image diagonal — a ±15% error that lands directly on every distance and speed. The iPhone hands us the real matrix on every frame.</td></tr>
+<tr><td><b>Per-frame timestamps</b></td><td>Turns the time base from <em>inferred</em> into <em>measured</em>. This is the single gate standing between a band and a point speed.</td></tr>
+<tr><td><b>Gyroscope / attitude</b></td><td>Measures exactly how much the phone rotated, so small motion can be compensated and large motion honestly refused instead of silently corrupting the scale.</td></tr>
+<tr><td><b>Exposure &amp; ISO</b></td><td>Records how much motion blur to expect, so the ball-centre uncertainty is real rather than assumed.</td></tr>
+</table>
+
+<h2>4 · What to bring back from the pitch</h2>
+<div class="card good"><b>Set A · the baseline</b>10 free kicks from ~18–20 m, same spot, same ball, phone still and side-on. This measures <b>repeatability</b> — how tight the numbers are for shots that were genuinely similar. Stability is measured, not claimed.</div>
+<div class="card good"><b>Set B · the distance sweep</b>3 shots each from 8 m, 12 m, 16 m, 20 m, 25 m. Error usually grows with distance; this tells us where the honest limit is.</div>
+<div class="card good"><b>Set C · the angle sweep</b>3 shots each with the phone at 30°, 45°, 60°, and one deliberately from behind the ball. The last one should come back <em>refused</em> — that's the test.</div>
+<div class="card good"><b>Set D · the stress set</b>A few clips that break the rules on purpose: phone hand-held, a post out of frame, dusk light. These prove the refusals fire instead of producing confident nonsense.</div>
+<div class="card bad"><b>The one thing that unlocks a real number: ground truth</b>A <b>Pocket Radar PR1000-BC</b> (~$300) beside the ball, filmed in the same frame so its display is readable. Without a trusted reference we can never validate a point speed — only bands. Ten shots with the radar visible turns "43–83 km/h" into a calibrated instrument. <b>This is the week-1 purchase.</b></div>
+<div class="card note"><b>Bonus if you have a second phone</b>Film the same shots from a second angle. Two independent solves of one flight is the cheapest cross-check there is — no extra hardware.</div>
+
+<h2>5 · What each thing buys you</h2>
+<table>
+<tr><th>You provide</th><th>You get</th></tr>
+<tr><td>Phone-recorded clip, rules followed</td><td>A tight, trustworthy <b>band</b> instead of a wide one — immediately</td></tr>
+<tr><td>+ Radar in frame, 10 shots</td><td>Validation, and the gate to display a <b>point speed</b></td></tr>
+<tr><td>+ Repeat set (Set A)</td><td>A measured <b>stability</b> figure — how much of the spread is you and how much is us</td></tr>
+<tr><td>+ Distance &amp; angle sweeps</td><td>The honest working envelope: where it measures, where it refuses</td></tr>
+</table>
+
+<footer>STRYKE · private field guide · the app refuses rather than guesses — a refusal here is the system working</footer>
+</div>
+
+</body></html>

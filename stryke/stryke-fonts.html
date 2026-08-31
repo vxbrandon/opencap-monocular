@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Display Font Candidates · STRYKE</title>
+</head><body>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Barlow:wght@400;500;600;700&family=Barlow+Semi+Condensed:wght@500;600&family=Bebas+Neue&family=Black+Han+Sans&family=Do+Hyeon&family=Gothic+A1:wght@900&family=Oswald:wght@700&family=Saira+Condensed:wght@900&family=Teko:wght@700&display=swap');
+
+:root {
+  --bg: #07090B;
+  --card: #0D1114;
+  --line: #1C2226;
+  --lime: #C9F53A;
+  --cyan: #54D9F2;
+  --fg: #F2F5F7;
+  --muted: #8A939B;
+  --ui: 'Barlow', system-ui, sans-serif;
+  --cond: 'Barlow Semi Condensed', 'Barlow', system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { background: var(--bg); }
+body {
+  margin: 0;
+  padding: 40px 28px 80px;
+  color: var(--fg);
+  font-family: var(--ui);
+  -webkit-font-smoothing: antialiased;
+}
+header { max-width: 1400px; margin: 0 auto 34px; }
+.eyebrow {
+  font-family: var(--cond);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: var(--lime);
+  margin: 0 0 8px;
+}
+h1 {
+  font-family: 'Anton', var(--ui);
+  font-size: 42px;
+  line-height: 1.05;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  margin: 0 0 12px;
+}
+header p { margin: 0; max-width: 74ch; font-size: 14px; line-height: 1.55; color: var(--muted); }
+header p + p { margin-top: 8px; }
+
+.section-label {
+  max-width: 1400px;
+  margin: 46px auto 16px;
+  font-family: var(--cond);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+}
+
+.grid {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+  gap: 14px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  padding: 20px 20px 22px;
+  position: relative;
+  overflow: hidden;
+}
+.card.current { border-color: rgba(201, 245, 58, 0.42); }
+
+.meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+.name {
+  font-family: var(--cond);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.tag {
+  font-family: var(--cond);
+  font-weight: 600;
+  font-size: 10px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--bg);
+  background: var(--lime);
+  padding: 2px 7px;
+}
+.tag.alt { background: transparent; color: var(--cyan); border: 1px solid rgba(84, 217, 242, 0.45); }
+
+/* Specimen block — identical markup in every card. */
+.headline {
+  font-size: 42px;
+  line-height: 1.19;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  margin: 0 0 16px;
+}
+.number {
+  font-size: 56px;
+  line-height: 1.18;
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+  color: var(--lime);
+  margin: 0;
+}
+.overline {
+  font-family: var(--cond);
+  font-weight: 600;
+  font-size: 11px;
+  line-height: 14px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 2px 0 18px;
+}
+.chip {
+  display: inline-block;
+  background: var(--lime);
+  color: #07090B;
+  padding: 11px 18px 9px;
+  font-size: 17px;
+  line-height: 1.1;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+}
+.note {
+  margin: 16px 0 0;
+  font-family: var(--ui);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+/* Candidate faces. Sizes are the real ramp (displayTitle 42 / display 56 /
+   h2 19) so the cards are directly comparable — only the family changes. */
+.f-anton     .headline, .f-anton     .number, .f-anton     .chip { font-family: 'Anton', var(--ui); }
+.f-bebas     .headline, .f-bebas     .number, .f-bebas     .chip { font-family: 'Bebas Neue', var(--ui); }
+.f-oswald    .headline, .f-oswald    .number, .f-oswald    .chip { font-family: 'Oswald', var(--ui); font-weight: 700; }
+.f-saira     .headline, .f-saira     .number, .f-saira     .chip { font-family: 'Saira Condensed', var(--ui); font-weight: 900; }
+.f-teko      .headline, .f-teko      .number, .f-teko      .chip { font-family: 'Teko', var(--ui); font-weight: 700; }
+.f-archivo   .headline, .f-archivo   .number, .f-archivo   .chip { font-family: 'Archivo Black', var(--ui); }
+.f-bhs       .headline, .f-bhs       .number, .f-bhs       .chip { font-family: 'Black Han Sans', var(--ui); }
+.f-dohyeon   .headline, .f-dohyeon   .number, .f-dohyeon   .chip { font-family: 'Do Hyeon', var(--ui); }
+.f-gothica1  .headline, .f-gothica1  .number, .f-gothica1  .chip { font-family: 'Gothic A1', var(--ui); font-weight: 900; }
+
+/* Bebas/Teko run optically small at the same px — the ramp would compensate. */
+.f-bebas .headline { font-size: 46px; }
+.f-teko  .headline { font-size: 50px; line-height: 1.02; }
+.f-teko  .number   { font-size: 64px; line-height: 1.0; }
+.f-archivo .headline { font-size: 34px; }
+.f-archivo .number   { font-size: 46px; }
+
+footer {
+  max-width: 1400px;
+  margin: 54px auto 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+</style>
+<header>
+  <p class="eyebrow">Type exploration · stadium night</p>
+  <h1>Display Font Candidates</h1>
+  <p>Every card renders the identical specimen at the real ramp sizes — the <strong>displayTitle</strong> headline (42), the <strong>display</strong> hero band (56) with its SemiCondensed overline, and a display-voice CTA chip. Only the display family changes; overlines stay on Barlow SemiCondensed and the palette stays on <span style="color:var(--lime)">#C9F53A</span> over #07090B, so what you are judging is the face and nothing else.</p>
+  <p>Exploration only — the app still ships Anton / Black Han Sans / Barlow. Verdicts and the swap procedure live in <strong>FONTS-EXPLORATION.md</strong> beside this file.</p>
+</header>
+
+<div class="section-label">Latin display — current first</div>
+<div class="grid">
+
+  <div class="card current f-anton">
+    <div class="meta"><span class="name">Anton — Regular</span><span class="tag">Current</span></div>
+    <div class="headline">Discover</div>
+    <div class="number">43–83</div>
+    <div class="overline">km/h · est</div>
+    <div><span class="chip">Start Session</span></div>
+    <p class="note">The benchmark: tall, heavy, single-weight, near-zero sidebearings. Digits are the widest part of its personality.</p>
+  </div>
+
+  <div class="card f-bebas">
+    <div class="meta"><span class="name">Bebas Neue — Regular</span><span class="tag alt">Candidate</span></div>
+    <div class="headline">Discover</div>
+    <div class="number">43–83</div>
+    <div class="overline">km/h · est</div>
+    <div><span class="chip">Start Session</span></div>
+    <p class="note">Taller and lighter than Anton; caps-only. Reads as signage rather than mass.</p>
+  </div>
+
+  <div class="card f-oswald">
+    <div class="meta"><span class="name">Oswald — 700</span><span class="tag alt">Candidate</span></div>
+    <div class="headline">Discover</div>
+    <div class="number">43–83</div>
+    <div class="overline">km/h · est</div>
+    <div><span class="chip">Start Session</span></div>
+    <p class="note">Condensed grotesque with real lowercase and a full weight axis — the flexible option.</p>
+  </div>
+
+  <div class="card f-saira">
+    <div class="meta"><span class="name">Saira Condensed — 900</span><span class="tag alt">Candidate</span></div>
+    <div class="headline">Discover</div>
+    <div class="number">43–83</div>
+    <div class="overline">km/h · est</div>
+    <div><span class="chip">Start Session</span></div>
+    <p class="note">Closest to a Tungsten Bold: heavy, squared, sporty. Nine static weights available.</p>
+  </div>
+
+  <div class="card f-teko">
+    <div class="meta"><span class="name">Teko — 700</span><span class="tag alt">Candidate</span></div>
+    <div class="headline">Discover</div>
+    <div class="number">43–83</div>
+    <div class="overline">km/h · est</div>
+    <div><span class="chip">Start Session</span></div>
+    <p class="note">Extremely tall and narrow (Devanagari-derived proportions). Flat terminals, scoreboard energy.</p>
+  </div>
+
+  <div class="card f-archivo">
+    <div class="meta"><span class="name">Archivo Black — Regular</span><span class="tag alt">Control</span></div>
+    <div class="headline">Discover</div>
+    <div class="number">43–83</div>
+    <div class="overline">km/h · est</div>
+    <div><span class="chip">Start Session</span></div>
+    <p class="note">Heavy but <em>wide</em> — included as the control that shows how much of the reference look is width, not weight.</p>
+  </div>
+
+</div>
+
+<div class="section-label">Korean display — current first</div>
+<div class="grid">
+
+  <div class="card current f-bhs">
+    <div class="meta"><span class="name">Black Han Sans — Regular</span><span class="tag">Current</span></div>
+    <div class="headline">디스커버</div>
+    <div class="number">43–83</div>
+    <div class="overline">km/h · 추정</div>
+    <div><span class="chip">세션 시작</span></div>
+    <p class="note">Heavy, tight, single weight — the Hangul analogue of Anton. Latin digits are serviceable but softer.</p>
+  </div>
+
+  <div class="card f-dohyeon">
+    <div class="meta"><span class="name">Do Hyeon — Regular</span><span class="tag alt">Candidate</span></div>
+    <div class="headline">디스커버</div>
+    <div class="number">43–83</div>
+    <div class="overline">km/h · 추정</div>
+    <div><span class="chip">세션 시작</span></div>
+    <p class="note">Rounded, friendly, medium weight. Lighter colour on screen than Black Han Sans.</p>
+  </div>
+
+  <div class="card f-gothica1">
+    <div class="meta"><span class="name">Gothic A1 — 900</span><span class="tag alt">Candidate</span></div>
+    <div class="headline">디스커버</div>
+    <div class="number">43–83</div>
+    <div class="overline">km/h · 추정</div>
+    <div><span class="chip">세션 시작</span></div>
+    <p class="note">Neutral Hangul grotesque at Black. Nine weights, so ko could share one family across the whole ramp.</p>
+  </div>
+
+</div>
+
+<div class="section-label">Korean display — Latin digits, side by side</div>
+<div class="grid">
+
+  <div class="card current f-bhs">
+    <div class="meta"><span class="name">Black Han Sans — mixed</span><span class="tag">Current</span></div>
+    <div class="headline">세션 시작</div>
+    <div class="number">43–83</div>
+    <div class="overline">km/h · est · 추정</div>
+    <p class="note">Mixed-script check: does the ko face carry the hero number, or does it need to stay on the Latin face?</p>
+  </div>
+
+  <div class="card f-dohyeon">
+    <div class="meta"><span class="name">Do Hyeon — mixed</span><span class="tag alt">Candidate</span></div>
+    <div class="headline">세션 시작</div>
+    <div class="number">43–83</div>
+    <div class="overline">km/h · est · 추정</div>
+    <p class="note">Mixed-script check.</p>
+  </div>
+
+  <div class="card f-gothica1">
+    <div class="meta"><span class="name">Gothic A1 900 — mixed</span><span class="tag alt">Candidate</span></div>
+    <div class="headline">세션 시작</div>
+    <div class="number">43–83</div>
+    <div class="overline">km/h · est · 추정</div>
+    <p class="note">Mixed-script check.</p>
+  </div>
+
+</div>
+
+<footer>
+  Faces are pulled from Google Fonts for browser rendering only. The matching TTFs for app use are downloaded to
+  <code>apps/fe-mobile/assets/fonts/candidates/</code> with their OFL notices — nothing in that folder is registered
+  in <code>useFonts</code>, so the shipped app is unchanged.
+</footer>
+
+</body></html>
