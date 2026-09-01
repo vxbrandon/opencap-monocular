@@ -211,7 +211,7 @@ band   = [min, max] × (1 ± frame-rate uncertainty)</div>
 <tr><td>Per-frame timestamps</td><td><span class="tag t-ok">yes</span> measured time base; gates the point value</td></tr>
 <tr><td>Attitude track (gyro)</td><td><span class="tag t-wip">expanding</span> rotation compensation + stillness today; being wired as a gravity-referenced TILT prior — which covers the square-on case the goal pose cannot, and turns IMU-vs-goal disagreement into a sloped-ground detector</td></tr>
 <tr><td>Zoom / stabilisation / lens / dropped frames</td><td><span class="tag t-ok">yes</span> each is a named refusal trigger</td></tr>
-<tr><td>Exposure duration</td><td><span class="tag t-no">not yet</span> the last unused measurement: blur-streak length &divide; exposure is an independent speed cross-check, queued</td></tr>
+<tr><td>Exposure duration</td><td><span class="tag t-ok">yes</span> the blur-streak cross-check: streak length &divide; exposure vs the fit's reprojected speed, compared in px/s so the two rulers share no scale. A deliberately doubled exposure is caught at 10.3&sigma; while the band stays byte-identical — it can accuse a lying clock but has no veto power until a radar promotes it</td></tr>
 <tr><td>Lens focus position</td><td><span class="tag t-no">no, honestly useless</span> AVFoundation reports it unitless (0&ndash;1), not in metres</td></tr>
 </table>
 <div class="card warn"><b class="h">The catch, and it is a real one</b>All of the above exists <em>only</em> for clips recorded inside the app. An imported file — anything from the Camera app, AirDrop, or a share sheet — arrives with none of it, keeps the ±15% focal warning, and gets the wider band. That is the honest cost of importing, and it is the strongest practical argument for shooting in-app once the capture path is proven on a real device.</div>
@@ -239,7 +239,7 @@ band   = [min, max] × (1 ± frame-rate uncertainty)</div>
 </ul>
 
 <footer>
-STRYKE · pipeline status, 1 Sep 2026 (rev 3) · Numbers on this page are measured outputs from real clips, not projections. Where something has not been measured, it says so.
+STRYKE · pipeline status, 1 Sep 2026 (rev 4, sensor ledger complete) · Numbers on this page are measured outputs from real clips, not projections. Where something has not been measured, it says so.
 </footer>
 </div>
 </body></html>
