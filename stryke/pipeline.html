@@ -90,10 +90,10 @@ footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--line);color:v
 <p class="fn">stryke-capture/ios/{CaptureController,ShotDetector,SegmentRing,ClipCutter,SidecarTracks}.swift</p>
 </div></div>
 
-<div class="stage no"><div class="dot">2</div><div class="sbody">
-<h4>Offline shot detection &amp; auto-cut <span class="tag t-no">missing</span></h4>
-<p class="im">This is the gap that matters most to you. The <em>only</em> shot detector is the Swift one above — it runs on-device, from audio, while the app is recording. For a video file that already exists, there is no path at all.</p>
-<p>A 2.6-minute training video with a dozen shots in it cannot currently be analysed. A crude frame-difference scan over <code>MovingBallShots.MP4</code> found 13 high-activity windows, but a person walking trips it exactly as readily as a struck ball. That is proof the problem is tractable, not proof of a solution.</p>
+<div class="stage ok"><div class="dot">2</div><div class="sbody">
+<h4>Offline shot detection &amp; auto-cut <span class="tag t-ok">built</span></h4>
+<p class="im">An imported file now has a path: two visual proposal lanes (an audio lane was built, measured useless on real footage — 94&ndash;100% coverage across a 27-point sweep — and deleted with its evidence kept in the docstring), unioned windows, and every window resolved by the real solver into ACCEPTED / BAND_ONLY / REFUSED / NOT_A_SHOT. Proven on the 158-second real clip: 19 windows over 55.4% of the source, the one labelled shot proposed and resolved. A saturation guard measures each proposer alone and disarms any lane that proposes nearly everything.</p>
+<p class="fn">pipeline/shots.py</p>
 </div></div>
 
 <div class="stage ok"><div class="dot">3</div><div class="sbody">
@@ -110,12 +110,12 @@ footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--line);color:v
 </div></div>
 
 <div class="stage part"><div class="dot">5</div><div class="sbody">
-<h4>Ball acquisition <span class="tag t-part">dead-ball only</span></h4>
+<h4>Ball acquisition <span class="tag t-ok">dead-ball + moving-ball</span></h4>
 <p class="im">The wall. The pipeline finds the ball by first finding it <b>at rest</b> — a white circle that holds still, then departs. Free kicks and penalties work. Everything else raises before a single measurement is attempted.</p>
 <div class="eq" style="margin:10px 0 8px">find_rest_ball()                  <span style="color:var(--mut)"># Hough circles + whiteness</span>
 track_rest_until_departure()      <span style="color:var(--mut)"># template match until it leaves</span>
 <i>RuntimeError: no rest-ball candidate produced a departing track</i></div>
-<p>Three of the four segments cut from your own footage died on that line. The fourth ran and returned 9.9–13.8 km/h — walking pace, i.e. it had locked onto the wrong object entirely.</p>
+<p>Now a second entry strategy: a moving-ball path that finds the strike the boot hides — the ball is occluded through contact, so identity across the gap is proven by white-disc confirmation on BOTH sides (junk fails at least one side), and contact lands exactly on the labelled frame. On the real clip that used to die here: 40 observations, median 1.46&nbsp;px from the hand-checked track, band emitted with the point honestly refused.</p>
 </div></div>
 
 <div class="stage wip"><div class="dot">6</div><div class="sbody">
@@ -172,9 +172,10 @@ band   = [min, max] × (1 ± frame-rate uncertainty)</div>
 <p class="fn">focal_from_diagonal_heuristic_pm15pct · camera_rotation_exceeds_compensation_limit · goal_fronto_parallel · impact_indistinguishable_from_track_noise · …</p>
 </div></div>
 
-<div class="stage no"><div class="dot">12</div><div class="sbody">
-<h4>Keeper detection <span class="tag t-no">missing</span></h4>
-<p class="im">There is a keeper in green in your goal, and we do not detect him. The app currently ships a constant stance position — an assumption about a person who was never actually measured. Nothing that depends on keeper reach means anything until this is real.</p>
+<div class="stage ok"><div class="dot">12</div><div class="sbody">
+<h4>Keeper detection <span class="tag t-ok">built</span></h4>
+<p class="im">Classical CV, CPU, tested on the real footage: the keeper is found and his stance measured in goal-plane metres — on the long clip he stands at <b>&minus;2.54&nbsp;m</b> from centre, 2.5&nbsp;m away from where the old constant assumed. The sunset-sky content that once fooled the goal detector is refused here. The shooter-identification half was deleted after it was caught returning the ball's own disc as "the shooter" — it now returns a standing refusal rather than a wrong box.</p>
+<p class="fn">pipeline/subjects.py — 62 tests</p>
 </div></div>
 
 <div class="stage part"><div class="dot">13</div><div class="sbody">
@@ -204,6 +205,15 @@ band   = [min, max] × (1 ± frame-rate uncertainty)</div>
 <tr><td><b>Exposure, ISO, lens position</b></td><td><span class="tag t-ok">yes</span></td><td>Exposure duration is the one to watch: it sets motion-blur streak length, which is a possible <em>independent</em> speed cross-check. Under investigation.</td></tr>
 <tr><td><b>Zoom, stabilisation state, lens ID</b></td><td><span class="tag t-ok">yes</span></td><td>Each is a refusal trigger. Digital zoom or active video stabilisation silently changes the geometry, so they are named and refused rather than ignored.</td></tr>
 </table>
+<table>
+<tr><th>Recorded by the app</th><th>Used by the solver</th></tr>
+<tr><td>Intrinsic matrix K (per frame)</td><td><span class="tag t-ok">yes</span> replaces the &plusmn;15% focal guess; band sized by provenance</td></tr>
+<tr><td>Per-frame timestamps</td><td><span class="tag t-ok">yes</span> measured time base; gates the point value</td></tr>
+<tr><td>Attitude track (gyro)</td><td><span class="tag t-wip">expanding</span> rotation compensation + stillness today; being wired as a gravity-referenced TILT prior — which covers the square-on case the goal pose cannot, and turns IMU-vs-goal disagreement into a sloped-ground detector</td></tr>
+<tr><td>Zoom / stabilisation / lens / dropped frames</td><td><span class="tag t-ok">yes</span> each is a named refusal trigger</td></tr>
+<tr><td>Exposure duration</td><td><span class="tag t-no">not yet</span> the last unused measurement: blur-streak length &divide; exposure is an independent speed cross-check, queued</td></tr>
+<tr><td>Lens focus position</td><td><span class="tag t-no">no, honestly useless</span> AVFoundation reports it unitless (0&ndash;1), not in metres</td></tr>
+</table>
 <div class="card warn"><b class="h">The catch, and it is a real one</b>All of the above exists <em>only</em> for clips recorded inside the app. An imported file — anything from the Camera app, AirDrop, or a share sheet — arrives with none of it, keeps the ±15% focal warning, and gets the wider band. That is the honest cost of importing, and it is the strongest practical argument for shooting in-app once the capture path is proven on a real device.</div>
 
 <h2><span class="n">04</span>What is being decided right now</h2>
@@ -213,7 +223,12 @@ band   = [min, max] × (1 ± frame-rate uncertainty)</div>
 <div class="card yes"><b class="h">Closed since this page was written</b>Two ways a confident wrong speed could reach you, both now shut:
 <br><br><b>The focal band ignored its own provenance.</b> The &plusmn;15% perturbation is the diagonal heuristic's error, and it ran unconditionally — so a clip that handed us the camera's real intrinsic matrix still paid the guess's penalty. A band that does not narrow when the input improves has stopped tracking the evidence.
 <br><br><b>The declared goal size was never checked.</b> A wrong goal size does not produce a bad fit; it produces a <em>perfect</em> fit at the wrong depth, because a rectangle's absolute size is unobservable from one view. A 5&nbsp;m 7-a-side goal declared as regulation is +46% on every speed, a 3&nbsp;m futsal goal +144%, with nothing in the solve objecting. The one witness is the ball's own 22&nbsp;cm — and it was already being polled, its verdict printed as a warning beside a confident point speed. Past 35% disagreement the point value is now refused.</div>
-<div class="card warn"><b class="h">The largest error left, and it is not any of the above</b>The flight fit is <b>anchored at the contact frame</b>. A contact off by one frame is <b>&plusmn;13&ndash;16% on speed</b> — and the test suite currently permits &plusmn;2 frames, which is &plusmn;23%. Reporting speed at the first reliable detection instead would cut that to about 1.1% per frame. This is larger than the focal error and larger than the anchor spread, and it should land before any band is widened: there is no sense widening a band to cover an error that can simply be removed.</div>
+<div class="card yes"><b class="h">The accuracy stack, as of 1 Sep</b>Four fixes landed in sequence, each measured:
+<br><br><b>The fit no longer welds to the contact frame</b> (was &plusmn;13&ndash;16% per frame of contact error).
+<b>The band no longer publishes solver bounds as measurements</b> — the recurring 248.4&nbsp;km/h ceiling was the v0 parameter bound &times; the timing uncertainty; two reference bands narrowed from 4.4&times; and 13.6&times; wide to 1.9&times; and 2.7&times;.
+<b>The goal's pose is no longer thrown away</b> — solvePnP's rotation gives camera height and tilt (the dominant error, 6&ndash;8% per degree), with width propagated from the corner noise, refusing itself when the goal is square-on. Wrong-goal declarations now get CAUGHT HARDER: with height pinned, a size lie has nowhere to hide but the ruler comparison (spread 0.2% &rarr; 45.7%).
+<b>Result on a synthetic angled-goal clip (truth 54.0):</b> band 30.2% wide square-on &rarr; <b>5.3% at 25&deg;</b> &rarr; <b>3.0% at 40&deg;</b>, truth inside every band. The 30&ndash;60&deg; capture rule is no longer advice — it is the measured price of a tight band.</div>
+<div class="card warn"><b class="h">What still stands between this and a &plusmn;10 claim</b>Real corners are noisier than synthetic ones, and no measurement here has ever been checked against an external reference. Two steps, neither of them code: run the designed capture on a real pitch, and one session against a radar gun. The band is allowed to be the answer until then.</div>
 
 <h2><span class="n">05</span>The shortest honest summary</h2>
 <p>The middle of the pipeline — tracking, physics, geometry, the band, the refusals — is in good shape and is not the problem. Both ends are.</p>
@@ -224,7 +239,7 @@ band   = [min, max] × (1 ± frame-rate uncertainty)</div>
 </ul>
 
 <footer>
-STRYKE · pipeline status, 31 Aug 2026 (rev 2) · Numbers on this page are measured outputs from real clips, not projections. Where something has not been measured, it says so.
+STRYKE · pipeline status, 1 Sep 2026 (rev 3) · Numbers on this page are measured outputs from real clips, not projections. Where something has not been measured, it says so.
 </footer>
 </div>
 </body></html>
