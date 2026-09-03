@@ -90,7 +90,7 @@ footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--line);color:v
 
 <h2><span class="n">04</span>네 가지 리플레이</h2>
 <p>같은 슛의 네 출력 — MVP 권고안의 4종 그대로. 메시 슬롯은 GPU 파이프라인이 채웁니다.</p>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:0 0 20px">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin:0 0 20px">
   <div class="vid"><div class="cap">① 원본 리플레이</div><video src="your-shot/raw-replay.mp4" controls muted playsinline preload="metadata"></video></div>
   <div class="vid"><div class="cap">② 슬로모 0.25&times; — 프레임 스트레치, <b>보간 없음</b>(보간 프레임은 지어낸 데이터)</div><video src="your-shot/slowmo-replay.mp4" controls muted playsinline preload="metadata"></video></div>
   <div class="vid"><div class="cap">③ 궤적 오버레이</div><video src="your-shot/overlay-v2.mp4" controls muted playsinline loop preload="metadata"></video></div>
@@ -213,6 +213,6 @@ footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--line);color:v
 <br><br>즉 <b>그릴 3D 궤적이 애초에 없습니다.</b> 40프레임의 픽셀 추적은 진짜지만(01절), 그것을 미터로 세울 자가 없으면 3D 씬은 존재하지 않는 것을 그리게 됩니다. 이 클립에는 몸(body) 해가 없으므로 body 모드로 우회하지도 않았습니다 — 다른 클립의 궤적을 이 선수의 동작 옆에 놓는 것이 이 저장소가 할 수 있는 가장 그럴듯한 거짓말이기 때문입니다.</div>
 <div class="card yes"><b class="h">이 거부를 푸는 조건</b>규격 골대가 프레임에 들어오면 자가 생기고, 원점이 고정되고, 미터 궤적이 8점을 넘겨 히어로 씬이 렌더됩니다. 03절의 밴드가 좁아지는 조건과 <b>정확히 같은 조건</b>입니다 — 우연이 아니라, 둘 다 하나의 같은 결핍에서 나온 증상이기 때문입니다.</div>
 
-<footer>STRYKE · 당신의 클립, 파이프라인 실출력 · 1 Sep 2026 코드 기준 (04·05절: 4 Sep 2026 실행) · 모든 숫자는 measured or refused</footer>
+<footer>STRYKE · 당신의 클립, 파이프라인 실출력 · 1 Sep 2026 코드 기준 (04~06절: 4 Sep 2026 실행) · 모든 숫자는 measured or refused</footer>
 </div>
 </body></html>
