@@ -35,6 +35,31 @@ img.strip{display:block;width:100%;height:auto;border:1px solid var(--line);bord
 .stat.am b{color:var(--amber)}.stat.cy b{color:var(--cyan)}
 .stat span{color:var(--mut);font-size:11.5px;letter-spacing:1.6px;text-transform:uppercase;display:block;margin-top:5px}
 ul{margin:0 0 14px;padding-left:20px}li{margin:0 0 7px;max-width:68ch}
+table.win{width:100%;border-collapse:collapse;font-size:13.5px;margin:0}
+table.win th,table.win td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+table.win th{font-family:'Barlow Semi Condensed',sans-serif;letter-spacing:1.2px;text-transform:uppercase;font-size:11.5px;color:var(--mut)}
+table.win td.n,table.win td.num{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12.5px}
+table.win tr.band td{background:rgba(200,255,0,.045)}
+table.win tr.gt td{background:rgba(244,201,93,.08)}
+table.win .v{font-family:'Barlow Semi Condensed',sans-serif;font-weight:600;letter-spacing:.8px;font-size:12px}
+.v.b{color:var(--lime)}.v.r{color:var(--mut)}
+.tscroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:4px 10px;margin:0 0 14px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px;margin:0 0 18px}
+.shot{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.shot video{display:block;width:100%;height:auto;background:#000}
+.shot img{display:block;width:100%;height:auto;border-top:1px solid var(--line)}
+.shot .m{padding:10px 12px;border-top:1px solid var(--line)}
+.shot .m .t{font-family:'Barlow Semi Condensed',sans-serif;letter-spacing:1.2px;text-transform:uppercase;font-size:11.5px;color:var(--mut);display:block;margin-bottom:4px}
+.shot .m .d{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12.5px;color:var(--fg);display:block}
+.shot .m .d em{font-style:normal;color:var(--lime)}
+.shot .m .q{display:block;margin-top:5px;font-size:12px;line-height:1.45}
+.shot.bad{border-color:#5a2a2c}
+pre.ref{background:#0A1015;border:1px solid var(--line);border-left:3px solid var(--red);border-radius:10px;padding:13px 15px;margin:0 0 14px;overflow-x:auto;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12.5px;line-height:1.55;color:var(--fg)}
+.gates{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:10px;margin:0 0 14px}
+.gate{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:12px;padding:12px 14px}
+.gate .g{display:block;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11.5px;color:var(--amber);margin-bottom:6px;white-space:normal;word-break:break-word;line-height:1.4}
+.gate .x{color:var(--mut);font-size:12.5px}
+h3.sub{font-family:Anton,Impact,sans-serif;font-size:18px;letter-spacing:.5px;text-transform:uppercase;margin:28px 0 10px}
 footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--line);color:var(--mut);font-size:13px}
 </style>
 
@@ -63,6 +88,122 @@ footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--line);color:v
 <div class="card yes"><b class="h">며칠 전과의 비교</b>같은 클립이 ① 크래시 → ② 자신 있는 오답 9.9–13.8 km/h (다리를 추적, 석양 하늘을 골대로 오인) → ③ 지금: 공을 정확히 추적하고, 컨택을 정확히 잡고, 스케일이 없음을 <em>알고</em>, 넓은 밴드를 정직하게 보고. 구장에서 <b>규격 골대가 프레임에 들어오는 순간</b> 이 넓은 밴드가 좁아지는 구조입니다 — 비스듬히 찍으면 ±3%까지.</div>
 <div class="card warn"><b class="h">시간 자도 한마디 했습니다</b>이 파일은 컨테이너 레이트가 서로 불일치(재인코딩 흔적)라 point가 어차피 거부됩니다. 앱 안에서 찍으면 프레임별 실측 타임스탬프가 이 문제를 통째로 제거합니다.</div>
 
-<footer>STRYKE · 당신의 클립, 파이프라인 실출력 · 1 Sep 2026 코드 기준 · 모든 숫자는 measured or refused</footer>
+<h2><span class="n">04</span>다른 슛들</h2>
+<p>같은 158.7초 영상 전체를 <code>pipeline.shots</code>로 다시 훑었습니다. 값싼 제안 레인 두 개(시각·에너지)가 창을 제안하고, 각 창을 기존 솔버가 판정합니다. 결과: <b>창 19개</b>, 소스의 <b>55.4%</b>를 덮음.</p>
+<div class="big">
+  <div class="stat"><b>19</b><span>제안된 창</span></div>
+  <div class="stat"><b>6</b><span>BAND_ONLY</span></div>
+  <div class="stat am"><b>13</b><span>REFUSED</span></div>
+  <div class="stat cy"><b>0</b><span>ACCEPTED — point 속도는 하나도 없음</span></div>
+</div>
+<div class="card warn"><b class="h">이 표를 읽기 전에</b>NOT_A_SHOT 스크린은 이 footage에서 <b>무력(inert)</b>합니다 — 프레임의 95.1%가 공 모양 체인을 갖고 있어 사실상 아무것도 걸러내지 못했습니다. 그래서 <code>NOT_A_SHOT 0</code>은 "창들이 검증되어 공이 있었다"는 뜻이 <em>아니라</em> "걸러진 게 없다"는 뜻입니다. 창이 소스의 절반 이상을 덮으므로, 제안이 무언가를 포함한다는 사실 자체도 약한 증거입니다. 정밀도는 <b>측정되지 않았습니다</b> — 나머지 창엔 라벨이 없습니다.</div>
+
+<div class="tscroll"><table class="win">
+<thead><tr><th>#</th><th>소스 프레임</th><th>시간</th><th>판정</th><th>밴드 km/h</th><th>컨택</th><th>관측</th><th>피팅 rms</th></tr></thead>
+<tbody>
+<tr class=""><td class="n">#0</td><td class="n">f54–165</td><td class="n">1.80–5.53s</td><td><span class="v r">REFUSED</span></td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+<tr class="band"><td class="n">#1</td><td class="n">f281–418</td><td class="n">9.37–13.97s</td><td><span class="v b">BAND_ONLY</span></td><td class="num">36.2–99.4</td><td class="num">f353</td><td class="num">22</td><td class="num">6.4 px</td></tr>
+<tr class=""><td class="n">#2</td><td class="n">f504–644</td><td class="n">16.80–21.50s</td><td><span class="v r">REFUSED</span></td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+<tr class="band"><td class="n">#3</td><td class="n">f655–766</td><td class="n">21.84–25.57s</td><td><span class="v b">BAND_ONLY</span></td><td class="num">20.4–157.9</td><td class="num">f660</td><td class="num">28</td><td class="num" style="color:var(--red)">50.7 px ✗</td></tr>
+<tr class="band"><td class="n">#4</td><td class="n">f851–962</td><td class="n">28.37–32.11s</td><td><span class="v b">BAND_ONLY</span></td><td class="num">10.0–15.8</td><td class="num">f887</td><td class="num">9</td><td class="num" style="color:var(--red)">103.1 px ✗</td></tr>
+<tr class=""><td class="n">#5</td><td class="n">f980–1091</td><td class="n">32.67–36.41s</td><td><span class="v r">REFUSED</span></td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+<tr class="band"><td class="n">#6</td><td class="n">f1107–1218</td><td class="n">36.91–40.64s</td><td><span class="v b">BAND_ONLY</span></td><td class="num">42.5–148.9</td><td class="num">f1121</td><td class="num">13</td><td class="num">4.5 px</td></tr>
+<tr class="band"><td class="n">#7</td><td class="n">f1297–1408</td><td class="n">43.24–46.98s</td><td><span class="v b">BAND_ONLY</span></td><td class="num">18.0–40.5</td><td class="num">f1312</td><td class="num">21</td><td class="num">6.5 px</td></tr>
+<tr class=""><td class="n">#8</td><td class="n">f1482–1626</td><td class="n">49.41–54.24s</td><td><span class="v r">REFUSED</span></td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+<tr class=""><td class="n">#9</td><td class="n">f1929–2167</td><td class="n">64.31–72.28s</td><td><span class="v r">REFUSED</span></td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+<tr class=""><td class="n">#10</td><td class="n">f2225–2402</td><td class="n">74.18–80.12s</td><td><span class="v r">REFUSED</span></td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+<tr class=""><td class="n">#11</td><td class="n">f2485–2686</td><td class="n">82.85–89.58s</td><td><span class="v r">REFUSED</span></td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+<tr class=""><td class="n">#12</td><td class="n">f2712–2823</td><td class="n">90.42–94.15s</td><td><span class="v r">REFUSED</span></td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+<tr class="band"><td class="n">#13</td><td class="n">f2959–3125</td><td class="n">98.65–104.22s</td><td><span class="v b">BAND_ONLY</span></td><td class="num">11.8–58.1</td><td class="num">f2980</td><td class="num">37</td><td class="num">11.8 px</td></tr>
+<tr class="gt"><td class="n">#14</td><td class="n">f3248–3487</td><td class="n">108.29–116.29s</td><td><span class="v r">REFUSED</span> &nbsp;<span style="color:var(--amber);font-size:12px">← 라벨된 슛이 여기 있음</span></td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+<tr class=""><td class="n">#15</td><td class="n">f3458–3568</td><td class="n">115.29–118.99s</td><td><span class="v r">REFUSED</span></td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+<tr class=""><td class="n">#16</td><td class="n">f4063–4174</td><td class="n">135.46–139.19s</td><td><span class="v r">REFUSED</span></td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+<tr class=""><td class="n">#17</td><td class="n">f4304–4415</td><td class="n">143.49–147.23s</td><td><span class="v r">REFUSED</span></td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+<tr class=""><td class="n">#18</td><td class="n">f4664–4759</td><td class="n">155.50–158.70s</td><td><span class="v r">REFUSED</span></td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+</tbody></table></div>
+<p style="color:var(--mut);font-size:13.5px;margin-bottom:16px">밴드·컨택·관측·rms는 모두 스캔과 <b>동일한 설정</b>(골대 치수 미지정)에서 나왔고, 스캔이 기록한 판정과 정확히 일치합니다.</p>
+
+<div class="card no"><b class="h">가장 중요한 경고 — BAND_ONLY 6개 중 <em>5개</em>는 공을 따라가고 있지 않습니다</b>
+<code>BAND_ONLY</code>는 "솔버가 밴드를 냈다"는 뜻이지 "맞는 물체를 쟀다"는 뜻이 아닙니다. 아래 오버레이 스트립을 <b>육안으로 확인</b>한 결과, 6개 중 <b>#1 하나만</b> 실제로 공을 따라갑니다. 실패는 두 종류로 갈립니다.
+<br><br><b>(1) 모델이 아예 안 맞음 — #3, #4.</b> 재투영 rms가 파이프라인 자신의 기준(<b>30 px 초과면 거부</b>)을 넘습니다(50.7 px · 103.1 px). 파이프라인이 스스로 적어둔 문장: <em>"the flight model does not fit the observations … the track, the geometry or both are wrong"</em>. #4는 실측 검출이 <b>9개</b>뿐이고, #3·#4·#6은 형상 파라미터가 <b>경계에 붙은 채</b>(railed) 멈췄습니다 — 데이터가 아니라 경계가 해를 정했다는 뜻입니다.
+<br><br><b>(2) 모델은 훌륭히 맞지만 대상이 틀림 — #6, #7, #13.</b> 이쪽이 더 위험합니다. rms가 각각 <b>4.5 · 6.5 · 11.8 px</b>로 <em>#1보다도 좋습니다</em>. 그런데 스트립을 보면 초록 마커가 선수의 <b>허리·가슴·얼굴</b> 위에 얹혀 있습니다. 부드럽게 움직이는 몸통은 포물선에 아름답게 맞기 때문입니다. <b>낮은 rms는 "공을 추적했다"는 증거가 아닙니다.</b> 며칠 전 이 클립에서 있었던 "다리를 추적한 자신 있는 오답"과 <em>같은 실패</em>가, 이번엔 좋은 rms를 달고 재발했습니다.
+<br><br>그래서 이 표에서 밴드를 숫자로 읽어도 되는 창은 <b>#1 하나</b>입니다. 나머지 5개의 밴드는 <b>숫자로 취급하면 안 됩니다</b>. 스트립을 함께 실어두었으니 직접 확인하실 수 있습니다 — 이 판정은 자동 검사가 아니라 <b>육안 확인</b>이며, 그렇게 밝혀둡니다.</div>
+
+<h3 class="sub">BAND_ONLY 6개 — 오버레이</h3>
+<div class="grid2">
+<div class="shot">
+  <video src="your-shot/shots/w1.mp4" controls muted playsinline loop preload="metadata"></video>
+  <img src="your-shot/shots/w1.jpg" alt="window 1 frame strip" loading="lazy">
+  <div class="m"><span class="t">Window #1 · src f281–418</span>
+  <span class="d">밴드 <em>36.2–99.4</em> km/h · 컨택 <em>f353</em> · 관측 <em>22</em>프레임</span>
+  <span class="q" style="color:var(--lime)">피팅 rms 6.4 px · 육안 확인: <b>공</b>을 따라감</span></div>
+</div>
+<div class="shot bad">
+  <video src="your-shot/shots/w3.mp4" controls muted playsinline loop preload="metadata"></video>
+  <img src="your-shot/shots/w3.jpg" alt="window 3 frame strip" loading="lazy">
+  <div class="m"><span class="t">Window #3 · src f655–766</span>
+  <span class="d">밴드 <em>20.4–157.9</em> km/h · 컨택 <em>f660</em> · 관측 <em>28</em>프레임</span>
+  <span class="q" style="color:var(--red)">✗ 모델 미적합 (rms 50.7 px · 기준 30 px) · 육안: <b>몸통</b></span></div>
+</div>
+<div class="shot bad">
+  <video src="your-shot/shots/w4.mp4" controls muted playsinline loop preload="metadata"></video>
+  <img src="your-shot/shots/w4.jpg" alt="window 4 frame strip" loading="lazy">
+  <div class="m"><span class="t">Window #4 · src f851–962</span>
+  <span class="d">밴드 <em>10.0–15.8</em> km/h · 컨택 <em>f887</em> · 관측 <em>9</em>프레임</span>
+  <span class="q" style="color:var(--red)">✗ 모델 미적합 (rms 103.1 px · 검출 9개) · 육안: <b>다리·블러</b></span></div>
+</div>
+<div class="shot bad">
+  <video src="your-shot/shots/w6.mp4" controls muted playsinline loop preload="metadata"></video>
+  <img src="your-shot/shots/w6.jpg" alt="window 6 frame strip" loading="lazy">
+  <div class="m"><span class="t">Window #6 · src f1107–1218</span>
+  <span class="d">밴드 <em>42.5–148.9</em> km/h · 컨택 <em>f1121</em> · 관측 <em>13</em>프레임</span>
+  <span class="q" style="color:var(--red)">✗ rms 4.5 px로 잘 맞지만 육안: <b>허리</b> — 공이 아님</span></div>
+</div>
+<div class="shot bad">
+  <video src="your-shot/shots/w7.mp4" controls muted playsinline loop preload="metadata"></video>
+  <img src="your-shot/shots/w7.jpg" alt="window 7 frame strip" loading="lazy">
+  <div class="m"><span class="t">Window #7 · src f1297–1408</span>
+  <span class="d">밴드 <em>18.0–40.5</em> km/h · 컨택 <em>f1312</em> · 관측 <em>21</em>프레임</span>
+  <span class="q" style="color:var(--red)">✗ rms 6.5 px로 잘 맞지만 육안: <b>가슴</b> — 공이 아님</span></div>
+</div>
+<div class="shot bad">
+  <video src="your-shot/shots/w13.mp4" controls muted playsinline loop preload="metadata"></video>
+  <img src="your-shot/shots/w13.jpg" alt="window 13 frame strip" loading="lazy">
+  <div class="m"><span class="t">Window #13 · src f2959–3125</span>
+  <span class="d">밴드 <em>11.8–58.1</em> km/h · 컨택 <em>f2980</em> · 관측 <em>37</em>프레임</span>
+  <span class="q" style="color:var(--red)">✗ rms 11.8 px로 잘 맞지만 육안: <b>얼굴·머리</b> — 공이 아님</span></div>
+</div>
+</div>
+<div class="card"><b class="h">이 오버레이가 잘라낸 클립이 아닌 이유</b>스캔은 창을 <b>프레임 단위로 정확히</b> 디코드해 솔버에 넘깁니다. 반면 옆에 저장되는 잘린 클립은 <code>stream copy</code>라 가장 가까운 키프레임에서 시작하므로 <em>같은 프레임을 담고 있지 않습니다</em>. 실제로 확인했습니다: 창 #1은 스캔에서 BAND_ONLY지만, 자기 클립 위에서 다시 돌리면 <code>moving_ball_flight_not_ballistic</code>으로 거부됩니다. 그래서 위 오버레이는 클립이 아니라 <b>스캔이 본 그 프레임들</b>에서 생성했고, 덕분에 표의 숫자와 판정이 서로 어긋나지 않습니다.</div>
+
+<h3 class="sub">거부 13개 — 무엇이 걸렸나</h3>
+<p>13개 전부 최상위 사유가 하나로 같습니다: <code>moving_ball_flight_not_ballistic</code> — 두 진입 전략이 <b>모두</b> 시작에 실패했다는 뜻입니다. 세부 사유는 후보별로 이름이 붙습니다. 13개 창을 합쳐 정지공 후보 <b>46개</b>, 무빙볼 스트라이크 후보 <b>222개</b>가 재추적 끝에 탈락했습니다.</p>
+<div class="gates">
+<div class="gate"><span class="g">rest_ball: none of them flew</span><span class="x">13개 창 <b>전부</b>. 흰 원반은 찾았지만(합계 46개) 어느 것도 날아가지 않음 — 정지공 진입 자체가 불가.</span></div>
+<div class="gate"><span class="g">flight_not_ballistic_in_pixels</span><span class="x">13개 창 전부, 이름이 적힌 후보 기준 <b>49회</b>. 픽셀 상에서 포물선이 아님(예: 37px vs 허용 5px).</span></div>
+<div class="gate"><span class="g">ensemble_held_the_ball_for_only_N_frames</span><span class="x">13개 창 전부, <b>30회</b>. 앙상블이 공을 12프레임도 붙들지 못함 — 피팅할 만큼 길지 않음.</span></div>
+<div class="gate"><span class="g">radius_inconsistent_…_off_the_1_over_r_line</span><span class="x">11개 창, <b>27회</b>. 반지름이 1/r 깊이선에서 벗어남 — 같은 공이 아니거나 깊이가 틀림.</span></div>
+</div>
+<p style="color:var(--mut);font-size:13.5px">횟수는 <b>사유 문자열이 이름을 밝힌 후보</b>(창당 상위 5개)에 대한 집계입니다. 222개 후보 전체의 분포가 아닙니다 — 파이프라인이 이름을 대지 않은 것을 세지는 않았습니다.</p>
+
+<div class="card no"><b class="h">그리고 유일하게 라벨된 슛을 이 스캔은 거부했습니다</b>
+손으로 검증된 슛은 소스 프레임 <code>3340–3405</code>에 있습니다 — 01·02절에서 분석한 바로 그 슛입니다. 제안 레인은 <b>맞게 찾았습니다</b>: 시각 레인 온셋이 <code>f3346</code>으로, 라벨된 컨택(<code>f3349</code>)에서 <b>3프레임</b> 거리입니다. 그런데 창 병합이 이 온셋을 이웃한 에너지 온셋 3개(f3284·f3425·f3449)와 합쳐 <b>240프레임짜리 창 #14</b>를 만들었고, 그 폭 안에서 솔버는 스트라이크 후보 26개를 놓고 헤매다 거부했습니다. 같은 슛을 <b>112프레임으로 손수 자르면</b> 풀립니다(01절). 이 한 건에서 잃은 것은 <em>검출</em>이 아니라 <b>창 폭</b>입니다.
+<br><br>덧붙여, 관찰된 패턴 하나: 폭이 가장 넓은 창 4개(240·239·202·178프레임)는 <b>모두</b> 거부됐고, BAND_ONLY 6개는 전부 167프레임 이하였습니다. n=19이므로 이것은 법칙이 아니라 <b>관찰</b>입니다 — 112프레임 창도 여럿 거부됐습니다.</div>
+
+<div class="card warn"><b class="h">규격 골대 치수를 넣으면 두 창이 달라집니다</b>위 표는 스캔과 같은 설정(치수 미지정)입니다. 시험 삼아 규격 치수 <code>7.32×2.44 m</code>를 주고 다시 돌리면 6개 중 <b>4개</b>는 골대 후보가 검증에서 실격해 밴드가 <b>한 자리도 바뀌지 않습니다</b>. 그러나 창 <b>#4</b>와 <b>#13</b>에서는 어떤 골대 후보가 검증을 <em>통과</em>해 자를 세웠고(<code>metric_reference: true</code>), 밴드가 #4는 10.0–15.8 → <b>10.1–16.6</b>, #13은 11.8–58.1 → <b>8.3–32.5</b>로 이동했습니다. 이 영상의 골대는 연습용 소형 골대이므로 그 통과가 <em>옳은지</em>는 이 클립만으로 확인할 수 없습니다 — 그래서 표에 넣지 않고 여기 적어둡니다. (두 창 모두 위에서 몸을 추적한 것으로 판정됐으므로, 어느 쪽 밴드든 읽을 숫자는 아닙니다.)</div>
+
+<h2><span class="n">05</span>3D 씬</h2>
+<p>01절의 그 슛(<code>ball_flight.json</code>)을 서버 3D 씬 렌더러에 <code>--mode shot</code>으로 넘겼습니다. 렌더러는 <b>거부했습니다</b>. 출력 전문:</p>
+<pre class="ref">{
+  "rendered": false,
+  "reason": "only 1 solved points — refusing to render a hero clip"
+}</pre>
+<div class="card no"><b class="h">왜 이것이 정직한 결과인가</b>
+게이트는 히어로 클립에 <b>최소 8개</b>의 해결된 3D 점을 요구합니다(<code>MIN_POINTS_FOR_HERO = 8</code>). 이 클립의 <code>points_3d</code>에는 <b>1개</b>뿐입니다. 그 이유는 03절과 <em>똑같은 뿌리</em>입니다:
+<br><br>프레임에 미터 자가 없음 → 컨택 순간 공이 이미 공중에 있어(컨택 전 수직 가속도 −0.24 px/frame², 자유낙하 0.39와 일관) "광선이 지면과 만난다"는 가정이 무너짐 → <b>월드 프레임의 원점이 고정되지 않음</b> → 미터 궤적이 무너져(1.5 px 안에 맞는 카메라 기하 4개의 정점이 전부 0.11 m) 첫 샘플 이후 공이 공 반지름 아래로 내려감 → 남는 점이 1개.
+<br><br>즉 <b>그릴 3D 궤적이 애초에 없습니다.</b> 40프레임의 픽셀 추적은 진짜지만(01절), 그것을 미터로 세울 자가 없으면 3D 씬은 존재하지 않는 것을 그리게 됩니다. 이 클립에는 몸(body) 해가 없으므로 body 모드로 우회하지도 않았습니다 — 다른 클립의 궤적을 이 선수의 동작 옆에 놓는 것이 이 저장소가 할 수 있는 가장 그럴듯한 거짓말이기 때문입니다.</div>
+<div class="card yes"><b class="h">이 거부를 푸는 조건</b>규격 골대가 프레임에 들어오면 자가 생기고, 원점이 고정되고, 미터 궤적이 8점을 넘겨 히어로 씬이 렌더됩니다. 03절의 밴드가 좁아지는 조건과 <b>정확히 같은 조건</b>입니다 — 우연이 아니라, 둘 다 하나의 같은 결핍에서 나온 증상이기 때문입니다.</div>
+
+<footer>STRYKE · 당신의 클립, 파이프라인 실출력 · 1 Sep 2026 코드 기준 (04·05절: 4 Sep 2026 실행) · 모든 숫자는 measured or refused</footer>
 </div>
 </body></html>
