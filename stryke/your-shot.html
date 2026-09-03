@@ -88,7 +88,16 @@ footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--line);color:v
 <div class="card yes"><b class="h">며칠 전과의 비교</b>같은 클립이 ① 크래시 → ② 자신 있는 오답 9.9–13.8 km/h (다리를 추적, 석양 하늘을 골대로 오인) → ③ 지금: 공을 정확히 추적하고, 컨택을 정확히 잡고, 스케일이 없음을 <em>알고</em>, 넓은 밴드를 정직하게 보고. 구장에서 <b>규격 골대가 프레임에 들어오는 순간</b> 이 넓은 밴드가 좁아지는 구조입니다 — 비스듬히 찍으면 ±3%까지.</div>
 <div class="card warn"><b class="h">시간 자도 한마디 했습니다</b>이 파일은 컨테이너 레이트가 서로 불일치(재인코딩 흔적)라 point가 어차피 거부됩니다. 앱 안에서 찍으면 프레임별 실측 타임스탬프가 이 문제를 통째로 제거합니다.</div>
 
-<h2><span class="n">04</span>다른 슛들</h2>
+<h2><span class="n">04</span>네 가지 리플레이</h2>
+<p>같은 슛의 네 출력 — MVP 권고안의 4종 그대로. 메시 슬롯은 GPU 파이프라인이 채웁니다.</p>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:0 0 20px">
+  <div class="vid"><div class="cap">① 원본 리플레이</div><video src="your-shot/raw-replay.mp4" controls muted playsinline preload="metadata"></video></div>
+  <div class="vid"><div class="cap">② 슬로모 0.25&times; — 프레임 스트레치, <b>보간 없음</b>(보간 프레임은 지어낸 데이터)</div><video src="your-shot/slowmo-replay.mp4" controls muted playsinline preload="metadata"></video></div>
+  <div class="vid"><div class="cap">③ 궤적 오버레이</div><video src="your-shot/overlay-v2.mp4" controls muted playsinline loop preload="metadata"></video></div>
+  <div class="vid"><div class="cap" style="border-bottom:none">④ 메시 리플레이 — <span style="color:var(--amber)">대기</span></div><div style="display:grid;place-items:center;min-height:180px;color:var(--mut);font-size:13px;text-align:center;padding:16px">GVHMR 실행용 GPU 박스 셋업 중.<br>SMPL-X 모델 파일(연구 라이선스, 본인 등록) 게이트 남음.</div></div>
+</div>
+
+<h2><span class="n">05</span>다른 슛들</h2>
 <p>같은 158.7초 영상 전체를 <code>pipeline.shots</code>로 다시 훑었습니다. 값싼 제안 레인 두 개(시각·에너지)가 창을 제안하고, 각 창을 기존 솔버가 판정합니다. 결과: <b>창 19개</b>, 소스의 <b>55.4%</b>를 덮음.</p>
 <div class="big">
   <div class="stat"><b>19</b><span>제안된 창</span></div>
@@ -192,7 +201,7 @@ footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--line);color:v
 
 <div class="card warn"><b class="h">규격 골대 치수를 넣으면 두 창이 달라집니다</b>위 표는 스캔과 같은 설정(치수 미지정)입니다. 시험 삼아 규격 치수 <code>7.32×2.44 m</code>를 주고 다시 돌리면 6개 중 <b>4개</b>는 골대 후보가 검증에서 실격해 밴드가 <b>한 자리도 바뀌지 않습니다</b>. 그러나 창 <b>#4</b>와 <b>#13</b>에서는 어떤 골대 후보가 검증을 <em>통과</em>해 자를 세웠고(<code>metric_reference: true</code>), 밴드가 #4는 10.0–15.8 → <b>10.1–16.6</b>, #13은 11.8–58.1 → <b>8.3–32.5</b>로 이동했습니다. 이 영상의 골대는 연습용 소형 골대이므로 그 통과가 <em>옳은지</em>는 이 클립만으로 확인할 수 없습니다 — 그래서 표에 넣지 않고 여기 적어둡니다. (두 창 모두 위에서 몸을 추적한 것으로 판정됐으므로, 어느 쪽 밴드든 읽을 숫자는 아닙니다.)</div>
 
-<h2><span class="n">05</span>3D 씬</h2>
+<h2><span class="n">06</span>3D 씬</h2>
 <p>01절의 그 슛(<code>ball_flight.json</code>)을 서버 3D 씬 렌더러에 <code>--mode shot</code>으로 넘겼습니다. 렌더러는 <b>거부했습니다</b>. 출력 전문:</p>
 <pre class="ref">{
   "rendered": false,
