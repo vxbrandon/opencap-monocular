@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Your Moving-Ball Shot · STRYKE</title>
+</head><body>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@400;500;600;700&family=Barlow+Semi+Condensed:wght@600&family=JetBrains+Mono:wght@400;600&display=swap');
+:root{--bg:#0D141A;--panel:#141C24;--line:#25313B;--fg:#EEF3F6;--mut:#9AA7B0;--lime:#C8FF00;--cyan:#55D9FF;--amber:#F4C95D;--red:#FF5A5F}
+*{box-sizing:border-box}html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 Barlow,system-ui,sans-serif}
+.wrap{max-width:900px;margin:0 auto;padding:40px 22px 100px}
+h1{font-family:Anton,Impact,sans-serif;font-size:clamp(42px,9vw,72px);line-height:.94;margin:0 0 10px;text-transform:uppercase}
+h1 em{font-style:normal;color:var(--lime)}
+.eyebrow{font-family:'Barlow Semi Condensed',sans-serif;font-weight:600;font-size:12px;letter-spacing:2.4px;color:var(--mut);text-transform:uppercase;margin:0 0 12px}
+.lede{color:var(--mut);max-width:64ch;margin:0 0 4px}
+h2{font-family:Anton,Impact,sans-serif;font-size:24px;letter-spacing:.6px;text-transform:uppercase;margin:48px 0 8px;padding-top:18px;border-top:1px solid var(--line)}
+h2 .n{color:var(--lime);margin-right:10px}
+p{margin:0 0 13px;max-width:70ch}
+code{background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:13px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:0 0 14px}
+.card b.h{display:block;font-family:'Barlow Semi Condensed',sans-serif;letter-spacing:1.4px;text-transform:uppercase;font-size:12.5px;margin-bottom:7px;color:var(--mut)}
+.card.warn{border-left:3px solid var(--amber)}
+.card.yes{border-left:3px solid var(--lime)}
+.card.no{border-left:3px solid var(--red)}
+.vid{background:#000;border:1px solid var(--line);border-radius:14px;overflow:hidden;margin:0 0 16px}
+.vid video{display:block;width:100%;height:auto}
+.vid .cap{padding:9px 12px;font-family:'Barlow Semi Condensed',sans-serif;letter-spacing:1.3px;text-transform:uppercase;font-size:11.5px;color:var(--mut);border-bottom:1px solid var(--line)}
+img.strip{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:10px;margin:0 0 16px}
+.big{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:0 0 18px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:15px}
+.stat b{font-family:Anton,sans-serif;font-size:28px;display:block;color:var(--lime);line-height:1.1}
+.stat.am b{color:var(--amber)}.stat.cy b{color:var(--cyan)}
+.stat span{color:var(--mut);font-size:11.5px;letter-spacing:1.6px;text-transform:uppercase;display:block;margin-top:5px}
+ul{margin:0 0 14px;padding-left:20px}li{margin:0 0 7px;max-width:68ch}
+footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--line);color:var(--mut);font-size:13px}
+</style>
+
+<div class="wrap">
+<p class="eyebrow">STRYKE · 당신의 무빙볼 클립, 실제 분석</p>
+<h1>Your <em>Shot</em></h1>
+<p class="lede">당신이 준 158초 훈련 영상에서 잘라낸, 굴러가는 공을 달려가서 차는 장면. 아래 영상과 숫자는 전부 이 클립에서 파이프라인이 실제로 산출한 것 — 데모 데이터가 아닙니다.</p>
+
+<h2><span class="n">01</span>The overlay</h2>
+<div class="vid"><div class="cap">추적점(초록) + 물리 피팅 궤적(주황), 원본 위에 재투영</div><video src="your-shot/ball_overlay.mp4" controls muted playsinline loop preload="metadata"></video></div>
+<img class="strip" src="your-shot/ball_strip.png" alt="frame strip f80 to f143">
+<p>f80이 컨택 — 부츠가 공을 가리는 f81–88 구간을 흰-원반 확인(가림 양쪽에서 공이 원반으로 확인돼야 동일 개체로 인정)으로 건너뛰고, f91부터 비행을 다시 잡아 낙하까지 따라갑니다.</p>
+
+<h2><span class="n">02</span>The numbers</h2>
+<div class="big">
+  <div class="stat cy"><b>moving_ball</b><span>진입 전략 — 정지공 없이</span></div>
+  <div class="stat"><b>40</b><span>관측 프레임</span></div>
+  <div class="stat"><b>f80</b><span>컨택 — 라벨과 정확히 일치</span></div>
+  <div class="stat"><b>1.46 px</b><span>손검증 궤적 대비 중앙값 오차</span></div>
+  <div class="stat am"><b>70–248</b><span>km/h · 밴드 (아래 참조)</span></div>
+  <div class="stat am"><b>refused</b><span>point 속도</span></div>
+</div>
+
+<h2><span class="n">03</span>밴드가 왜 이렇게 넓은가 — 그리고 그게 왜 옳은가</h2>
+<div class="card no"><b class="h">이 클립엔 미터 자가 없습니다</b>프레임 속 골대는 규격 골대가 아니라 소형 연습 골대이고, 검출기는 후보를 찾았지만 <b>이름을 대며 실격</b>시켰습니다: <code>crossbar_907px_is_5.9x_the_post_separation</code> — "크로스바"라고 잡힌 선이 포스트 간격의 5.9배, 즉 크로스바가 아님. 포스트 길이도 251px vs 69px로 서로 다름. 자가 없으니 스케일은 약한 자(중력·공 지름)에 의지하고, 그 둘은 축방향 슛에서 24–35% 어긋납니다 — 그래서 밴드가 넓고, point는 거부.</div>
+<div class="card yes"><b class="h">며칠 전과의 비교</b>같은 클립이 ① 크래시 → ② 자신 있는 오답 9.9–13.8 km/h (다리를 추적, 석양 하늘을 골대로 오인) → ③ 지금: 공을 정확히 추적하고, 컨택을 정확히 잡고, 스케일이 없음을 <em>알고</em>, 넓은 밴드를 정직하게 보고. 구장에서 <b>규격 골대가 프레임에 들어오는 순간</b> 이 넓은 밴드가 좁아지는 구조입니다 — 비스듬히 찍으면 ±3%까지.</div>
+<div class="card warn"><b class="h">시간 자도 한마디 했습니다</b>이 파일은 컨테이너 레이트가 서로 불일치(재인코딩 흔적)라 point가 어차피 거부됩니다. 앱 안에서 찍으면 프레임별 실측 타임스탬프가 이 문제를 통째로 제거합니다.</div>
+
+<footer>STRYKE · 당신의 클립, 파이프라인 실출력 · 1 Sep 2026 코드 기준 · 모든 숫자는 measured or refused</footer>
+</div>
+</body></html>
