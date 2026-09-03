@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ko"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Replay System · STRYKE</title>
+</head><body>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@400;500;600;700&family=Barlow+Semi+Condensed:wght@600&family=JetBrains+Mono:wght@400;600&display=swap');
+:root{--bg:#0D141A;--panel:#141C24;--line:#25313B;--fg:#EEF3F6;--mut:#9AA7B0;--lime:#C8FF00;--cyan:#55D9FF;--amber:#F4C95D;--red:#FF5A5F}
+*{box-sizing:border-box}html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 Barlow,system-ui,sans-serif}
+.wrap{max-width:900px;margin:0 auto;padding:40px 22px 100px}
+h1{font-family:Anton,Impact,sans-serif;font-size:clamp(42px,9vw,72px);line-height:.94;margin:0 0 10px;text-transform:uppercase}
+h1 em{font-style:normal;color:var(--lime)}
+.eyebrow{font-family:'Barlow Semi Condensed',sans-serif;font-weight:600;font-size:12px;letter-spacing:2.4px;color:var(--mut);text-transform:uppercase;margin:0 0 12px}
+.lede{color:var(--mut);max-width:64ch;margin:0 0 4px}
+h2{font-family:Anton,Impact,sans-serif;font-size:24px;letter-spacing:.6px;text-transform:uppercase;margin:48px 0 8px;padding-top:18px;border-top:1px solid var(--line)}
+h2 .n{color:var(--lime);margin-right:10px}
+p{margin:0 0 13px;max-width:70ch}
+code{background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:13px}
+.tag{display:inline-block;border-radius:4px;padding:1px 7px;font-size:11px;letter-spacing:.8px;text-transform:uppercase;font-family:'Barlow Semi Condensed',sans-serif;font-weight:600;white-space:nowrap}
+.t-ok{background:#1A2A10;color:var(--lime);border:1px solid #2E4416}
+.t-wip{background:#122630;color:var(--cyan);border:1px solid #1D3D4C}
+.t-part{background:#2A2412;color:var(--amber);border:1px solid #443A1C}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:0 0 14px}
+.card b.h{display:block;font-family:'Barlow Semi Condensed',sans-serif;letter-spacing:1.4px;text-transform:uppercase;font-size:12.5px;margin-bottom:7px;color:var(--mut)}
+.card.warn{border-left:3px solid var(--amber)}
+.card.yes{border-left:3px solid var(--lime)}
+table{width:100%;border-collapse:collapse;margin:0 0 18px;font-size:14.5px}
+th,td{text-align:left;padding:10px 11px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:'Barlow Semi Condensed',sans-serif;letter-spacing:1.2px;text-transform:uppercase;font-size:11.5px;color:var(--mut);font-weight:600}
+.flow{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--lime);border-radius:10px;padding:14px 18px;margin:0 0 16px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:13.5px;line-height:1.9;overflow-x:auto;white-space:pre}
+.flow b{color:var(--lime)}
+ul{margin:0 0 14px;padding-left:20px}li{margin:0 0 7px;max-width:68ch}
+footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--line);color:var(--mut);font-size:13px}
+</style>
+
+<div class="wrap">
+<p class="eyebrow">STRYKE · 리플레이 시스템</p>
+<h1>Every Shot,<br><em>Replayable</em></h1>
+<p class="lede">목표 UX: 세션에서 슛을 여러 개 찍으면 전부 저장되고, 나중에 아무 슛이나 골라 궤적·슬로모·바디 메시로 다시 본다. 이 페이지는 그 그림의 어디까지가 지금 실제로 작동하는지의 장부다.</p>
+
+<h2><span class="n">01</span>흐름</h2>
+<div class="flow">킥 소리 감지 → 슛마다 자동 컷 (클립 + 사이드카)
+      → 서버 분석 (궤적·컨택·밴드) → <b>슛별 영구 저장</b>
+      → 숏 맵: 모든 슛의 arc 한 화면, 탭 = 하이라이트
+      → 숏 디테일: 이 슛의 3D 씬 · 영상 · 지표
+                       └─ 리플레이 4종 ↓</div>
+<p>세션이 끝나도 슛은 사라지지 않는다 — 서버에 없는 결과는 로컬 SQLite가 먼저 들고 있다가 동기화한다. 네트워크가 죽어도 세션은 산다.</p>
+
+<h2><span class="n">02</span>슛별 보기 — 요소별 장부</h2>
+<table>
+<tr><th>보기</th><th>상태</th><th>비고</th></tr>
+<tr><td><b>궤적 다시 보기</b> (3D 씬)</td><td><span class="tag t-ok">지금 됨</span></td><td>숏 맵: 전체 arc 동시 표시 + 선택 하이라이트, 정지 카메라(촬영 각도 포즈). refuse된 슛은 곡선을 안 그림</td></tr>
+<tr><td><b>원본 리플레이</b></td><td><span class="tag t-ok">지금 됨</span></td><td>숏 디테일 영상 탭</td></tr>
+<tr><td><b>슬로모 0.25×</b></td><td><span class="tag t-wip">앱 작업 중</span></td><td>같은 영상의 재생속도 제어 — 새 파일 불필요. 프레임 보간은 하지 않는다(보간 프레임 = 지어낸 데이터)</td></tr>
+<tr><td><b>궤적 오버레이 영상</b></td><td><span class="tag t-wip">앱 작업 중</span></td><td>서버가 굽는 능력은 <a href="your-shot.html" style="color:var(--cyan)">your-shot</a>에서 증명됨 — 서빙 엔드포인트 + 앱 재생만</td></tr>
+<tr><td><b>바디 메시 리플레이</b></td><td><span class="tag t-part">온디맨드 설계</span></td><td>아래 03 참조 — 유일하게 자동이 아닌 조각</td></tr>
+</table>
+
+<h2><span class="n">03</span>바디 메시는 왜 "온디맨드"인가</h2>
+<p>메시 복원(GVHMR)은 슛당 GPU로 수 분이 걸린다. 모든 슛에 자동으로 돌리면 비용이 슛 수에 비례해서 커지므로, 설계는 반대로 간다:</p>
+<div class="card yes"><b class="h">보고 싶은 슛에서 버튼 → 렌더 → 완성되면 재생</b>be-vision의 hero 상태기계가 이미 이 모양이다: <code>none → rendering → ready | failed</code>, 실패엔 이름 붙은 이유. 궤적·속도는 모든 슛에 즉시(CPU, 초 단위), 메시는 원할 때만(GPU, 분 단위) — 두 비용 곡선을 섞지 않는다.</div>
+<div class="card warn"><b class="h">남은 관문 둘</b>① GPU 워커 — 프로토타입 셋업이 지금 진행 중. ② 라이선스 — SMPL-X는 연구용이라 개발 빌드까지만; 출시 전 상용 가능 바디로 교체(추적 중). 개발 중 메시 품질의 실물은 <a href="your-mesh.html" style="color:var(--cyan)">Your Mesh</a>에 이미 있다.</div>
+
+<h2><span class="n">04</span>정직성이 리플레이에 남기는 것</h2>
+<ul>
+<li>측정 안 된 슛의 곡선은 그리지 않는다 — refuse된 슛의 리플레이는 원본 영상뿐이다.</li>
+<li>슬로모는 스트레치지 보간이 아니다 — 없는 프레임을 만들어 넣지 않는다.</li>
+<li>메시 리플레이는 자기 상태를 말한다 — 렌더 중인지, 왜 실패했는지, 몸이 추정인지.</li>
+</ul>
+
+<footer>STRYKE · 리플레이 시스템 장부 · 상태는 앱/서버 코드 기준, 희망 사항 아님</footer>
+</div>
+</body></html>
