@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="ko"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>STRYKE Design Record</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&family=Inter+Tight:wght@600;700;800&display=swap">
+
+<style>
+/* ------------------------------------------------------------------
+   STRYKE design record.
+   The page is drawn with the instrument the app is: a ruled 0-160 km/h
+   groove with engraved eighth-ticks, majors at 80. Tokens below are the
+   app's own (apps/fe-mobile/src/constants/theme.ts), unchanged.
+   Deliberately single-theme: the product is a night-pitch instrument and
+   every colour is painted explicitly so the page holds on any host ground.
+------------------------------------------------------------------- */
+:root{
+  --ground:#0B0F13;
+  --card:#141A20;
+  --raised:#1C242C;
+  --hair:rgba(255,255,255,.08);
+  --hair-strong:rgba(255,255,255,.14);
+  --lime:#C8FF00;
+  --lime-ink:#0B0F13;
+  --cyan:#55D9FF;
+  --danger:#FF5A5F;
+  --tx:#F2F5F7;
+  --tx2:#B3BCC4;
+  --tx3:#7C8890;
+  --tx4:#4E5962;
+
+  --sans:"IBM Plex Sans KR",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --num:"Inter Tight","IBM Plex Sans KR",sans-serif;
+
+  --gut:clamp(20px,5vw,56px);
+  --max:1180px;
+}
+*{box-sizing:border-box}
+html{background:var(--ground);-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--ground);color:var(--tx2);
+  font-family:var(--sans);font-weight:400;font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--gut)}
+img{max-width:100%;display:block}
+a{color:var(--tx);text-decoration-color:var(--tx4);text-underline-offset:3px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--lime);outline-offset:3px}
+
+/* ---- the tick rule: the page's own divider is the app's axis ---- */
+.axis-rule{position:relative;height:22px;margin:0}
+.axis-rule::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--hair-strong)}
+.axis-rule i{position:absolute;top:0;width:1px;background:var(--hair);height:6px}
+.axis-rule i.maj{height:11px;background:var(--hair-strong)}
+
+/* ---- type ---- */
+h1,h2,h3{color:var(--tx);text-wrap:balance;margin:0}
+h1{font-family:var(--num);font-weight:800;font-size:clamp(38px,7.5vw,76px);line-height:.98;letter-spacing:-.035em}
+h2{font-weight:700;font-size:clamp(21px,2.6vw,27px);line-height:1.25;letter-spacing:-.015em}
+h3{font-weight:600;font-size:16px;line-height:1.35}
+p{margin:0 0 1em;max-width:66ch}
+.lede{font-size:clamp(17px,1.9vw,20px);line-height:1.55;color:var(--tx2);max-width:60ch}
+.tick-label,.eyebrow{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--tx3)}
+.dim{color:var(--tx3)}
+.faint{color:var(--tx4)}
+.num{font-family:var(--num);font-weight:700;font-variant-numeric:tabular-nums;color:var(--tx)}
+strong{color:var(--tx);font-weight:600}
+
+section{padding:clamp(48px,7vw,88px) 0 0}
+.sec-head{display:flex;flex-direction:column;gap:10px;margin-bottom:clamp(24px,3.5vw,40px)}
+.sec-head p{margin:0}
+
+/* ---- masthead ---- */
+header{padding:clamp(44px,8vw,96px) 0 0}
+.mast{display:flex;flex-direction:column;gap:22px}
+.mast-meta{display:flex;flex-wrap:wrap;gap:8px 22px;align-items:baseline}
+.wordmark{font-family:var(--num);font-weight:800;letter-spacing:-.02em}
+
+/* ---- the arc: a real sequence, so it is drawn on a scale ---- */
+.arc{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin-top:8px}
+.arc-col{padding:0 0 0 12px;border-left:1px solid var(--hair);min-width:0}
+.arc-col:first-child{padding-left:0;border-left:0}
+.arc-n{font-family:var(--num);font-weight:800;font-size:clamp(26px,4.4vw,44px);line-height:1;font-variant-numeric:tabular-nums;color:var(--tx4);letter-spacing:-.03em}
+.arc-col.live .arc-n{color:var(--lime)}
+.arc-d{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--tx4);margin-top:7px}
+.arc-bar{height:5px;background:var(--raised);margin-top:12px;position:relative;overflow:hidden}
+.arc-bar span{position:absolute;inset:0 auto 0 0;background:var(--tx4)}
+.arc-col.live .arc-bar span{background:var(--lime)}
+
+/* ---- stat line: numbers on a rule, not big-number cards ---- */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:1px;background:var(--hair);border:1px solid var(--hair)}
+.stat{background:var(--ground);padding:16px 18px}
+.stat .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--tx3)}
+.stat .v{font-family:var(--num);font-weight:700;font-size:23px;font-variant-numeric:tabular-nums;color:var(--tx);margin-top:6px;letter-spacing:-.02em}
+.stat .v em{font-style:normal;color:var(--tx4);font-weight:600}
+.stat .v b{color:var(--lime);font-weight:700}
+
+/* ---- screen grid ---- */
+.screens{display:grid;grid-template-columns:repeat(auto-fill,minmax(198px,1fr));gap:clamp(18px,2.4vw,30px);align-items:start}
+figure{margin:0;display:flex;flex-direction:column;gap:9px}
+.shot{background:var(--card);border:1px solid var(--hair);border-radius:14px;overflow:hidden;line-height:0}
+figcaption{display:flex;gap:8px;align-items:baseline;min-width:0}
+figcaption .ko{color:var(--tx);font-weight:600;font-size:14px}
+figcaption .en{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--tx4);white-space:nowrap}
+
+/* ---- before / after ---- */
+.pairs{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:clamp(22px,3vw,38px)}
+.pair{display:flex;flex-direction:column;gap:12px}
+.pair-imgs{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:start}
+.pair-imgs figure{gap:7px}
+.pair-imgs .shot{border-radius:11px}
+.was .shot{filter:saturate(.32) brightness(.72);border-color:rgba(255,255,255,.05)}
+.tag{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;display:flex;align-items:center;gap:6px;color:var(--tx4)}
+.tag::before{content:"";width:14px;height:2px;background:var(--tx4)}
+.now .tag{color:var(--lime)}
+.now .tag::before{background:var(--lime)}
+.pair-note{font-size:13.5px;line-height:1.55;color:var(--tx3);margin:0}
+.pair-note b{color:var(--tx2);font-weight:500}
+
+/* ---- the confidence ladder, drawn to the app's real scale ---- */
+.ladder{border:1px solid var(--hair);background:var(--card);border-radius:16px;padding:clamp(18px,2.6vw,30px);overflow-x:auto}
+.ladder-scale{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;color:var(--tx4);margin-bottom:6px}
+.rung{display:grid;grid-template-columns:118px 1fr;gap:16px;align-items:center;padding:11px 0;border-top:1px solid var(--hair)}
+.rung:first-of-type{border-top:0}
+.rung-k{min-width:0}
+.rung-k .rk{font-family:var(--num);font-weight:700;font-size:17px;font-variant-numeric:tabular-nums;color:var(--tx2);letter-spacing:-.01em}
+.rung.point .rung-k .rk{color:var(--lime);font-size:22px}
+.rung-k .rw{font-family:var(--mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--tx4);margin-top:2px}
+.groove{position:relative;height:40px;background:var(--raised);border-radius:3px;min-width:260px}
+.groove i{position:absolute;top:0;bottom:0;width:1px;background:rgba(255,255,255,.055)}
+.groove i.maj{background:rgba(255,255,255,.1)}
+.mark{position:absolute;top:50%;transform:translateY(-50%);background:var(--lime);border-radius:2px}
+.mark.fade{background:linear-gradient(90deg,rgba(200,255,0,0) 0%,var(--lime) 22%,var(--lime) 78%,rgba(200,255,0,0) 100%)}
+.mark.fade.wide{background:linear-gradient(90deg,rgba(200,255,0,0) 0%,rgba(200,255,0,.72) 34%,rgba(200,255,0,.72) 66%,rgba(200,255,0,0) 100%)}
+.mark.post{width:5px;height:54px;top:-7px;transform:none;border-radius:1px;box-shadow:0 0 16px rgba(200,255,0,.4)}
+
+/* ---- verdict quotes ---- */
+.rounds{display:flex;flex-direction:column;gap:1px;background:var(--hair);border:1px solid var(--hair);border-radius:16px;overflow:hidden}
+.round{background:var(--card);padding:clamp(18px,2.4vw,26px);display:grid;grid-template-columns:76px 1fr;gap:clamp(14px,2.2vw,26px)}
+.round-n{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--tx4);line-height:1.5}
+.round-n b{display:block;font-family:var(--num);font-size:26px;font-weight:800;color:var(--tx3);letter-spacing:-.02em;line-height:1;margin-bottom:5px}
+.round.last .round-n b{color:var(--lime)}
+blockquote{margin:0 0 10px;color:var(--tx);font-size:clamp(15.5px,1.75vw,18px);line-height:1.5;font-weight:400}
+blockquote em{font-style:normal;color:var(--lime)}
+.round p{margin:0;font-size:13.5px;color:var(--tx3);max-width:62ch}
+
+/* ---- remaining ---- */
+.left{display:grid;grid-template-columns:repeat(auto-fit,minmax(258px,1fr));gap:1px;background:var(--hair);border:1px solid var(--hair);border-radius:16px;overflow:hidden}
+.leftcard{background:var(--card);padding:clamp(18px,2.4vw,26px);display:flex;flex-direction:column;gap:9px}
+.leftcard .who{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--lime)}
+.leftcard p{margin:0;font-size:14px;line-height:1.6;color:var(--tx3)}
+.leftcard h3{color:var(--tx)}
+
+.crit{border-left:2px solid var(--danger);padding:2px 0 2px 16px;margin:22px 0 0}
+.crit .tick-label{color:var(--danger)}
+.crit p{margin:6px 0 0;font-size:14px;color:var(--tx3)}
+
+footer{padding:clamp(40px,6vw,72px) 0 clamp(56px,8vw,96px);margin-top:clamp(40px,6vw,72px)}
+footer p{font-size:13px;color:var(--tx4);max-width:70ch}
+.paths{font-family:var(--mono);font-size:11.5px;color:var(--tx3);line-height:2;overflow-x:auto;white-space:nowrap}
+.paths b{color:var(--tx2);font-weight:500}
+
+@media (max-width:640px){
+  .arc{grid-template-columns:repeat(5,1fr)}
+  .arc-col{padding-left:8px}
+  .round{grid-template-columns:1fr;gap:12px}
+  .rung{grid-template-columns:96px 1fr;gap:12px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+</head><body>
+<header>
+  <div class="wrap mast">
+    <div class="mast-meta">
+      <span class="wordmark" style="color:var(--tx);font-size:15px">STRYKE</span>
+      <span class="tick-label">디자인 기록 · v3.5</span>
+      <span class="tick-label faint">2026 · 09 · 05 → 09 · 11</span>
+      <a href="index.html" class="tick-label" style="color:var(--tx3);text-decoration-color:var(--tx4)">← STRYKE 인덱스</a>
+    </div>
+    <h1>측정할 것이 없는<br>완성된 계측기</h1>
+    <p class="lede">축구 슛 계측 앱을 여섯 번의 웨이브에 걸쳐 다시 만들었습니다. 매 화면은 시뮬레이터에서 실제로 조작해 촬영했고, 독립된 두 명의 비평가가 다섯 차례 적대적으로 심사했습니다. 이 페이지는 그 기록입니다.</p>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">한국어를 가리고 무슨 앱인지 맞추기 · 통과한 화면 수</span>
+      <p class="dim" style="font-size:14.5px;max-width:62ch">비평가가 매 라운드 적용한 테스트입니다. 화면의 모든 한글을 가린 뒤, 그림만 보고 이게 무슨 앱인지 말할 수 있는가. "리스트"나 "폼"이면 실패, "계측"이면 통과입니다.</p>
+    </div>
+    <div class="arc">
+      <div class="arc-col"><div class="arc-n">0</div><div class="arc-bar"><span style="width:2%"></span></div><div class="arc-d">시작 · 11개 중</div></div>
+      <div class="arc-col"><div class="arc-n">5</div><div class="arc-bar"><span style="width:45%"></span></div><div class="arc-d">1차 심사</div></div>
+      <div class="arc-col"><div class="arc-n">7</div><div class="arc-bar"><span style="width:64%"></span></div><div class="arc-d">2차</div></div>
+      <div class="arc-col live"><div class="arc-n">10</div><div class="arc-bar"><span style="width:91%"></span></div><div class="arc-d">3차</div></div>
+      <div class="arc-col live"><div class="arc-n">10</div><div class="arc-bar"><span style="width:91%"></span></div><div class="arc-d">4차 · 최종</div></div>
+    </div>
+    <div class="axis-rule" style="margin-top:26px" aria-hidden="true">
+      <i style="left:12.5%"></i><i style="left:25%"></i><i style="left:37.5%"></i><i class="maj" style="left:50%"></i><i style="left:62.5%"></i><i style="left:75%"></i><i style="left:87.5%"></i>
+    </div>
+    <div class="stats" style="margin-top:26px">
+      <div class="stat"><div class="k">앱 테스트</div><div class="v"><em>73</em> → <b>698</b></div></div>
+      <div class="stat"><div class="k">서버 테스트</div><div class="v"><em>437</em> → 466</div></div>
+      <div class="stat"><div class="k">확실성 : 추측 무게비</div><div class="v"><em>0.97</em> → <b>1.45</b></div></div>
+      <div class="stat"><div class="k">랭킹 해상도 px/km/h</div><div class="v"><em>1.0</em> → <b>6.14</b></div></div>
+      <div class="stat"><div class="k">탭</div><div class="v"><em>5</em> → 3 + 촬영</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>지금의 앱</h2>
+      <p class="dim" style="font-size:14.5px">15개 화면 전부. iPhone 17 Pro 시뮬레이터에서 네이티브 해상도로 촬영했고, 데이터는 실제 저장소의 것입니다. 밴드는 전부 시드값이라 축의 절반 남짓을 차지합니다. 그게 이 프로젝트에 남은 유일한 문제입니다.</p>
+    </div>
+    <div class="screens">
+      <figure><div class="shot"><img src="design-v3/img/final-01-home.jpg" alt="현재 화면" loading="lazy" width="920"></div><figcaption><span class="ko">홈</span><span class="en">home</span></figcaption></figure>
+      <figure><div class="shot"><img src="design-v3/img/final-02-setup.jpg" alt="현재 화면" loading="lazy" width="920"></div><figcaption><span class="ko">세팅</span><span class="en">setup</span></figcaption></figure>
+      <figure><div class="shot"><img src="design-v3/img/final-04-session.jpg" alt="현재 화면" loading="lazy" width="920"></div><figcaption><span class="ko">세션</span><span class="en">session</span></figcaption></figure>
+      <figure><div class="shot"><img src="design-v3/img/final-05-shot.jpg" alt="현재 화면" loading="lazy" width="920"></div><figcaption><span class="ko">슛</span><span class="en">shot</span></figcaption></figure>
+      <figure><div class="shot"><img src="design-v3/img/final-06-records.jpg" alt="현재 화면" loading="lazy" width="920"></div><figcaption><span class="ko">기록</span><span class="en">records</span></figcaption></figure>
+      <figure><div class="shot"><img src="design-v3/img/final-11-session-list.jpg" alt="현재 화면" loading="lazy" width="920"></div><figcaption><span class="ko">세션 목록</span><span class="en">list</span></figcaption></figure>
+      <figure><div class="shot"><img src="design-v3/img/final-08-rankings.jpg" alt="현재 화면" loading="lazy" width="920"></div><figcaption><span class="ko">랭킹</span><span class="en">board</span></figcaption></figure>
+      <figure><div class="shot"><img src="design-v3/img/final-09-compare.jpg" alt="현재 화면" loading="lazy" width="920"></div><figcaption><span class="ko">비교</span><span class="en">compare</span></figcaption></figure>
+      <figure><div class="shot"><img src="design-v3/img/final-12-keeper.jpg" alt="현재 화면" loading="lazy" width="920"></div><figcaption><span class="ko">키퍼</span><span class="en">keeper</span></figcaption></figure>
+      <figure><div class="shot"><img src="design-v3/img/final-13-session-refused.jpg" alt="현재 화면" loading="lazy" width="920"></div><figcaption><span class="ko">측정 거부</span><span class="en">refused</span></figcaption></figure>
+      <figure><div class="shot"><img src="design-v3/img/final-07-me.jpg" alt="현재 화면" loading="lazy" width="920"></div><figcaption><span class="ko">나</span><span class="en">me</span></figcaption></figure>
+      <figure><div class="shot"><img src="design-v3/img/final-10-settings.jpg" alt="현재 화면" loading="lazy" width="920"></div><figcaption><span class="ko">설정</span><span class="en">settings</span></figcaption></figure>
+      <figure><div class="shot"><img src="design-v3/img/final-14-licences.jpg" alt="현재 화면" loading="lazy" width="920"></div><figcaption><span class="ko">라이선스</span><span class="en">licences</span></figcaption></figure>
+      <figure><div class="shot"><img src="design-v3/img/final-15-delete.jpg" alt="현재 화면" loading="lazy" width="920"></div><figcaption><span class="ko">삭제</span><span class="en">delete</span></figcaption></figure>
+      <figure style="grid-column:span 2"><div class="shot"><img src="design-v3/img/final-03-capture.jpg" alt="현재 화면" loading="lazy" width="920"></div><figcaption><span class="ko">촬영</span><span class="en">capture · landscape</span></figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>전 · 후</h2>
+      <p class="dim" style="font-size:14.5px">왼쪽은 당신이 "전혀 마음에 안 든다"고 한 그 앱입니다. 오른쪽은 지금입니다.</p>
+    </div>
+    <div class="pairs">
+      <div class="pair">
+        <div class="pair-imgs">
+          <figure class="was"><span class="tag">전</span><div class="shot"><img src="design-v3/img/before-01-home.jpg" alt="재설계 전 화면" loading="lazy" width="920"></div></figure>
+          <figure class="now"><span class="tag">후</span><div class="shot"><img src="design-v3/img/final-01-home.jpg" alt="현재 화면" loading="lazy" width="920"></div></figure>
+        </div>
+        <p class="pair-note"><b>홈.</b> 화면에서 제일 큰 물건이 워드마크였고, 유일하게 의미 있는 숫자가 세 번째 칸에 15pt 회색으로 있었습니다. 무의미한 카운트보다 작게. 지금은 이번 주 최고가 눈금 위에 서 있습니다.</p>
+      </div>
+      <div class="pair">
+        <div class="pair-imgs">
+          <figure class="was"><span class="tag">전</span><div class="shot"><img src="design-v3/img/before-05-shot.jpg" alt="재설계 전 화면" loading="lazy" width="920"></div></figure>
+          <figure class="now"><span class="tag">후</span><div class="shot"><img src="design-v3/img/final-05-shot.jpg" alt="현재 화면" loading="lazy" width="920"></div></figure>
+        </div>
+        <p class="pair-note"><b>슛.</b> 앱이 자기 숫자를 지웠던 화면. 43–109가 4pt 회색 트랙에 15pt 끝값이었고, 제일 큰 글자는 "슛 02"라는 라우트 이름이었습니다. 그림은 좌우 여백에 갇힌 썸네일이었습니다.</p>
+      </div>
+      <div class="pair">
+        <div class="pair-imgs">
+          <figure class="was"><span class="tag">전</span><div class="shot"><img src="design-v3/img/before-08-rankings.jpg" alt="재설계 전 화면" loading="lazy" width="920"></div></figure>
+          <figure class="now"><span class="tag">후</span><div class="shot"><img src="design-v3/img/final-08-rankings.jpg" alt="현재 화면" loading="lazy" width="920"></div></figure>
+        </div>
+        <p class="pair-note"><b>랭킹.</b> 캡슐 9개가 각자 보이지 않는 축을 가져서, 1위 134와 9위 84가 50픽셀 떨어져 있었습니다. 지금은 하나의 눈금 위에서 307픽셀입니다. 122로 동점인 두 선수의 획은 하나로 합쳐집니다.</p>
+      </div>
+      <div class="pair">
+        <div class="pair-imgs">
+          <figure class="was"><span class="tag">전</span><div class="shot"><img src="design-v3/img/before-02-setup.jpg" alt="재설계 전 화면" loading="lazy" width="920"></div></figure>
+          <figure class="now"><span class="tag">후</span><div class="shot"><img src="design-v3/img/final-02-setup.jpg" alt="현재 화면" loading="lazy" width="920"></div></figure>
+        </div>
+        <p class="pair-note"><b>세팅.</b> "준비 안 됨"을 다섯 가지 방식으로 동시에 말하면서 뒤로 가는 길이 없었습니다. 지금은 골대가 14m 밖 46도에서 핀홀 투영으로 그려지고, 지면선의 기울기가 곧 기울기 측정값입니다.</p>
+      </div>
+      <div class="pair">
+        <div class="pair-imgs">
+          <figure class="was"><span class="tag">전</span><div class="shot"><img src="design-v3/img/before-06-records.jpg" alt="재설계 전 화면" loading="lazy" width="920"></div></figure>
+          <figure class="now"><span class="tag">후</span><div class="shot"><img src="design-v3/img/final-06-records.jpg" alt="현재 화면" loading="lazy" width="920"></div></figure>
+        </div>
+        <p class="pair-note"><b>기록.</b> 초점이 "−3 ~ +0 km/h"였습니다. 밴드에서 밴드를 뺀 값이라 선수가 쓸 수 없는 숫자인데, 화면에서 제일 컸습니다. 컬럼마다 자기 트랙을 갖고 있어서 기록 없는 주가 가장 높은 막대로 보였습니다.</p>
+      </div>
+      <div class="pair">
+        <div class="pair-imgs">
+          <figure class="was"><span class="tag">전</span><div class="shot"><img src="design-v3/img/before-07-me.jpg" alt="재설계 전 화면" loading="lazy" width="920"></div></figure>
+          <figure class="now"><span class="tag">후</span><div class="shot"><img src="design-v3/img/final-07-me.jpg" alt="현재 화면" loading="lazy" width="920"></div></figure>
+        </div>
+        <p class="pair-note"><b>나.</b> 기록 탭과 완전히 같은 화면이었습니다. 같은 델타 히어로, 같은 차트, 같은 목록. 게다가 존재하지 않는 측정값을 주장하는 타일 두 개가 얹혀 있었습니다.</p>
+      </div>
+      <div class="pair">
+        <div class="pair-imgs">
+          <figure class="was"><span class="tag">전</span><div class="shot"><img src="design-v3/img/before-04-session.jpg" alt="재설계 전 화면" loading="lazy" width="920"></div></figure>
+          <figure class="now"><span class="tag">후</span><div class="shot"><img src="design-v3/img/final-04-session.jpg" alt="현재 화면" loading="lazy" width="920"></div></figure>
+        </div>
+        <p class="pair-note"><b>세션.</b> 44pt 초점이 밴드였고 옆에 호박색 "추정" 칩이 붙어 있었습니다. 확실한 사실인 배치와 거리는 그 아래에서 속삭였습니다. 6열 표는 11pt였습니다.</p>
+      </div>
+      <div class="pair">
+        <div class="pair-imgs">
+          <figure class="was"><span class="tag">전</span><div class="shot"><img src="design-v3/img/before-09-compare.jpg" alt="재설계 전 화면" loading="lazy" width="920"></div></figure>
+          <figure class="now"><span class="tag">후</span><div class="shot"><img src="design-v3/img/final-09-compare.jpg" alt="현재 화면" loading="lazy" width="920"></div></figure>
+        </div>
+        <p class="pair-note"><b>비교.</b> 화면의 제목이 "구분 불가"였습니다. 판정은 맞지만 거부를 초점으로 삼은 화면이었고, 신뢰도가 낮을 땐 내 궤적이 화면에서 제일 흐린 물건이 됐습니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">시각적 정체성</span>
+      <h2>축, 다섯 개의 스케일</h2>
+      <p class="dim" style="font-size:14.5px;max-width:64ch">세상의 모든 계측기에는 반복되는 도형이 하나 있습니다. 눈금과 그 위의 표시입니다. 이 앱은 그 물건을 이미 세 번 다른 이름으로 갖고 있었고 배관 취급을 했습니다. 이제는 하나의 물건이고, 여섯 번째 문법이 생기면 CI가 실패합니다.</p>
+    </div>
+    <div class="ladder">
+      <div class="ladder-scale"><span>0</span><span>80 km/h</span><span>160</span></div>
+      <div class="rung point">
+        <div class="rung-k"><div class="rk">132</div><div class="rw">검증된 값</div></div>
+        <div class="groove">
+          <i style="left:12.5%"></i><i style="left:25%"></i><i style="left:37.5%"></i><i class="maj" style="left:50%"></i><i style="left:62.5%"></i><i style="left:75%"></i><i style="left:87.5%"></i>
+          <div class="mark post" style="left:82.5%"></div>
+        </div>
+      </div>
+      <div class="rung">
+        <div class="rung-k"><div class="rk">96–104</div><div class="rw">폭 5% · 사실</div></div>
+        <div class="groove">
+          <i style="left:12.5%"></i><i style="left:25%"></i><i style="left:37.5%"></i><i class="maj" style="left:50%"></i><i style="left:62.5%"></i><i style="left:75%"></i><i style="left:87.5%"></i>
+          <div class="mark" style="left:60%;width:5%;height:32px"></div>
+        </div>
+      </div>
+      <div class="rung">
+        <div class="rung-k"><div class="rk">88–120</div><div class="rw">폭 20%</div></div>
+        <div class="groove">
+          <i style="left:12.5%"></i><i style="left:25%"></i><i style="left:37.5%"></i><i class="maj" style="left:50%"></i><i style="left:62.5%"></i><i style="left:75%"></i><i style="left:87.5%"></i>
+          <div class="mark" style="left:55%;width:20%;height:20px"></div>
+        </div>
+      </div>
+      <div class="rung">
+        <div class="rung-k"><div class="rk">43–109</div><div class="rw">폭 41% · 캡 없음</div></div>
+        <div class="groove">
+          <i style="left:12.5%"></i><i style="left:25%"></i><i style="left:37.5%"></i><i class="maj" style="left:50%"></i><i style="left:62.5%"></i><i style="left:75%"></i><i style="left:87.5%"></i>
+          <div class="mark fade" style="left:26.9%;width:41.3%;height:9px"></div>
+        </div>
+      </div>
+      <div class="rung">
+        <div class="rung-k"><div class="rk">60–151</div><div class="rw">폭 57% · 지금 도달 가능</div></div>
+        <div class="groove">
+          <i style="left:12.5%"></i><i style="left:25%"></i><i style="left:37.5%"></i><i class="maj" style="left:50%"></i><i style="left:62.5%"></i><i style="left:75%"></i><i style="left:87.5%"></i>
+          <div class="mark fade wide" style="left:37.5%;width:56.9%;height:6px"></div>
+        </div>
+      </div>
+      <div class="rung">
+        <div class="rung-k"><div class="rk">27–134</div><div class="rw">폭 67% · 잉크가 라임에 못 미침</div></div>
+        <div class="groove">
+          <i style="left:12.5%"></i><i style="left:25%"></i><i style="left:37.5%"></i><i class="maj" style="left:50%"></i><i style="left:62.5%"></i><i style="left:75%"></i><i style="left:87.5%"></i>
+          <div class="mark fade wide" style="left:16.9%;width:66.9%;height:5px;opacity:.72"></div>
+        </div>
+      </div>
+    </div>
+    <p class="dim" style="font-size:14px;margin-top:18px;max-width:64ch">확실한 값만 자기 트랙을 뚫고 나가고 라임 잉크를 갖습니다. 불확실성은 넓어질수록 속이 비고, 40%를 넘으면 양끝의 캡이 사라져 어디에도 단단한 모서리가 없습니다. 비평가가 픽셀을 세어 확인한 무게비는 <span class="num">1.45 : 1</span>입니다. 한 라운드 전에는 <span class="num">0.97 : 1</span>, 즉 동률이었습니다.</p>
+    <div class="crit">
+      <span class="tick-label">제 규칙이 두 번 틀렸습니다</span>
+      <p>처음에 "밴드는 display 크기로 렌더하지 않는다"고 썼고, 그게 앱의 숫자를 4pt 회색 트랙으로 만들었습니다. 불확실성은 크기가 아니라 모양입니다. 고친 뒤에도 절반이었습니다. 모양은 확실성보다 크게 외쳐서도 안 됩니다. 둘 다 사고 기록에 남겼습니다.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">다섯 번의 심사 · 원문 발췌</span>
+      <h2>비평가가 한 말</h2>
+    </div>
+    <div class="rounds">
+      <div class="round">
+        <div class="round-n"><b>1</b>1차</div>
+        <div>
+          <blockquote>유능한 와이어프레임. 돈 내고 쓸 제품은 아님. 디자인 시스템을 충실도 1로 렌더링해서 사진 찍고 완성이라고 부른 것.</blockquote>
+          <p>같은 라운드에서 완성도 비평가가 12개 공백을 찾았고 1위가 심각했습니다. 서버 없이 시작한 세션은 영구히 죽고, 재전송 경로가 앱 어디에도 없었습니다.</p>
+        </div>
+      </div>
+      <div class="round">
+        <div class="round-n"><b>2</b>2차</div>
+        <div>
+          <blockquote>숫자가 아직 돈 낼 만하지 않고, 디자인이 그걸 명백하게 만들 만큼 좋아졌다. <em>디자인은 더 이상 이 앱과 유료 제품 사이를 막고 있는 것이 아니다.</em></blockquote>
+          <p>같은 라운드에서 계기의 신뢰도 눈금이 거꾸로 돈다는 지적이 나왔습니다. 91km/h 추측이 CTA보다 무거웠습니다.</p>
+        </div>
+      </div>
+      <div class="round">
+        <div class="round-n"><b>3</b>3차</div>
+        <div>
+          <blockquote>디자인은 이제 좋은 측정값이 어떻게 생겼는지 명세하는 일을 끝냈고, 그렇게 함으로써 그 측정값이 없다는 사실을 반박 불가능하게 만들었다.</blockquote>
+          <p>보드를 하나의 축 위에 올리고 회색 판을 없애라, 그리고 디자인을 그만하고 레이더를 사러 가라.</p>
+        </div>
+      </div>
+      <div class="round last">
+        <div class="round-n"><b>4</b>4차</div>
+        <div>
+          <blockquote><em>디자인은 끝났습니다.</em> "충분히 좋다"가 아니라 끝났습니다. 네 번의 심사 전에는 모든 화면이 실패했던 테스트를 이제 11개 중 10개가 통과합니다.</blockquote>
+          <p>인터페이스에 뭘 더 해도 사람들이 돈을 낼지 여부는 바뀌지 않습니다. 이건 측정할 것이 없는 계측기입니다. 있을 수 있는 최선의 위치이자, 머물 수 있는 최악의 위치입니다.</p>
+        </div>
+      </div>
+      <div class="round last">
+        <div class="round-n"><b>5</b>최종</div>
+        <div>
+          <blockquote>이제는 측정할 것이 없는 <em>완성된</em> 계측기이고, 그 두 문장의 차이는 구장에서의 오후 한 나절과, 91이 아니라 8킬로미터 폭으로 돌아오는 숫자 하나입니다. <em>숫자를 가지러 가세요. 여기엔 제가 더 판정할 게 없습니다.</em></blockquote>
+          <p>완성도 비평가의 마지막 경고는 좋게 끝나지 않았습니다. 같은 종류의 결함이 다섯 웨이브 연속으로 발견됐고, 매번 이음매가 없는 모듈이었습니다. 줄을 고치기 전에 파일에 이음매를 주라는 조언이었고, 그대로 했습니다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>남은 것은 소프트웨어가 아닙니다</h2>
+      <p class="dim" style="font-size:14.5px;max-width:64ch">앱과 서버 목록은 비어 있습니다. 세 가지가 남았고, 세 가지 다 사람이 밖으로 나가야 하는 일입니다.</p>
+    </div>
+    <div class="left">
+      <div class="leftcard">
+        <span class="who">레이더</span>
+        <h3>밴드를 좁히는 숫자 하나</h3>
+        <p>Stage 0에서 점 속도는 구조적으로 null입니다. 모든 화면이 축의 57%를 차지하는 시드 밴드를 찍습니다. 검증 기준은 이제 문단이 아니라 앱이 이미 그릴 줄 아는 세 가지 그림입니다. 13km/h 이하는 꽉 찬 블록, 그보다 넓으면 속이 비고, 검증된 점은 라임 숫자와 트랙을 뚫는 표시를 받습니다.</p>
+      </div>
+      <div class="leftcard">
+        <span class="who">구장</span>
+        <h3>오후 세 시, 20m, 40개</h3>
+        <p>촬영 경로가 실제 카메라로 한 번도 실행된 적이 없습니다. 이 기록의 모든 프레임이 픽스처이거나 실험실 클립이거나 시뮬레이터 SQLite에 손으로 넣은 행입니다. 비평가 표현으로는 그 한 번의 실행이 지난 세 웨이브를 합친 것보다 많은 정보를 줍니다.</p>
+      </div>
+      <div class="leftcard">
+        <span class="who">로그인</span>
+        <h3>기록장이 폰과 함께 죽습니다</h3>
+        <p>공유 계정은 사라졌고 이제 설치마다 자기 기록장을 갖습니다. 프로필 화면은 정직하게 말합니다. "로그인이 없어서 이 폰이 곧 계정이에요. 폰을 바꾸면 처음부터예요." 좋은 제품이자, 아직 돈을 안 낼 이유입니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="axis-rule" style="margin-bottom:26px" aria-hidden="true">
+      <i style="left:12.5%"></i><i style="left:25%"></i><i style="left:37.5%"></i><i class="maj" style="left:50%"></i><i style="left:62.5%"></i><i style="left:75%"></i><i style="left:87.5%"></i>
+    </div>
+    <div class="paths">
+      <b>docs/design/v3/00-THOUGHT-LOG.md</b> · 사고 과정 전체, 시간순<br>
+      <b>docs/design/v3/01-PRODUCT.md</b> · 사용자 관점 제품 스펙 &nbsp;&nbsp; <b>02-SYSTEM.md</b> · 토큰과 프리미티브 &nbsp;&nbsp; <b>03-SCREENS.md</b> · 화면별 스펙<br>
+      <b>docs/design/v3/04~07-VERDICTS-R2..R5.md</b> · 판정문 다섯 회분, 원문<br>
+      <b>docs/design/v3/final/</b> · 이 페이지의 15개 프레임 &nbsp;&nbsp; <b>audit/</b> · 재설계 전 &nbsp;&nbsp; <b>after/</b> · 상태별 프레임
+    </div>
+    <p style="margin-top:22px">모든 프레임은 iPhone 17 Pro 시뮬레이터에서 1206×2622로 촬영한 뒤 이 페이지용으로 축소했습니다. 밴드는 전부 시드 데이터이며 실제 측정값이 아닙니다. 앱은 그 사실을 모든 화면에서 「테스트」 표시로 말합니다.</p>
+  </div>
+</footer>
+
+</body></html>

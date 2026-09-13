@@ -1,456 +1,353 @@
 <!doctype html>
-<html lang="ko"><head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex, nofollow">
-<title>STRYKE Design Record</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&family=Inter+Tight:wght@600;700;800&display=swap">
-
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>STRYKE Design Record — v5</title>
 <style>
-/* ------------------------------------------------------------------
-   STRYKE design record.
-   The page is drawn with the instrument the app is: a ruled 0-160 km/h
-   groove with engraved eighth-ticks, majors at 80. Tokens below are the
-   app's own (apps/fe-mobile/src/constants/theme.ts), unchanged.
-   Deliberately single-theme: the product is a night-pitch instrument and
-   every colour is painted explicitly so the page holds on any host ground.
-------------------------------------------------------------------- */
-:root{
-  --ground:#0B0F13;
-  --card:#141A20;
-  --raised:#1C242C;
-  --hair:rgba(255,255,255,.08);
-  --hair-strong:rgba(255,255,255,.14);
-  --lime:#C8FF00;
-  --lime-ink:#0B0F13;
-  --cyan:#55D9FF;
-  --danger:#FF5A5F;
-  --tx:#F2F5F7;
-  --tx2:#B3BCC4;
-  --tx3:#7C8890;
-  --tx4:#4E5962;
+:root{--ground:#0B0F13;--card:#141A20;--raised:#1C242C;--lime:#C8FF00;--cyan:#55D9FF;--text:#F2F5F7;--text2:#B3BCC4;--text3:#808C94;--hair:rgba(255,255,255,.08);--hairS:rgba(255,255,255,.14)}
+*{box-sizing:border-box}body{margin:0;background:var(--ground);color:var(--text);font:15px/1.6 -apple-system,"Pretendard",Inter,system-ui,sans-serif;padding:0 20px 80px}
+main{max-width:1080px;margin:0 auto}h1{font-size:34px;letter-spacing:-.6px;margin:48px 0 4px}h2{font-size:22px;margin:56px 0 12px;padding-top:24px;border-top:1px solid var(--hair)}h3{font-size:18px;margin:0}h4{font-size:15px;margin:20px 0 6px;color:var(--text2)}
+p{color:var(--text2)}code{font:12.5px ui-monospace,Menlo,monospace;background:var(--raised);padding:1px 5px;border-radius:4px;color:var(--text)}
+a{color:var(--cyan)}.lede{font-size:17px;color:var(--text)}.meta{color:var(--text3);font-size:13px}
+nav.toc{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0}nav.toc a{font-size:13px;color:var(--text2);border:1px solid var(--hairS);border-radius:8px;padding:4px 10px;text-decoration:none}nav.toc a:hover{color:var(--text)}
+.card{background:var(--card);border:1px solid var(--hair);border-radius:16px;padding:16px 20px;margin:16px 0}
+table{border-collapse:collapse;width:100%;font-size:13.5px;margin:12px 0}th,td{text-align:left;padding:6px 10px;border-bottom:1px solid var(--hair);vertical-align:top}th{color:var(--text3);font-weight:500}
+ul,ol{color:var(--text2);padding-left:22px}li{margin:4px 0}
+.refs{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px}.refs img{width:100%;border-radius:12px;border:1px solid var(--hair)}
+.screen{margin:36px 0;padding:20px;background:var(--card);border:1px solid var(--hair);border-radius:16px}.shead{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.fb{background:var(--lime);color:#0B0F13;text-decoration:none;font-weight:600;padding:8px 14px;border-radius:10px;font-size:14px}.shows{margin:6px 0 14px;font-size:14px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:16px}figure{margin:0}figcaption{font-size:11px;letter-spacing:.4px;color:var(--text3);margin-bottom:6px;text-transform:uppercase}figure img{width:100%;border-radius:12px;border:1px solid var(--hairS);background:#000}
+.empty{aspect-ratio:1206/2622;display:flex;align-items:center;justify-content:center;text-align:center;border:1px dashed var(--hairS);border-radius:12px;color:var(--text3);font-size:14px;padding:12px}
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}.sw{border:1px solid var(--hair);border-radius:10px;overflow:hidden;font-size:12px}.sw i{display:block;height:44px}.sw b{display:block;padding:6px 8px 0}.sw span{display:block;padding:0 8px 6px;color:var(--text3);font-family:ui-monospace,Menlo,monospace}
+.icons{columns:3;font-size:13px}.icons div{break-inside:avoid;padding:3px 0;border-bottom:1px solid var(--hair)}.icons code{margin-right:6px}
+.lane img{max-width:100%;border-radius:10px;border:1px solid var(--hair);margin:6px 0}
+@media(max-width:720px){.pair,.refs{grid-template-columns:1fr}.icons{columns:1}}
+</style></head><body><main>
+<h1>STRYKE — 디자인 기록 v5</h1>
+<p class="lede">앱이 지금 어떻게 보이는지, 왜 그렇게 바꾸는지, 그리고 어디를 눌러 피드백을 남기는지. <span class="meta">생성 2026-09-13 21:41Z · <a href="https://github.com/vxbrandon/stryke/issues?q=is%3Aissue+label%3Adesign-feedback">열린 피드백 보기</a></span></p>
+<nav class="toc"><a href="#log">진단</a><a href="#refs">레퍼런스</a><a href="#screens">화면 (15)</a><a href="#lane3d">3D 레인</a><a href="#kit">디자인 키트</a><a href="#assets">에셋</a><a href="#howto">피드백 방법</a></nav>
 
-  --sans:"IBM Plex Sans KR",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
-  --num:"Inter Tight","IBM Plex Sans KR",sans-serif;
+<div class="card" id="howto"><h3>피드백 남기는 법 · How to leave feedback</h3>
+<ol><li>아래 각 화면의 <b>피드백 남기기</b> 버튼을 누르면 GitHub 이슈가 라벨(<code>design-feedback</code>, <code>screen:&lt;key&gt;</code>)과 함께 미리 채워져 열립니다. 무엇이 이상한지, 참고할 브랜드·목업, 심각도만 적고 <b>Submit</b>.</li>
+<li>에이전트가 <code>node tools/design/design.mjs feedback pull</code>로 이슈를 받아 고치고, <code>shoot → report → publish</code>로 이 페이지를 다시 찍어 올린 뒤 이슈에 답글을 달고 닫습니다.</li>
+<li>이 페이지의 모든 이미지는 시뮬레이터 캡처입니다. 목업이 아닙니다.</li></ol></div>
 
-  --gut:clamp(20px,5vw,56px);
-  --max:1180px;
-}
-*{box-sizing:border-box}
-html{background:var(--ground);-webkit-text-size-adjust:100%}
-body{
-  margin:0;background:var(--ground);color:var(--tx2);
-  font-family:var(--sans);font-weight:400;font-size:16px;line-height:1.65;
-  -webkit-font-smoothing:antialiased;
-}
-.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--gut)}
-img{max-width:100%;display:block}
-a{color:var(--tx);text-decoration-color:var(--tx4);text-underline-offset:3px}
-a:focus-visible,button:focus-visible{outline:2px solid var(--lime);outline-offset:3px}
+<h2 id="log">진단과 결정 — thought log</h2>
+<h2>v5 — the production look. Thought log.</h2>
+<p>Dated entries, never rewritten. Continues <code>docs/design/v3/00-THOUGHT-LOG.md</code>.</p>
+<h3>2026-09-14 11:20 — the founder's verdict, and what it actually names</h3>
+<p>The brief, verbatim: <i>&quot;generate better 3d rendering model (blender or whatever) to improve the app design&quot;</i> and <i>&quot;use very clean icons and spacing to improve the ui/ux of the app. Right now it's so AI LIKE and not production grade.&quot;</i></p>
+<p>Four waves of v3/v4 made the app HONEST (735 tests, ten screens passing the cover-the-Korean test) and made it CONSISTENT (one icon set, one axis grammar). Neither made it look like a product. &quot;AI-like&quot; is a specific look and it is worth naming its parts, because each part was a decision this record took on purpose and can now take back on purpose.</p>
+<h4>The tells, read off <code>docs/design/v3/final/*.png</code></h4>
+<p><b>In the chrome (my lane):</b></p>
+<ol>
+<li><b>Light pools under buttons.</b> v4 called the lime CTA &quot;a lit object&quot; and put a soft lime ellipse under it and under the tab-bar disc. No shipped product does this — Strava, Nike Run Club, Whoop, Apple Fitness, Oura all use a flat fill. A glow under a button is the single most recognisable Dribbble/AI mannerism. Delete <code>LightPool</code> from every control.</li>
+<li><b>Two lime calls on one screen.</b> Home has a full-width lime CTA and, 40 pt below it, a lifted lime disc in the tab bar. Same colour, same verb, twice. The disc stays (it is the shell's one action, reachable from every tab) but it loses its lift and its pool. The CTA stays on Home because it carries the label; nothing else on Home may be lime except a measured mark.</li>
+<li><b>Hero numerals torn apart.</b> &quot;60 …… 151&quot; at 56 pt at opposite edges, with &quot;km/h&quot; at 15 pt under the right one. A range is ONE value in every product that prints one — Apple Health's &quot;60–151&quot;, Whoop's strain range. The axis grammar under it (the groove, the ticks) is kept; the numerals become one typographic unit with the unit beside them.</li>
+<li><b>The 테스트 pill.</b> A raised 28 pt chip, two or three times per screen. The honesty rule says the mark must be visible everywhere fixture data is shown or shared; it does not say it must be a control. It becomes a tag: 11 pt <code>text3</code>, hairline border, once per card.</li>
+<li><b>Chart numerals inside the plot.</b> 기록's weekly column stacks &quot;151&quot; and &quot;60&quot; over its own bar. Production charts label above the bar or on an axis, never through the mark.</li>
+<li><b>Truncated segment labels</b> (&quot;오버…&quot; on 슛). A label that does not fit its control is a layout that was never tried at its real width.</li>
+<li><b>Section titles at display size</b> (기록's &quot;세션&quot; at 28 pt, same as the screen title). One title per screen; sections are 17/600.</li>
+<li><b>Ground gradients behind headers</b> (05-shot's horizon glow bleeding into the header). Chrome is flat. Light belongs in the picture only.</li>
+</ol>
+<p><b>In the picture (the Codex lane, <code>01-BRIEF-3D.md</code>):</b></p>
+<ol>
+<li><b>The hologram.</b> Every material in <code>src/render/</code> is <code>MeshBasicMaterial</code> — unlit — and the scene has no light, no shadow, no sky. The goal is a cyan wireframe, the net is 1 px lines, the turf is near-black, the keeper is an additive &quot;hologram&quot; with a halo duplicate. That is the Tron/cyberpunk trope that generated imagery converges on, and it is the opposite of the reference the founder kept: <code>docs/design/reference/r6-journey.png</code> is a **floodlit night pitch — green grass with mown stripes, white posts, a white net, a real ball, stadium light in the haze, and ONE lime arc**. The picture in r6 is photographic; the ink on it is graphic. That split is the direction.</li>
+</ol>
+<h4>The decision</h4>
+<p>Two lanes, split by file ownership, same checkout, same Metro (8082), one simulator behind a mutex:</p>
+<table><thead><tr><th>Lane</th><th>Owner</th><th>Owns</th><th>Does not touch</th></tr></thead><tbody>
+<tr><td>Chrome</td><td>this session (Claude)</td><td><code>src/components/<b></code>, <code>src/app/</b></code> (not <code>dev/scene<i></code>), <code>src/constants/theme.ts</code>, <code>docs/design/v5/</i></code> except <code>10-*</code></td><td><code>src/render/**</code></td></tr>
+<tr><td>Picture</td><td>Codex (gpt-6-astra)</td><td><code>src/render/*<i></code>, <code>src/dev/scene-gallery</i></code>, <code>src/app/dev/scene.tsx</code>, <code>apps/fe-mobile/assets/models/<b></code>, <code>tools/blender/</b></code>, <code>docs/design/v5/10-3D-LANE.md</code></td><td>everything else in <code>src/</code></td></tr>
+</tbody></table>
+<p>A third agent (Codex, &quot;Improve STRYKE tracking pipeline&quot;) owns <code>apps/be-<i></code>, <code>apps/fe-mobile/modules/stryke-capture/</i>*</code> and <code>~/Desktop/programming/stryke-pipeline</code>. Three agents share one git index: every commit is an explicit <code>git add &lt;own paths&gt;</code>.</p>
+<h4>What is NOT being reopened</h4>
+<p>The honesty rules (v3 §8) all stand. A realistic scene changes what &quot;light&quot; means — environment light claims nothing, it falls on everything equally — so §8 rule 6 is narrowed, not dropped: it binds <i>lime emissive</i> light (arc, ball, pool) to the band's weight as before, and it does not bind floodlights, sky or shadow. The axis grammar, <code>gallery-gate.test.ts</code>, the closed Lucide vocabulary and the 테스트 mark all stay. What changes is dosage and staging, not the claims.</p>
+<h4>References consulted (brands, not mockups)</h4>
+<ul>
+<li><b>Strava</b> — flat orange record disc in a 5-item bar, no lift, no glow; cards with 1 px hairlines; one accent per screen.</li>
+<li><b>Nike Run Club</b> — a single black-on-volt CTA; numerals in one line with a small unit; generous 24 pt section gaps.</li>
+<li><b>Whoop / Oura</b> — ranges printed as <code>a–b unit</code> in one weight; charts label above bars; 11 pt uppercase overlines for metadata.</li>
+<li><b>Apple Fitness / Health</b> — 17/600 section headers, 13 pt captions, 10 pt tab labels under 25 pt glyphs, a 49 pt bar with no decoration.</li>
+<li><b>TrackMan / Rapsodo (shot tracers)</b> — photographic pitch, a single saturated tracer line, white goal; data lives in a card BELOW the picture, never floating on it.</li>
+</ul>
+<h3>2026-09-14 06:25 — chrome batch 1 landed (<code>d36e837</code>), and what the frames say</h3>
+<p>Shot on the sim after a full reload (a new file, <code>ui/tag.tsx</code>, needs one): <code>/tmp/stryke-v5/{home,records,me,session,shot}.png</code>, to be re-shot into <code>docs/design/v5/frames/</code> by the console's <code>shoot</code> once the picture lane lands.</p>
+<p><b>What changed, and the rule each change reverses</b></p>
+<table><thead><tr><th>Tell</th><th>Was (v4/v4.1 rule)</th><th>Now (v5)</th></tr></thead><tbody>
+<tr><td>1 pool under buttons</td><td><code>Button</code> primary + tab disc wrapped in <code>LightPool</code> (&quot;a lit object casts light&quot;, 02-SYSTEM v4 빛)</td><td>deleted; a primary is one flat lime fill, radius 14</td></tr>
+<tr><td>2 lifted disc</td><td>56 pt, lifted 8 pt above the bar, pooled</td><td>48 pt, in the bar's row, flat (Strava)</td></tr>
+<tr><td>3 numerals torn apart</td><td><code>BandLabels</code> measured both ends and anchored them over the groove's ends; a dash only when they collided; a unit box under the high numeral; its own arrival</td><td>one phrase <code>60–151</code> + <code>km/h</code>, left-aligned, <code>display</code> on a hero and <code>statSm</code> on a card; the groove still draws the exact band under it</td></tr>
+<tr><td>4 테스트 pill</td><td><code>Chip</code>, 28 pt, <code>raised</code> fill</td><td><code>Tag</code>, 20 pt, hairline, <code>overline</code>/<code>text3</code></td></tr>
+<tr><td>5 chart numerals in the plot</td><td>two <code>display</code> numerals on the column's ends, knocking out the rules</td><td>one caption phrase <code>s1</code> above the high end</td></tr>
+<tr><td>6 truncated segments</td><td><code>body</code> 17 + <code>s2</code> padding → &quot;오버…&quot;</td><td><code>text</code> 15 + <code>s1</code> — all five labels fit at 362 pt</td></tr>
+<tr><td>7 section titles at display size</td><td><code>heading</code> 20, <code>s5</code> below</td><td><code>body</code> 17, <code>s3</code> below</td></tr>
+<tr><td>8 lit ground</td><td><code>GroundLight</code> mounted by <code>Screen</code>; <code>groundLit</code>/<code>groundShade</code> plates</td><td>unmounted; the token is the ground everywhere; the plates are <code>ground</code></td></tr>
+</tbody></table>
+<p><b>What the frames show.</b> 세션 is the proof: &quot;60–151 km/h&quot; over the groove reads as a measurement a product would print, the segmented control under the panel no longer needs to abbreviate, and the flat CTA no longer has a lime haze under it. 나 and 기록 lost their pills and their titles stopped shouting. Home's hero this morning is <code>—</code> with an empty groove: it is Monday 14 Sep and the seed session is 9 Sep, so 이번 주 has no best. That is the honesty rule doing its job, not a regression, and it is why the card below carries the band instead.</p>
+<p><b>What went with it.</b> <code>axisLabelLayout</code> (the anchored pair's collision rule) and its 13 tests — a function with no caller is a claim the app does not make. 735 → 722 tests, all green. The frames gate is red until the console re-shoots: every frame that draws an axis, a button or the shell has moved, by design.</p>
+<p><b>Left alone on purpose.</b> The 2D picture well on Home's card (<code>shot-arc.tsx</code>) still carries a <code>GroundLight</code> — it is inside a picture, and the picture lane is rebuilding what a picture is; decide it after that lands. <code>groundLit</code> / <code>groundShade</code> stay as tokens with tests (<code>light-mix.test.ts</code>) and no caller in chrome: the picture well is their last reader.</p>
+<p><b>Seen while shooting, not mine.</b> 슛 opens on 원본 with 리플레이를 받지 못했어요 because this machine's be-api serves no replay rows for the demo shot (flagged since v4.1). 세션's panel showed 3D 장면 준비 중 while the picture lane was mid-edit — expected on a shared Metro.</p>
 
-/* ---- the tick rule: the page's own divider is the app's axis ---- */
-.axis-rule{position:relative;height:22px;margin:0}
-.axis-rule::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--hair-strong)}
-.axis-rule i{position:absolute;top:0;width:1px;background:var(--hair);height:6px}
-.axis-rule i.maj{height:11px;background:var(--hair-strong)}
+<h2 id="refs">레퍼런스 보드</h2>
+<p>왼쪽이 창업자가 남긴 방향(r6): 조명 아래의 진짜 잔디, 흰 골대와 그물, 하나의 라임 궤적. 오른쪽 둘(r5)은 홀로그램 계열 — 앱이 지금까지 따라가던 쪽이고, v5가 떠나는 쪽.</p>
+<div class="refs"><img src="design-v5/img/ref-r6-journey.png" alt="r6-journey.png"><img src="design-v5/img/ref-r5-03.png" alt="r5-03.png"><img src="design-v5/img/ref-r5-04.png" alt="r5-04.png"></div>
 
-/* ---- type ---- */
-h1,h2,h3{color:var(--tx);text-wrap:balance;margin:0}
-h1{font-family:var(--num);font-weight:800;font-size:clamp(38px,7.5vw,76px);line-height:.98;letter-spacing:-.035em}
-h2{font-weight:700;font-size:clamp(21px,2.6vw,27px);line-height:1.25;letter-spacing:-.015em}
-h3{font-weight:600;font-size:16px;line-height:1.35}
-p{margin:0 0 1em;max-width:66ch}
-.lede{font-size:clamp(17px,1.9vw,20px);line-height:1.55;color:var(--tx2);max-width:60ch}
-.tick-label,.eyebrow{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--tx3)}
-.dim{color:var(--tx3)}
-.faint{color:var(--tx4)}
-.num{font-family:var(--num);font-weight:700;font-variant-numeric:tabular-nums;color:var(--tx)}
-strong{color:var(--tx);font-weight:600}
+<h2 id="screens">화면 하나씩 — before / after</h2>
+<p>BEFORE는 v4.1(9월 13일)의 기록 프레임, AFTER는 v5 코드로 다시 찍은 프레임. 아직 안 찍힌 화면은 그렇다고 표시됩니다.</p>
 
-section{padding:clamp(48px,7vw,88px) 0 0}
-.sec-head{display:flex;flex-direction:column;gap:10px;margin-bottom:clamp(24px,3.5vw,40px)}
-.sec-head p{margin:0}
-
-/* ---- masthead ---- */
-header{padding:clamp(44px,8vw,96px) 0 0}
-.mast{display:flex;flex-direction:column;gap:22px}
-.mast-meta{display:flex;flex-wrap:wrap;gap:8px 22px;align-items:baseline}
-.wordmark{font-family:var(--num);font-weight:800;letter-spacing:-.02em}
-
-/* ---- the arc: a real sequence, so it is drawn on a scale ---- */
-.arc{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin-top:8px}
-.arc-col{padding:0 0 0 12px;border-left:1px solid var(--hair);min-width:0}
-.arc-col:first-child{padding-left:0;border-left:0}
-.arc-n{font-family:var(--num);font-weight:800;font-size:clamp(26px,4.4vw,44px);line-height:1;font-variant-numeric:tabular-nums;color:var(--tx4);letter-spacing:-.03em}
-.arc-col.live .arc-n{color:var(--lime)}
-.arc-d{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--tx4);margin-top:7px}
-.arc-bar{height:5px;background:var(--raised);margin-top:12px;position:relative;overflow:hidden}
-.arc-bar span{position:absolute;inset:0 auto 0 0;background:var(--tx4)}
-.arc-col.live .arc-bar span{background:var(--lime)}
-
-/* ---- stat line: numbers on a rule, not big-number cards ---- */
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:1px;background:var(--hair);border:1px solid var(--hair)}
-.stat{background:var(--ground);padding:16px 18px}
-.stat .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--tx3)}
-.stat .v{font-family:var(--num);font-weight:700;font-size:23px;font-variant-numeric:tabular-nums;color:var(--tx);margin-top:6px;letter-spacing:-.02em}
-.stat .v em{font-style:normal;color:var(--tx4);font-weight:600}
-.stat .v b{color:var(--lime);font-weight:700}
-
-/* ---- screen grid ---- */
-.screens{display:grid;grid-template-columns:repeat(auto-fill,minmax(198px,1fr));gap:clamp(18px,2.4vw,30px);align-items:start}
-figure{margin:0;display:flex;flex-direction:column;gap:9px}
-.shot{background:var(--card);border:1px solid var(--hair);border-radius:14px;overflow:hidden;line-height:0}
-figcaption{display:flex;gap:8px;align-items:baseline;min-width:0}
-figcaption .ko{color:var(--tx);font-weight:600;font-size:14px}
-figcaption .en{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--tx4);white-space:nowrap}
-
-/* ---- before / after ---- */
-.pairs{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:clamp(22px,3vw,38px)}
-.pair{display:flex;flex-direction:column;gap:12px}
-.pair-imgs{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:start}
-.pair-imgs figure{gap:7px}
-.pair-imgs .shot{border-radius:11px}
-.was .shot{filter:saturate(.32) brightness(.72);border-color:rgba(255,255,255,.05)}
-.tag{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;display:flex;align-items:center;gap:6px;color:var(--tx4)}
-.tag::before{content:"";width:14px;height:2px;background:var(--tx4)}
-.now .tag{color:var(--lime)}
-.now .tag::before{background:var(--lime)}
-.pair-note{font-size:13.5px;line-height:1.55;color:var(--tx3);margin:0}
-.pair-note b{color:var(--tx2);font-weight:500}
-
-/* ---- the confidence ladder, drawn to the app's real scale ---- */
-.ladder{border:1px solid var(--hair);background:var(--card);border-radius:16px;padding:clamp(18px,2.6vw,30px);overflow-x:auto}
-.ladder-scale{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;color:var(--tx4);margin-bottom:6px}
-.rung{display:grid;grid-template-columns:118px 1fr;gap:16px;align-items:center;padding:11px 0;border-top:1px solid var(--hair)}
-.rung:first-of-type{border-top:0}
-.rung-k{min-width:0}
-.rung-k .rk{font-family:var(--num);font-weight:700;font-size:17px;font-variant-numeric:tabular-nums;color:var(--tx2);letter-spacing:-.01em}
-.rung.point .rung-k .rk{color:var(--lime);font-size:22px}
-.rung-k .rw{font-family:var(--mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--tx4);margin-top:2px}
-.groove{position:relative;height:40px;background:var(--raised);border-radius:3px;min-width:260px}
-.groove i{position:absolute;top:0;bottom:0;width:1px;background:rgba(255,255,255,.055)}
-.groove i.maj{background:rgba(255,255,255,.1)}
-.mark{position:absolute;top:50%;transform:translateY(-50%);background:var(--lime);border-radius:2px}
-.mark.fade{background:linear-gradient(90deg,rgba(200,255,0,0) 0%,var(--lime) 22%,var(--lime) 78%,rgba(200,255,0,0) 100%)}
-.mark.fade.wide{background:linear-gradient(90deg,rgba(200,255,0,0) 0%,rgba(200,255,0,.72) 34%,rgba(200,255,0,.72) 66%,rgba(200,255,0,0) 100%)}
-.mark.post{width:5px;height:54px;top:-7px;transform:none;border-radius:1px;box-shadow:0 0 16px rgba(200,255,0,.4)}
-
-/* ---- verdict quotes ---- */
-.rounds{display:flex;flex-direction:column;gap:1px;background:var(--hair);border:1px solid var(--hair);border-radius:16px;overflow:hidden}
-.round{background:var(--card);padding:clamp(18px,2.4vw,26px);display:grid;grid-template-columns:76px 1fr;gap:clamp(14px,2.2vw,26px)}
-.round-n{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--tx4);line-height:1.5}
-.round-n b{display:block;font-family:var(--num);font-size:26px;font-weight:800;color:var(--tx3);letter-spacing:-.02em;line-height:1;margin-bottom:5px}
-.round.last .round-n b{color:var(--lime)}
-blockquote{margin:0 0 10px;color:var(--tx);font-size:clamp(15.5px,1.75vw,18px);line-height:1.5;font-weight:400}
-blockquote em{font-style:normal;color:var(--lime)}
-.round p{margin:0;font-size:13.5px;color:var(--tx3);max-width:62ch}
-
-/* ---- remaining ---- */
-.left{display:grid;grid-template-columns:repeat(auto-fit,minmax(258px,1fr));gap:1px;background:var(--hair);border:1px solid var(--hair);border-radius:16px;overflow:hidden}
-.leftcard{background:var(--card);padding:clamp(18px,2.4vw,26px);display:flex;flex-direction:column;gap:9px}
-.leftcard .who{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--lime)}
-.leftcard p{margin:0;font-size:14px;line-height:1.6;color:var(--tx3)}
-.leftcard h3{color:var(--tx)}
-
-.crit{border-left:2px solid var(--danger);padding:2px 0 2px 16px;margin:22px 0 0}
-.crit .tick-label{color:var(--danger)}
-.crit p{margin:6px 0 0;font-size:14px;color:var(--tx3)}
-
-footer{padding:clamp(40px,6vw,72px) 0 clamp(56px,8vw,96px);margin-top:clamp(40px,6vw,72px)}
-footer p{font-size:13px;color:var(--tx4);max-width:70ch}
-.paths{font-family:var(--mono);font-size:11.5px;color:var(--tx3);line-height:2;overflow-x:auto;white-space:nowrap}
-.paths b{color:var(--tx2);font-weight:500}
-
-@media (max-width:640px){
-  .arc{grid-template-columns:repeat(5,1fr)}
-  .arc-col{padding-left:8px}
-  .round{grid-template-columns:1fr;gap:12px}
-  .rung{grid-template-columns:96px 1fr;gap:12px}
-}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-</style>
-
-</head><body>
-<header>
-  <div class="wrap mast">
-    <div class="mast-meta">
-      <span class="wordmark" style="color:var(--tx);font-size:15px">STRYKE</span>
-      <span class="tick-label">디자인 기록 · v3.5</span>
-      <span class="tick-label faint">2026 · 09 · 05 → 09 · 11</span>
-      <a href="index.html" class="tick-label" style="color:var(--tx3);text-decoration-color:var(--tx4)">← STRYKE 인덱스</a>
-    </div>
-    <h1>측정할 것이 없는<br>완성된 계측기</h1>
-    <p class="lede">축구 슛 계측 앱을 여섯 번의 웨이브에 걸쳐 다시 만들었습니다. 매 화면은 시뮬레이터에서 실제로 조작해 촬영했고, 독립된 두 명의 비평가가 다섯 차례 적대적으로 심사했습니다. 이 페이지는 그 기록입니다.</p>
+<section class="screen" id="home">
+  <div class="shead">
+    <h3>01 · 홈 <code>home</code></h3>
+    <a class="fb" href="https://github.com/vxbrandon/stryke/issues/new?title=%5Bdesign%5D+%ED%99%88%3A+&body=%23%23%23+%ED%99%94%EB%A9%B4+%C2%B7+Screen%0A%ED%99%88+%28%60home%60%29%0A%0A%23%23%23+%EB%AC%B4%EC%97%87%EC%9D%B4+%EC%9D%B4%EC%83%81%ED%95%9C%EA%B0%80+%C2%B7+What+is+wrong%0A%0A%28%EC%97%AC%EA%B8%B0%EC%97%90+%EC%A0%81%EC%96%B4+%EC%A3%BC%EC%84%B8%EC%9A%94%29%0A%0A%23%23%23+%EC%B0%B8%EA%B3%A0+%C2%B7+Reference%0A%28%EB%B8%8C%EB%9E%9C%EB%93%9C+%2F+%EB%AA%A9%EC%97%85+%2F+%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7+%EB%A7%81%ED%81%AC%29%0A%0A%23%23%23+%EC%8B%AC%EA%B0%81%EB%8F%84+%C2%B7+Severity%0A-+%5B+%5D+BLOCKING++-+%5B+%5D+MAJOR++-+%5B+%5D+MINOR%0A%0A%EA%B8%B0%EB%A1%9D+%C2%B7+https%3A%2F%2Fvxbrandon.github.io%2Fopencap-monocular%2Fstryke%2Fdesign.html%23home&labels=design-feedback%2Cscreen%3Ahome" target="_blank" rel="noopener">피드백 남기기 ↗</a>
   </div>
-</header>
-
-<section>
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="eyebrow">한국어를 가리고 무슨 앱인지 맞추기 · 통과한 화면 수</span>
-      <p class="dim" style="font-size:14.5px;max-width:62ch">비평가가 매 라운드 적용한 테스트입니다. 화면의 모든 한글을 가린 뒤, 그림만 보고 이게 무슨 앱인지 말할 수 있는가. "리스트"나 "폼"이면 실패, "계측"이면 통과입니다.</p>
-    </div>
-    <div class="arc">
-      <div class="arc-col"><div class="arc-n">0</div><div class="arc-bar"><span style="width:2%"></span></div><div class="arc-d">시작 · 11개 중</div></div>
-      <div class="arc-col"><div class="arc-n">5</div><div class="arc-bar"><span style="width:45%"></span></div><div class="arc-d">1차 심사</div></div>
-      <div class="arc-col"><div class="arc-n">7</div><div class="arc-bar"><span style="width:64%"></span></div><div class="arc-d">2차</div></div>
-      <div class="arc-col live"><div class="arc-n">10</div><div class="arc-bar"><span style="width:91%"></span></div><div class="arc-d">3차</div></div>
-      <div class="arc-col live"><div class="arc-n">10</div><div class="arc-bar"><span style="width:91%"></span></div><div class="arc-d">4차 · 최종</div></div>
-    </div>
-    <div class="axis-rule" style="margin-top:26px" aria-hidden="true">
-      <i style="left:12.5%"></i><i style="left:25%"></i><i style="left:37.5%"></i><i class="maj" style="left:50%"></i><i style="left:62.5%"></i><i style="left:75%"></i><i style="left:87.5%"></i>
-    </div>
-    <div class="stats" style="margin-top:26px">
-      <div class="stat"><div class="k">앱 테스트</div><div class="v"><em>73</em> → <b>698</b></div></div>
-      <div class="stat"><div class="k">서버 테스트</div><div class="v"><em>437</em> → 466</div></div>
-      <div class="stat"><div class="k">확실성 : 추측 무게비</div><div class="v"><em>0.97</em> → <b>1.45</b></div></div>
-      <div class="stat"><div class="k">랭킹 해상도 px/km/h</div><div class="v"><em>1.0</em> → <b>6.14</b></div></div>
-      <div class="stat"><div class="k">탭</div><div class="v"><em>5</em> → 3 + 촬영</div></div>
-    </div>
+  <p class="shows">이번 주 최고, 이번 주 카운트, 최근 세션 카드, 촬영 시작</p>
+  <div class="pair">
+    <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-home.png" alt="홈 before"></figure>
+    <figure><figcaption>AFTER · v5 (2026-09-13 21:37)</figcaption><img loading="lazy" src="design-v5/img/after-home.png" alt="홈 after"></figure>
   </div>
 </section>
 
-<section>
-  <div class="wrap">
-    <div class="sec-head">
-      <h2>지금의 앱</h2>
-      <p class="dim" style="font-size:14.5px">15개 화면 전부. iPhone 17 Pro 시뮬레이터에서 네이티브 해상도로 촬영했고, 데이터는 실제 저장소의 것입니다. 밴드는 전부 시드값이라 축의 절반 남짓을 차지합니다. 그게 이 프로젝트에 남은 유일한 문제입니다.</p>
-    </div>
-    <div class="screens">
-      <figure><div class="shot"><img src="design-v3/img/final-01-home.jpg" alt="현재 화면" loading="lazy" width="920"></div><figcaption><span class="ko">홈</span><span class="en">home</span></figcaption></figure>
-      <figure><div class="shot"><img src="design-v3/img/final-02-setup.jpg" alt="현재 화면" loading="lazy" width="920"></div><figcaption><span class="ko">세팅</span><span class="en">setup</span></figcaption></figure>
-      <figure><div class="shot"><img src="design-v3/img/final-04-session.jpg" alt="현재 화면" loading="lazy" width="920"></div><figcaption><span class="ko">세션</span><span class="en">session</span></figcaption></figure>
-      <figure><div class="shot"><img src="design-v3/img/final-05-shot.jpg" alt="현재 화면" loading="lazy" width="920"></div><figcaption><span class="ko">슛</span><span class="en">shot</span></figcaption></figure>
-      <figure><div class="shot"><img src="design-v3/img/final-06-records.jpg" alt="현재 화면" loading="lazy" width="920"></div><figcaption><span class="ko">기록</span><span class="en">records</span></figcaption></figure>
-      <figure><div class="shot"><img src="design-v3/img/final-11-session-list.jpg" alt="현재 화면" loading="lazy" width="920"></div><figcaption><span class="ko">세션 목록</span><span class="en">list</span></figcaption></figure>
-      <figure><div class="shot"><img src="design-v3/img/final-08-rankings.jpg" alt="현재 화면" loading="lazy" width="920"></div><figcaption><span class="ko">랭킹</span><span class="en">board</span></figcaption></figure>
-      <figure><div class="shot"><img src="design-v3/img/final-09-compare.jpg" alt="현재 화면" loading="lazy" width="920"></div><figcaption><span class="ko">비교</span><span class="en">compare</span></figcaption></figure>
-      <figure><div class="shot"><img src="design-v3/img/final-12-keeper.jpg" alt="현재 화면" loading="lazy" width="920"></div><figcaption><span class="ko">키퍼</span><span class="en">keeper</span></figcaption></figure>
-      <figure><div class="shot"><img src="design-v3/img/final-13-session-refused.jpg" alt="현재 화면" loading="lazy" width="920"></div><figcaption><span class="ko">측정 거부</span><span class="en">refused</span></figcaption></figure>
-      <figure><div class="shot"><img src="design-v3/img/final-07-me.jpg" alt="현재 화면" loading="lazy" width="920"></div><figcaption><span class="ko">나</span><span class="en">me</span></figcaption></figure>
-      <figure><div class="shot"><img src="design-v3/img/final-10-settings.jpg" alt="현재 화면" loading="lazy" width="920"></div><figcaption><span class="ko">설정</span><span class="en">settings</span></figcaption></figure>
-      <figure><div class="shot"><img src="design-v3/img/final-14-licences.jpg" alt="현재 화면" loading="lazy" width="920"></div><figcaption><span class="ko">라이선스</span><span class="en">licences</span></figcaption></figure>
-      <figure><div class="shot"><img src="design-v3/img/final-15-delete.jpg" alt="현재 화면" loading="lazy" width="920"></div><figcaption><span class="ko">삭제</span><span class="en">delete</span></figcaption></figure>
-      <figure style="grid-column:span 2"><div class="shot"><img src="design-v3/img/final-03-capture.jpg" alt="현재 화면" loading="lazy" width="920"></div><figcaption><span class="ko">촬영</span><span class="en">capture · landscape</span></figcaption></figure>
-    </div>
+<section class="screen" id="setup">
+  <div class="shead">
+    <h3>02 · 세팅 <code>setup</code></h3>
+    <a class="fb" href="https://github.com/vxbrandon/stryke/issues/new?title=%5Bdesign%5D+%EC%84%B8%ED%8C%85%3A+&body=%23%23%23+%ED%99%94%EB%A9%B4+%C2%B7+Screen%0A%EC%84%B8%ED%8C%85+%28%60setup%60%29%0A%0A%23%23%23+%EB%AC%B4%EC%97%87%EC%9D%B4+%EC%9D%B4%EC%83%81%ED%95%9C%EA%B0%80+%C2%B7+What+is+wrong%0A%0A%28%EC%97%AC%EA%B8%B0%EC%97%90+%EC%A0%81%EC%96%B4+%EC%A3%BC%EC%84%B8%EC%9A%94%29%0A%0A%23%23%23+%EC%B0%B8%EA%B3%A0+%C2%B7+Reference%0A%28%EB%B8%8C%EB%9E%9C%EB%93%9C+%2F+%EB%AA%A9%EC%97%85+%2F+%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7+%EB%A7%81%ED%81%AC%29%0A%0A%23%23%23+%EC%8B%AC%EA%B0%81%EB%8F%84+%C2%B7+Severity%0A-+%5B+%5D+BLOCKING++-+%5B+%5D+MAJOR++-+%5B+%5D+MINOR%0A%0A%EA%B8%B0%EB%A1%9D+%C2%B7+https%3A%2F%2Fvxbrandon.github.io%2Fopencap-monocular%2Fstryke%2Fdesign.html%23setup&labels=design-feedback%2Cscreen%3Asetup" target="_blank" rel="noopener">피드백 남기기 ↗</a>
+  </div>
+  <p class="shows">골대 투영과 두 개의 높이 브래킷, 눈금이 새겨진 L자 자</p>
+  <div class="pair">
+    <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-setup.png" alt="세팅 before"></figure>
+    <figure><figcaption>AFTER · v5</figcaption><div class="empty">아직 다시 찍지 않음<br><small>not yet re-shot — <code>design.mjs shoot ${s.key}</code></small></div></figure>
   </div>
 </section>
 
-<section>
-  <div class="wrap">
-    <div class="sec-head">
-      <h2>전 · 후</h2>
-      <p class="dim" style="font-size:14.5px">왼쪽은 당신이 "전혀 마음에 안 든다"고 한 그 앱입니다. 오른쪽은 지금입니다.</p>
-    </div>
-    <div class="pairs">
-      <div class="pair">
-        <div class="pair-imgs">
-          <figure class="was"><span class="tag">전</span><div class="shot"><img src="design-v3/img/before-01-home.jpg" alt="재설계 전 화면" loading="lazy" width="920"></div></figure>
-          <figure class="now"><span class="tag">후</span><div class="shot"><img src="design-v3/img/final-01-home.jpg" alt="현재 화면" loading="lazy" width="920"></div></figure>
-        </div>
-        <p class="pair-note"><b>홈.</b> 화면에서 제일 큰 물건이 워드마크였고, 유일하게 의미 있는 숫자가 세 번째 칸에 15pt 회색으로 있었습니다. 무의미한 카운트보다 작게. 지금은 이번 주 최고가 눈금 위에 서 있습니다.</p>
-      </div>
-      <div class="pair">
-        <div class="pair-imgs">
-          <figure class="was"><span class="tag">전</span><div class="shot"><img src="design-v3/img/before-05-shot.jpg" alt="재설계 전 화면" loading="lazy" width="920"></div></figure>
-          <figure class="now"><span class="tag">후</span><div class="shot"><img src="design-v3/img/final-05-shot.jpg" alt="현재 화면" loading="lazy" width="920"></div></figure>
-        </div>
-        <p class="pair-note"><b>슛.</b> 앱이 자기 숫자를 지웠던 화면. 43–109가 4pt 회색 트랙에 15pt 끝값이었고, 제일 큰 글자는 "슛 02"라는 라우트 이름이었습니다. 그림은 좌우 여백에 갇힌 썸네일이었습니다.</p>
-      </div>
-      <div class="pair">
-        <div class="pair-imgs">
-          <figure class="was"><span class="tag">전</span><div class="shot"><img src="design-v3/img/before-08-rankings.jpg" alt="재설계 전 화면" loading="lazy" width="920"></div></figure>
-          <figure class="now"><span class="tag">후</span><div class="shot"><img src="design-v3/img/final-08-rankings.jpg" alt="현재 화면" loading="lazy" width="920"></div></figure>
-        </div>
-        <p class="pair-note"><b>랭킹.</b> 캡슐 9개가 각자 보이지 않는 축을 가져서, 1위 134와 9위 84가 50픽셀 떨어져 있었습니다. 지금은 하나의 눈금 위에서 307픽셀입니다. 122로 동점인 두 선수의 획은 하나로 합쳐집니다.</p>
-      </div>
-      <div class="pair">
-        <div class="pair-imgs">
-          <figure class="was"><span class="tag">전</span><div class="shot"><img src="design-v3/img/before-02-setup.jpg" alt="재설계 전 화면" loading="lazy" width="920"></div></figure>
-          <figure class="now"><span class="tag">후</span><div class="shot"><img src="design-v3/img/final-02-setup.jpg" alt="현재 화면" loading="lazy" width="920"></div></figure>
-        </div>
-        <p class="pair-note"><b>세팅.</b> "준비 안 됨"을 다섯 가지 방식으로 동시에 말하면서 뒤로 가는 길이 없었습니다. 지금은 골대가 14m 밖 46도에서 핀홀 투영으로 그려지고, 지면선의 기울기가 곧 기울기 측정값입니다.</p>
-      </div>
-      <div class="pair">
-        <div class="pair-imgs">
-          <figure class="was"><span class="tag">전</span><div class="shot"><img src="design-v3/img/before-06-records.jpg" alt="재설계 전 화면" loading="lazy" width="920"></div></figure>
-          <figure class="now"><span class="tag">후</span><div class="shot"><img src="design-v3/img/final-06-records.jpg" alt="현재 화면" loading="lazy" width="920"></div></figure>
-        </div>
-        <p class="pair-note"><b>기록.</b> 초점이 "−3 ~ +0 km/h"였습니다. 밴드에서 밴드를 뺀 값이라 선수가 쓸 수 없는 숫자인데, 화면에서 제일 컸습니다. 컬럼마다 자기 트랙을 갖고 있어서 기록 없는 주가 가장 높은 막대로 보였습니다.</p>
-      </div>
-      <div class="pair">
-        <div class="pair-imgs">
-          <figure class="was"><span class="tag">전</span><div class="shot"><img src="design-v3/img/before-07-me.jpg" alt="재설계 전 화면" loading="lazy" width="920"></div></figure>
-          <figure class="now"><span class="tag">후</span><div class="shot"><img src="design-v3/img/final-07-me.jpg" alt="현재 화면" loading="lazy" width="920"></div></figure>
-        </div>
-        <p class="pair-note"><b>나.</b> 기록 탭과 완전히 같은 화면이었습니다. 같은 델타 히어로, 같은 차트, 같은 목록. 게다가 존재하지 않는 측정값을 주장하는 타일 두 개가 얹혀 있었습니다.</p>
-      </div>
-      <div class="pair">
-        <div class="pair-imgs">
-          <figure class="was"><span class="tag">전</span><div class="shot"><img src="design-v3/img/before-04-session.jpg" alt="재설계 전 화면" loading="lazy" width="920"></div></figure>
-          <figure class="now"><span class="tag">후</span><div class="shot"><img src="design-v3/img/final-04-session.jpg" alt="현재 화면" loading="lazy" width="920"></div></figure>
-        </div>
-        <p class="pair-note"><b>세션.</b> 44pt 초점이 밴드였고 옆에 호박색 "추정" 칩이 붙어 있었습니다. 확실한 사실인 배치와 거리는 그 아래에서 속삭였습니다. 6열 표는 11pt였습니다.</p>
-      </div>
-      <div class="pair">
-        <div class="pair-imgs">
-          <figure class="was"><span class="tag">전</span><div class="shot"><img src="design-v3/img/before-09-compare.jpg" alt="재설계 전 화면" loading="lazy" width="920"></div></figure>
-          <figure class="now"><span class="tag">후</span><div class="shot"><img src="design-v3/img/final-09-compare.jpg" alt="현재 화면" loading="lazy" width="920"></div></figure>
-        </div>
-        <p class="pair-note"><b>비교.</b> 화면의 제목이 "구분 불가"였습니다. 판정은 맞지만 거부를 초점으로 삼은 화면이었고, 신뢰도가 낮을 땐 내 궤적이 화면에서 제일 흐린 물건이 됐습니다.</p>
-      </div>
-    </div>
+<section class="screen" id="capture">
+  <div class="shead">
+    <h3>03 · 촬영 <code>capture</code></h3>
+    <a class="fb" href="https://github.com/vxbrandon/stryke/issues/new?title=%5Bdesign%5D+%EC%B4%AC%EC%98%81%3A+&body=%23%23%23+%ED%99%94%EB%A9%B4+%C2%B7+Screen%0A%EC%B4%AC%EC%98%81+%28%60capture%60%29%0A%0A%23%23%23+%EB%AC%B4%EC%97%87%EC%9D%B4+%EC%9D%B4%EC%83%81%ED%95%9C%EA%B0%80+%C2%B7+What+is+wrong%0A%0A%28%EC%97%AC%EA%B8%B0%EC%97%90+%EC%A0%81%EC%96%B4+%EC%A3%BC%EC%84%B8%EC%9A%94%29%0A%0A%23%23%23+%EC%B0%B8%EA%B3%A0+%C2%B7+Reference%0A%28%EB%B8%8C%EB%9E%9C%EB%93%9C+%2F+%EB%AA%A9%EC%97%85+%2F+%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7+%EB%A7%81%ED%81%AC%29%0A%0A%23%23%23+%EC%8B%AC%EA%B0%81%EB%8F%84+%C2%B7+Severity%0A-+%5B+%5D+BLOCKING++-+%5B+%5D+MAJOR++-+%5B+%5D+MINOR%0A%0A%EA%B8%B0%EB%A1%9D+%C2%B7+https%3A%2F%2Fvxbrandon.github.io%2Fopencap-monocular%2Fstryke%2Fdesign.html%23capture&labels=design-feedback%2Cscreen%3Acapture" target="_blank" rel="noopener">피드백 남기기 ↗</a>
+  </div>
+  <p class="shows">가로 화면 — 슛 카운터, 3×3 배치 셀, 전폭 눈금 위의 마지막 슛 밴드</p>
+  <div class="pair">
+    <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-capture.png" alt="촬영 before"></figure>
+    <figure><figcaption>AFTER · v5</figcaption><div class="empty">아직 다시 찍지 않음<br><small>not yet re-shot — <code>design.mjs shoot ${s.key}</code></small></div></figure>
   </div>
 </section>
 
-<section>
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="eyebrow">시각적 정체성</span>
-      <h2>축, 다섯 개의 스케일</h2>
-      <p class="dim" style="font-size:14.5px;max-width:64ch">세상의 모든 계측기에는 반복되는 도형이 하나 있습니다. 눈금과 그 위의 표시입니다. 이 앱은 그 물건을 이미 세 번 다른 이름으로 갖고 있었고 배관 취급을 했습니다. 이제는 하나의 물건이고, 여섯 번째 문법이 생기면 CI가 실패합니다.</p>
-    </div>
-    <div class="ladder">
-      <div class="ladder-scale"><span>0</span><span>80 km/h</span><span>160</span></div>
-      <div class="rung point">
-        <div class="rung-k"><div class="rk">132</div><div class="rw">검증된 값</div></div>
-        <div class="groove">
-          <i style="left:12.5%"></i><i style="left:25%"></i><i style="left:37.5%"></i><i class="maj" style="left:50%"></i><i style="left:62.5%"></i><i style="left:75%"></i><i style="left:87.5%"></i>
-          <div class="mark post" style="left:82.5%"></div>
-        </div>
-      </div>
-      <div class="rung">
-        <div class="rung-k"><div class="rk">96–104</div><div class="rw">폭 5% · 사실</div></div>
-        <div class="groove">
-          <i style="left:12.5%"></i><i style="left:25%"></i><i style="left:37.5%"></i><i class="maj" style="left:50%"></i><i style="left:62.5%"></i><i style="left:75%"></i><i style="left:87.5%"></i>
-          <div class="mark" style="left:60%;width:5%;height:32px"></div>
-        </div>
-      </div>
-      <div class="rung">
-        <div class="rung-k"><div class="rk">88–120</div><div class="rw">폭 20%</div></div>
-        <div class="groove">
-          <i style="left:12.5%"></i><i style="left:25%"></i><i style="left:37.5%"></i><i class="maj" style="left:50%"></i><i style="left:62.5%"></i><i style="left:75%"></i><i style="left:87.5%"></i>
-          <div class="mark" style="left:55%;width:20%;height:20px"></div>
-        </div>
-      </div>
-      <div class="rung">
-        <div class="rung-k"><div class="rk">43–109</div><div class="rw">폭 41% · 캡 없음</div></div>
-        <div class="groove">
-          <i style="left:12.5%"></i><i style="left:25%"></i><i style="left:37.5%"></i><i class="maj" style="left:50%"></i><i style="left:62.5%"></i><i style="left:75%"></i><i style="left:87.5%"></i>
-          <div class="mark fade" style="left:26.9%;width:41.3%;height:9px"></div>
-        </div>
-      </div>
-      <div class="rung">
-        <div class="rung-k"><div class="rk">60–151</div><div class="rw">폭 57% · 지금 도달 가능</div></div>
-        <div class="groove">
-          <i style="left:12.5%"></i><i style="left:25%"></i><i style="left:37.5%"></i><i class="maj" style="left:50%"></i><i style="left:62.5%"></i><i style="left:75%"></i><i style="left:87.5%"></i>
-          <div class="mark fade wide" style="left:37.5%;width:56.9%;height:6px"></div>
-        </div>
-      </div>
-      <div class="rung">
-        <div class="rung-k"><div class="rk">27–134</div><div class="rw">폭 67% · 잉크가 라임에 못 미침</div></div>
-        <div class="groove">
-          <i style="left:12.5%"></i><i style="left:25%"></i><i style="left:37.5%"></i><i class="maj" style="left:50%"></i><i style="left:62.5%"></i><i style="left:75%"></i><i style="left:87.5%"></i>
-          <div class="mark fade wide" style="left:16.9%;width:66.9%;height:5px;opacity:.72"></div>
-        </div>
-      </div>
-    </div>
-    <p class="dim" style="font-size:14px;margin-top:18px;max-width:64ch">확실한 값만 자기 트랙을 뚫고 나가고 라임 잉크를 갖습니다. 불확실성은 넓어질수록 속이 비고, 40%를 넘으면 양끝의 캡이 사라져 어디에도 단단한 모서리가 없습니다. 비평가가 픽셀을 세어 확인한 무게비는 <span class="num">1.45 : 1</span>입니다. 한 라운드 전에는 <span class="num">0.97 : 1</span>, 즉 동률이었습니다.</p>
-    <div class="crit">
-      <span class="tick-label">제 규칙이 두 번 틀렸습니다</span>
-      <p>처음에 "밴드는 display 크기로 렌더하지 않는다"고 썼고, 그게 앱의 숫자를 4pt 회색 트랙으로 만들었습니다. 불확실성은 크기가 아니라 모양입니다. 고친 뒤에도 절반이었습니다. 모양은 확실성보다 크게 외쳐서도 안 됩니다. 둘 다 사고 기록에 남겼습니다.</p>
-    </div>
+<section class="screen" id="session">
+  <div class="shead">
+    <h3>04 · 세션 <code>session</code></h3>
+    <a class="fb" href="https://github.com/vxbrandon/stryke/issues/new?title=%5Bdesign%5D+%EC%84%B8%EC%85%98%3A+&body=%23%23%23+%ED%99%94%EB%A9%B4+%C2%B7+Screen%0A%EC%84%B8%EC%85%98+%28%60session%60%29%0A%0A%23%23%23+%EB%AC%B4%EC%97%87%EC%9D%B4+%EC%9D%B4%EC%83%81%ED%95%9C%EA%B0%80+%C2%B7+What+is+wrong%0A%0A%28%EC%97%AC%EA%B8%B0%EC%97%90+%EC%A0%81%EC%96%B4+%EC%A3%BC%EC%84%B8%EC%9A%94%29%0A%0A%23%23%23+%EC%B0%B8%EA%B3%A0+%C2%B7+Reference%0A%28%EB%B8%8C%EB%9E%9C%EB%93%9C+%2F+%EB%AA%A9%EC%97%85+%2F+%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7+%EB%A7%81%ED%81%AC%29%0A%0A%23%23%23+%EC%8B%AC%EA%B0%81%EB%8F%84+%C2%B7+Severity%0A-+%5B+%5D+BLOCKING++-+%5B+%5D+MAJOR++-+%5B+%5D+MINOR%0A%0A%EA%B8%B0%EB%A1%9D+%C2%B7+https%3A%2F%2Fvxbrandon.github.io%2Fopencap-monocular%2Fstryke%2Fdesign.html%23session&labels=design-feedback%2Cscreen%3Asession" target="_blank" rel="noopener">피드백 남기기 ↗</a>
+  </div>
+  <p class="shows">골대 렌더 위의 궤적, 히어로 그루브, 그 아래 필드 위의 슛 목록</p>
+  <div class="pair">
+    <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-session.png" alt="세션 before"></figure>
+    <figure><figcaption>AFTER · v5</figcaption><div class="empty">아직 다시 찍지 않음<br><small>not yet re-shot — <code>design.mjs shoot ${s.key}</code></small></div></figure>
   </div>
 </section>
 
-<section>
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="eyebrow">다섯 번의 심사 · 원문 발췌</span>
-      <h2>비평가가 한 말</h2>
-    </div>
-    <div class="rounds">
-      <div class="round">
-        <div class="round-n"><b>1</b>1차</div>
-        <div>
-          <blockquote>유능한 와이어프레임. 돈 내고 쓸 제품은 아님. 디자인 시스템을 충실도 1로 렌더링해서 사진 찍고 완성이라고 부른 것.</blockquote>
-          <p>같은 라운드에서 완성도 비평가가 12개 공백을 찾았고 1위가 심각했습니다. 서버 없이 시작한 세션은 영구히 죽고, 재전송 경로가 앱 어디에도 없었습니다.</p>
-        </div>
-      </div>
-      <div class="round">
-        <div class="round-n"><b>2</b>2차</div>
-        <div>
-          <blockquote>숫자가 아직 돈 낼 만하지 않고, 디자인이 그걸 명백하게 만들 만큼 좋아졌다. <em>디자인은 더 이상 이 앱과 유료 제품 사이를 막고 있는 것이 아니다.</em></blockquote>
-          <p>같은 라운드에서 계기의 신뢰도 눈금이 거꾸로 돈다는 지적이 나왔습니다. 91km/h 추측이 CTA보다 무거웠습니다.</p>
-        </div>
-      </div>
-      <div class="round">
-        <div class="round-n"><b>3</b>3차</div>
-        <div>
-          <blockquote>디자인은 이제 좋은 측정값이 어떻게 생겼는지 명세하는 일을 끝냈고, 그렇게 함으로써 그 측정값이 없다는 사실을 반박 불가능하게 만들었다.</blockquote>
-          <p>보드를 하나의 축 위에 올리고 회색 판을 없애라, 그리고 디자인을 그만하고 레이더를 사러 가라.</p>
-        </div>
-      </div>
-      <div class="round last">
-        <div class="round-n"><b>4</b>4차</div>
-        <div>
-          <blockquote><em>디자인은 끝났습니다.</em> "충분히 좋다"가 아니라 끝났습니다. 네 번의 심사 전에는 모든 화면이 실패했던 테스트를 이제 11개 중 10개가 통과합니다.</blockquote>
-          <p>인터페이스에 뭘 더 해도 사람들이 돈을 낼지 여부는 바뀌지 않습니다. 이건 측정할 것이 없는 계측기입니다. 있을 수 있는 최선의 위치이자, 머물 수 있는 최악의 위치입니다.</p>
-        </div>
-      </div>
-      <div class="round last">
-        <div class="round-n"><b>5</b>최종</div>
-        <div>
-          <blockquote>이제는 측정할 것이 없는 <em>완성된</em> 계측기이고, 그 두 문장의 차이는 구장에서의 오후 한 나절과, 91이 아니라 8킬로미터 폭으로 돌아오는 숫자 하나입니다. <em>숫자를 가지러 가세요. 여기엔 제가 더 판정할 게 없습니다.</em></blockquote>
-          <p>완성도 비평가의 마지막 경고는 좋게 끝나지 않았습니다. 같은 종류의 결함이 다섯 웨이브 연속으로 발견됐고, 매번 이음매가 없는 모듈이었습니다. 줄을 고치기 전에 파일에 이음매를 주라는 조언이었고, 그대로 했습니다.</p>
-        </div>
-      </div>
-    </div>
+<section class="screen" id="shot">
+  <div class="shead">
+    <h3>05 · 슛 <code>shot</code></h3>
+    <a class="fb" href="https://github.com/vxbrandon/stryke/issues/new?title=%5Bdesign%5D+%EC%8A%9B%3A+&body=%23%23%23+%ED%99%94%EB%A9%B4+%C2%B7+Screen%0A%EC%8A%9B+%28%60shot%60%29%0A%0A%23%23%23+%EB%AC%B4%EC%97%87%EC%9D%B4+%EC%9D%B4%EC%83%81%ED%95%9C%EA%B0%80+%C2%B7+What+is+wrong%0A%0A%28%EC%97%AC%EA%B8%B0%EC%97%90+%EC%A0%81%EC%96%B4+%EC%A3%BC%EC%84%B8%EC%9A%94%29%0A%0A%23%23%23+%EC%B0%B8%EA%B3%A0+%C2%B7+Reference%0A%28%EB%B8%8C%EB%9E%9C%EB%93%9C+%2F+%EB%AA%A9%EC%97%85+%2F+%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7+%EB%A7%81%ED%81%AC%29%0A%0A%23%23%23+%EC%8B%AC%EA%B0%81%EB%8F%84+%C2%B7+Severity%0A-+%5B+%5D+BLOCKING++-+%5B+%5D+MAJOR++-+%5B+%5D+MINOR%0A%0A%EA%B8%B0%EB%A1%9D+%C2%B7+https%3A%2F%2Fvxbrandon.github.io%2Fopencap-monocular%2Fstryke%2Fdesign.html%23shot&labels=design-feedback%2Cscreen%3Ashot" target="_blank" rel="noopener">피드백 남기기 ↗</a>
+  </div>
+  <p class="shows">3D 장면과 그 아래 하나의 측정</p>
+  <div class="pair">
+    <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-shot.png" alt="슛 before"></figure>
+    <figure><figcaption>AFTER · v5</figcaption><div class="empty">아직 다시 찍지 않음<br><small>not yet re-shot — <code>design.mjs shoot ${s.key}</code></small></div></figure>
   </div>
 </section>
 
-<section>
-  <div class="wrap">
-    <div class="sec-head">
-      <h2>남은 것은 소프트웨어가 아닙니다</h2>
-      <p class="dim" style="font-size:14.5px;max-width:64ch">앱과 서버 목록은 비어 있습니다. 세 가지가 남았고, 세 가지 다 사람이 밖으로 나가야 하는 일입니다.</p>
-    </div>
-    <div class="left">
-      <div class="leftcard">
-        <span class="who">레이더</span>
-        <h3>밴드를 좁히는 숫자 하나</h3>
-        <p>Stage 0에서 점 속도는 구조적으로 null입니다. 모든 화면이 축의 57%를 차지하는 시드 밴드를 찍습니다. 검증 기준은 이제 문단이 아니라 앱이 이미 그릴 줄 아는 세 가지 그림입니다. 13km/h 이하는 꽉 찬 블록, 그보다 넓으면 속이 비고, 검증된 점은 라임 숫자와 트랙을 뚫는 표시를 받습니다.</p>
-      </div>
-      <div class="leftcard">
-        <span class="who">구장</span>
-        <h3>오후 세 시, 20m, 40개</h3>
-        <p>촬영 경로가 실제 카메라로 한 번도 실행된 적이 없습니다. 이 기록의 모든 프레임이 픽스처이거나 실험실 클립이거나 시뮬레이터 SQLite에 손으로 넣은 행입니다. 비평가 표현으로는 그 한 번의 실행이 지난 세 웨이브를 합친 것보다 많은 정보를 줍니다.</p>
-      </div>
-      <div class="leftcard">
-        <span class="who">로그인</span>
-        <h3>기록장이 폰과 함께 죽습니다</h3>
-        <p>공유 계정은 사라졌고 이제 설치마다 자기 기록장을 갖습니다. 프로필 화면은 정직하게 말합니다. "로그인이 없어서 이 폰이 곧 계정이에요. 폰을 바꾸면 처음부터예요." 좋은 제품이자, 아직 돈을 안 낼 이유입니다.</p>
-      </div>
-    </div>
+<section class="screen" id="records">
+  <div class="shead">
+    <h3>06 · 기록 <code>records</code></h3>
+    <a class="fb" href="https://github.com/vxbrandon/stryke/issues/new?title=%5Bdesign%5D+%EA%B8%B0%EB%A1%9D%3A+&body=%23%23%23+%ED%99%94%EB%A9%B4+%C2%B7+Screen%0A%EA%B8%B0%EB%A1%9D+%28%60records%60%29%0A%0A%23%23%23+%EB%AC%B4%EC%97%87%EC%9D%B4+%EC%9D%B4%EC%83%81%ED%95%9C%EA%B0%80+%C2%B7+What+is+wrong%0A%0A%28%EC%97%AC%EA%B8%B0%EC%97%90+%EC%A0%81%EC%96%B4+%EC%A3%BC%EC%84%B8%EC%9A%94%29%0A%0A%23%23%23+%EC%B0%B8%EA%B3%A0+%C2%B7+Reference%0A%28%EB%B8%8C%EB%9E%9C%EB%93%9C+%2F+%EB%AA%A9%EC%97%85+%2F+%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7+%EB%A7%81%ED%81%AC%29%0A%0A%23%23%23+%EC%8B%AC%EA%B0%81%EB%8F%84+%C2%B7+Severity%0A-+%5B+%5D+BLOCKING++-+%5B+%5D+MAJOR++-+%5B+%5D+MINOR%0A%0A%EA%B8%B0%EB%A1%9D+%C2%B7+https%3A%2F%2Fvxbrandon.github.io%2Fopencap-monocular%2Fstryke%2Fdesign.html%23records&labels=design-feedback%2Cscreen%3Arecords" target="_blank" rel="noopener">피드백 남기기 ↗</a>
+  </div>
+  <p class="shows">주간 컬럼 차트, 카드 스케일의 개인 최고, 세션 목록의 머리</p>
+  <div class="pair">
+    <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-records.png" alt="기록 before"></figure>
+    <figure><figcaption>AFTER · v5 (2026-09-13 21:37)</figcaption><img loading="lazy" src="design-v5/img/after-records.png" alt="기록 after"></figure>
   </div>
 </section>
 
-<footer>
-  <div class="wrap">
-    <div class="axis-rule" style="margin-bottom:26px" aria-hidden="true">
-      <i style="left:12.5%"></i><i style="left:25%"></i><i style="left:37.5%"></i><i class="maj" style="left:50%"></i><i style="left:62.5%"></i><i style="left:75%"></i><i style="left:87.5%"></i>
-    </div>
-    <div class="paths">
-      <b>docs/design/v3/00-THOUGHT-LOG.md</b> · 사고 과정 전체, 시간순<br>
-      <b>docs/design/v3/01-PRODUCT.md</b> · 사용자 관점 제품 스펙 &nbsp;&nbsp; <b>02-SYSTEM.md</b> · 토큰과 프리미티브 &nbsp;&nbsp; <b>03-SCREENS.md</b> · 화면별 스펙<br>
-      <b>docs/design/v3/04~07-VERDICTS-R2..R5.md</b> · 판정문 다섯 회분, 원문<br>
-      <b>docs/design/v3/final/</b> · 이 페이지의 15개 프레임 &nbsp;&nbsp; <b>audit/</b> · 재설계 전 &nbsp;&nbsp; <b>after/</b> · 상태별 프레임
-    </div>
-    <p style="margin-top:22px">모든 프레임은 iPhone 17 Pro 시뮬레이터에서 1206×2622로 촬영한 뒤 이 페이지용으로 축소했습니다. 밴드는 전부 시드 데이터이며 실제 측정값이 아닙니다. 앱은 그 사실을 모든 화면에서 「테스트」 표시로 말합니다.</p>
+<section class="screen" id="me">
+  <div class="shead">
+    <h3>07 · 나 <code>me</code></h3>
+    <a class="fb" href="https://github.com/vxbrandon/stryke/issues/new?title=%5Bdesign%5D+%EB%82%98%3A+&body=%23%23%23+%ED%99%94%EB%A9%B4+%C2%B7+Screen%0A%EB%82%98+%28%60me%60%29%0A%0A%23%23%23+%EB%AC%B4%EC%97%87%EC%9D%B4+%EC%9D%B4%EC%83%81%ED%95%9C%EA%B0%80+%C2%B7+What+is+wrong%0A%0A%28%EC%97%AC%EA%B8%B0%EC%97%90+%EC%A0%81%EC%96%B4+%EC%A3%BC%EC%84%B8%EC%9A%94%29%0A%0A%23%23%23+%EC%B0%B8%EA%B3%A0+%C2%B7+Reference%0A%28%EB%B8%8C%EB%9E%9C%EB%93%9C+%2F+%EB%AA%A9%EC%97%85+%2F+%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7+%EB%A7%81%ED%81%AC%29%0A%0A%23%23%23+%EC%8B%AC%EA%B0%81%EB%8F%84+%C2%B7+Severity%0A-+%5B+%5D+BLOCKING++-+%5B+%5D+MAJOR++-+%5B+%5D+MINOR%0A%0A%EA%B8%B0%EB%A1%9D+%C2%B7+https%3A%2F%2Fvxbrandon.github.io%2Fopencap-monocular%2Fstryke%2Fdesign.html%23me&labels=design-feedback%2Cscreen%3Ame" target="_blank" rel="noopener">피드백 남기기 ↗</a>
   </div>
-</footer>
+  <p class="shows">게스트 문장과 카드 스케일 개인 최고, 랭킹·인증·내보내기·설정 행</p>
+  <div class="pair">
+    <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-me.png" alt="나 before"></figure>
+    <figure><figcaption>AFTER · v5 (2026-09-13 21:37)</figcaption><img loading="lazy" src="design-v5/img/after-me.png" alt="나 after"></figure>
+  </div>
+</section>
 
-</body></html>
+<section class="screen" id="rankings">
+  <div class="shead">
+    <h3>08 · 랭킹 <code>rankings</code></h3>
+    <a class="fb" href="https://github.com/vxbrandon/stryke/issues/new?title=%5Bdesign%5D+%EB%9E%AD%ED%82%B9%3A+&body=%23%23%23+%ED%99%94%EB%A9%B4+%C2%B7+Screen%0A%EB%9E%AD%ED%82%B9+%28%60rankings%60%29%0A%0A%23%23%23+%EB%AC%B4%EC%97%87%EC%9D%B4+%EC%9D%B4%EC%83%81%ED%95%9C%EA%B0%80+%C2%B7+What+is+wrong%0A%0A%28%EC%97%AC%EA%B8%B0%EC%97%90+%EC%A0%81%EC%96%B4+%EC%A3%BC%EC%84%B8%EC%9A%94%29%0A%0A%23%23%23+%EC%B0%B8%EA%B3%A0+%C2%B7+Reference%0A%28%EB%B8%8C%EB%9E%9C%EB%93%9C+%2F+%EB%AA%A9%EC%97%85+%2F+%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7+%EB%A7%81%ED%81%AC%29%0A%0A%23%23%23+%EC%8B%AC%EA%B0%81%EB%8F%84+%C2%B7+Severity%0A-+%5B+%5D+BLOCKING++-+%5B+%5D+MAJOR++-+%5B+%5D+MINOR%0A%0A%EA%B8%B0%EB%A1%9D+%C2%B7+https%3A%2F%2Fvxbrandon.github.io%2Fopencap-monocular%2Fstryke%2Fdesign.html%23rankings&labels=design-feedback%2Cscreen%3Arankings" target="_blank" rel="noopener">피드백 남기기 ↗</a>
+  </div>
+  <p class="shows">값 컬럼 앞에서 멈추는 필드 위의 포인트</p>
+  <div class="pair">
+    <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-rankings.png" alt="랭킹 before"></figure>
+    <figure><figcaption>AFTER · v5 (2026-09-13 21:37)</figcaption><img loading="lazy" src="design-v5/img/after-rankings.png" alt="랭킹 after"></figure>
+  </div>
+</section>
+
+<section class="screen" id="compare">
+  <div class="shead">
+    <h3>09 · 비교 <code>compare</code></h3>
+    <a class="fb" href="https://github.com/vxbrandon/stryke/issues/new?title=%5Bdesign%5D+%EB%B9%84%EA%B5%90%3A+&body=%23%23%23+%ED%99%94%EB%A9%B4+%C2%B7+Screen%0A%EB%B9%84%EA%B5%90+%28%60compare%60%29%0A%0A%23%23%23+%EB%AC%B4%EC%97%87%EC%9D%B4+%EC%9D%B4%EC%83%81%ED%95%9C%EA%B0%80+%C2%B7+What+is+wrong%0A%0A%28%EC%97%AC%EA%B8%B0%EC%97%90+%EC%A0%81%EC%96%B4+%EC%A3%BC%EC%84%B8%EC%9A%94%29%0A%0A%23%23%23+%EC%B0%B8%EA%B3%A0+%C2%B7+Reference%0A%28%EB%B8%8C%EB%9E%9C%EB%93%9C+%2F+%EB%AA%A9%EC%97%85+%2F+%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7+%EB%A7%81%ED%81%AC%29%0A%0A%23%23%23+%EC%8B%AC%EA%B0%81%EB%8F%84+%C2%B7+Severity%0A-+%5B+%5D+BLOCKING++-+%5B+%5D+MAJOR++-+%5B+%5D+MINOR%0A%0A%EA%B8%B0%EB%A1%9D+%C2%B7+https%3A%2F%2Fvxbrandon.github.io%2Fopencap-monocular%2Fstryke%2Fdesign.html%23compare&labels=design-feedback%2Cscreen%3Acompare" target="_blank" rel="noopener">피드백 남기기 ↗</a>
+  </div>
+  <p class="shows">하나의 눈금 위에 두 밴드 — 이번 슛과 이전 최고</p>
+  <div class="pair">
+    <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-compare.png" alt="비교 before"></figure>
+    <figure><figcaption>AFTER · v5</figcaption><div class="empty">아직 다시 찍지 않음<br><small>not yet re-shot — <code>design.mjs shoot ${s.key}</code></small></div></figure>
+  </div>
+</section>
+
+<section class="screen" id="settings">
+  <div class="shead">
+    <h3>10 · 설정 <code>settings</code></h3>
+    <a class="fb" href="https://github.com/vxbrandon/stryke/issues/new?title=%5Bdesign%5D+%EC%84%A4%EC%A0%95%3A+&body=%23%23%23+%ED%99%94%EB%A9%B4+%C2%B7+Screen%0A%EC%84%A4%EC%A0%95+%28%60settings%60%29%0A%0A%23%23%23+%EB%AC%B4%EC%97%87%EC%9D%B4+%EC%9D%B4%EC%83%81%ED%95%9C%EA%B0%80+%C2%B7+What+is+wrong%0A%0A%28%EC%97%AC%EA%B8%B0%EC%97%90+%EC%A0%81%EC%96%B4+%EC%A3%BC%EC%84%B8%EC%9A%94%29%0A%0A%23%23%23+%EC%B0%B8%EA%B3%A0+%C2%B7+Reference%0A%28%EB%B8%8C%EB%9E%9C%EB%93%9C+%2F+%EB%AA%A9%EC%97%85+%2F+%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7+%EB%A7%81%ED%81%AC%29%0A%0A%23%23%23+%EC%8B%AC%EA%B0%81%EB%8F%84+%C2%B7+Severity%0A-+%5B+%5D+BLOCKING++-+%5B+%5D+MAJOR++-+%5B+%5D+MINOR%0A%0A%EA%B8%B0%EB%A1%9D+%C2%B7+https%3A%2F%2Fvxbrandon.github.io%2Fopencap-monocular%2Fstryke%2Fdesign.html%23settings&labels=design-feedback%2Cscreen%3Asettings" target="_blank" rel="noopener">피드백 남기기 ↗</a>
+  </div>
+  <p class="shows">단위·언어·라이선스·내 데이터 지우기 (나 위의 시트)</p>
+  <div class="pair">
+    <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-settings.png" alt="설정 before"></figure>
+    <figure><figcaption>AFTER · v5</figcaption><div class="empty">아직 다시 찍지 않음<br><small>not yet re-shot — <code>design.mjs shoot ${s.key}</code></small></div></figure>
+  </div>
+</section>
+
+<section class="screen" id="session-list">
+  <div class="shead">
+    <h3>11 · 기록 · 세션 목록 <code>session-list</code></h3>
+    <a class="fb" href="https://github.com/vxbrandon/stryke/issues/new?title=%5Bdesign%5D+%EA%B8%B0%EB%A1%9D+%C2%B7+%EC%84%B8%EC%85%98+%EB%AA%A9%EB%A1%9D%3A+&body=%23%23%23+%ED%99%94%EB%A9%B4+%C2%B7+Screen%0A%EA%B8%B0%EB%A1%9D+%C2%B7+%EC%84%B8%EC%85%98+%EB%AA%A9%EB%A1%9D+%28%60session-list%60%29%0A%0A%23%23%23+%EB%AC%B4%EC%97%87%EC%9D%B4+%EC%9D%B4%EC%83%81%ED%95%9C%EA%B0%80+%C2%B7+What+is+wrong%0A%0A%28%EC%97%AC%EA%B8%B0%EC%97%90+%EC%A0%81%EC%96%B4+%EC%A3%BC%EC%84%B8%EC%9A%94%29%0A%0A%23%23%23+%EC%B0%B8%EA%B3%A0+%C2%B7+Reference%0A%28%EB%B8%8C%EB%9E%9C%EB%93%9C+%2F+%EB%AA%A9%EC%97%85+%2F+%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7+%EB%A7%81%ED%81%AC%29%0A%0A%23%23%23+%EC%8B%AC%EA%B0%81%EB%8F%84+%C2%B7+Severity%0A-+%5B+%5D+BLOCKING++-+%5B+%5D+MAJOR++-+%5B+%5D+MINOR%0A%0A%EA%B8%B0%EB%A1%9D+%C2%B7+https%3A%2F%2Fvxbrandon.github.io%2Fopencap-monocular%2Fstryke%2Fdesign.html%23session-list&labels=design-feedback%2Cscreen%3Asession-list" target="_blank" rel="noopener">피드백 남기기 ↗</a>
+  </div>
+  <p class="shows">스크롤 중간에서 되풀이되는 눈금과, 자기 줄 위에 놓인 마크들</p>
+  <div class="pair">
+    <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-session-list.png" alt="기록 · 세션 목록 before"></figure>
+    <figure><figcaption>AFTER · v5</figcaption><div class="empty">아직 다시 찍지 않음<br><small>not yet re-shot — <code>design.mjs shoot ${s.key}</code></small></div></figure>
+  </div>
+</section>
+
+<section class="screen" id="keeper">
+  <div class="shead">
+    <h3>12 · 키퍼 <code>keeper</code></h3>
+    <a class="fb" href="https://github.com/vxbrandon/stryke/issues/new?title=%5Bdesign%5D+%ED%82%A4%ED%8D%BC%3A+&body=%23%23%23+%ED%99%94%EB%A9%B4+%C2%B7+Screen%0A%ED%82%A4%ED%8D%BC+%28%60keeper%60%29%0A%0A%23%23%23+%EB%AC%B4%EC%97%87%EC%9D%B4+%EC%9D%B4%EC%83%81%ED%95%9C%EA%B0%80+%C2%B7+What+is+wrong%0A%0A%28%EC%97%AC%EA%B8%B0%EC%97%90+%EC%A0%81%EC%96%B4+%EC%A3%BC%EC%84%B8%EC%9A%94%29%0A%0A%23%23%23+%EC%B0%B8%EA%B3%A0+%C2%B7+Reference%0A%28%EB%B8%8C%EB%9E%9C%EB%93%9C+%2F+%EB%AA%A9%EC%97%85+%2F+%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7+%EB%A7%81%ED%81%AC%29%0A%0A%23%23%23+%EC%8B%AC%EA%B0%81%EB%8F%84+%C2%B7+Severity%0A-+%5B+%5D+BLOCKING++-+%5B+%5D+MAJOR++-+%5B+%5D+MINOR%0A%0A%EA%B8%B0%EB%A1%9D+%C2%B7+https%3A%2F%2Fvxbrandon.github.io%2Fopencap-monocular%2Fstryke%2Fdesign.html%23keeper&labels=design-feedback%2Cscreen%3Akeeper" target="_blank" rel="noopener">피드백 남기기 ↗</a>
+  </div>
+  <p class="shows">골문 앞 키퍼가 그려진 시뮬레이션과 그 아래 측정 — 다이빙 중간에 찍는다</p>
+  <div class="pair">
+    <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-keeper.png" alt="키퍼 before"></figure>
+    <figure><figcaption>AFTER · v5</figcaption><div class="empty">아직 다시 찍지 않음<br><small>not yet re-shot — <code>design.mjs shoot ${s.key}</code></small></div></figure>
+  </div>
+</section>
+
+<section class="screen" id="session-refused">
+  <div class="shead">
+    <h3>13 · 세션 · 측정 안 됨 <code>session-refused</code></h3>
+    <a class="fb" href="https://github.com/vxbrandon/stryke/issues/new?title=%5Bdesign%5D+%EC%84%B8%EC%85%98+%C2%B7+%EC%B8%A1%EC%A0%95+%EC%95%88+%EB%90%A8%3A+&body=%23%23%23+%ED%99%94%EB%A9%B4+%C2%B7+Screen%0A%EC%84%B8%EC%85%98+%C2%B7+%EC%B8%A1%EC%A0%95+%EC%95%88+%EB%90%A8+%28%60session-refused%60%29%0A%0A%23%23%23+%EB%AC%B4%EC%97%87%EC%9D%B4+%EC%9D%B4%EC%83%81%ED%95%9C%EA%B0%80+%C2%B7+What+is+wrong%0A%0A%28%EC%97%AC%EA%B8%B0%EC%97%90+%EC%A0%81%EC%96%B4+%EC%A3%BC%EC%84%B8%EC%9A%94%29%0A%0A%23%23%23+%EC%B0%B8%EA%B3%A0+%C2%B7+Reference%0A%28%EB%B8%8C%EB%9E%9C%EB%93%9C+%2F+%EB%AA%A9%EC%97%85+%2F+%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7+%EB%A7%81%ED%81%AC%29%0A%0A%23%23%23+%EC%8B%AC%EA%B0%81%EB%8F%84+%C2%B7+Severity%0A-+%5B+%5D+BLOCKING++-+%5B+%5D+MAJOR++-+%5B+%5D+MINOR%0A%0A%EA%B8%B0%EB%A1%9D+%C2%B7+https%3A%2F%2Fvxbrandon.github.io%2Fopencap-monocular%2Fstryke%2Fdesign.html%23session-refused&labels=design-feedback%2Cscreen%3Asession-refused" target="_blank" rel="noopener">피드백 남기기 ↗</a>
+  </div>
+  <p class="shows">빈 골대, 빈 그루브, 마크가 하나도 없는 슛 목록 (측정이 거부된 세션이 목록에 있어야 한다)</p>
+  <div class="pair">
+    <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-session-refused.png" alt="세션 · 측정 안 됨 before"></figure>
+    <figure><figcaption>AFTER · v5</figcaption><div class="empty">아직 다시 찍지 않음<br><small>not yet re-shot — <code>design.mjs shoot ${s.key}</code></small></div></figure>
+  </div>
+</section>
+
+<section class="screen" id="licences">
+  <div class="shead">
+    <h3>14 · 라이선스 <code>licences</code></h3>
+    <a class="fb" href="https://github.com/vxbrandon/stryke/issues/new?title=%5Bdesign%5D+%EB%9D%BC%EC%9D%B4%EC%84%A0%EC%8A%A4%3A+&body=%23%23%23+%ED%99%94%EB%A9%B4+%C2%B7+Screen%0A%EB%9D%BC%EC%9D%B4%EC%84%A0%EC%8A%A4+%28%60licences%60%29%0A%0A%23%23%23+%EB%AC%B4%EC%97%87%EC%9D%B4+%EC%9D%B4%EC%83%81%ED%95%9C%EA%B0%80+%C2%B7+What+is+wrong%0A%0A%28%EC%97%AC%EA%B8%B0%EC%97%90+%EC%A0%81%EC%96%B4+%EC%A3%BC%EC%84%B8%EC%9A%94%29%0A%0A%23%23%23+%EC%B0%B8%EA%B3%A0+%C2%B7+Reference%0A%28%EB%B8%8C%EB%9E%9C%EB%93%9C+%2F+%EB%AA%A9%EC%97%85+%2F+%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7+%EB%A7%81%ED%81%AC%29%0A%0A%23%23%23+%EC%8B%AC%EA%B0%81%EB%8F%84+%C2%B7+Severity%0A-+%5B+%5D+BLOCKING++-+%5B+%5D+MAJOR++-+%5B+%5D+MINOR%0A%0A%EA%B8%B0%EB%A1%9D+%C2%B7+https%3A%2F%2Fvxbrandon.github.io%2Fopencap-monocular%2Fstryke%2Fdesign.html%23licences&labels=design-feedback%2Cscreen%3Alicences" target="_blank" rel="noopener">피드백 남기기 ↗</a>
+  </div>
+  <p class="shows">글꼴·모델과 오픈소스 목록</p>
+  <div class="pair">
+    <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-licences.png" alt="라이선스 before"></figure>
+    <figure><figcaption>AFTER · v5 (2026-09-13 21:37)</figcaption><img loading="lazy" src="design-v5/img/after-licences.png" alt="라이선스 after"></figure>
+  </div>
+</section>
+
+<section class="screen" id="delete">
+  <div class="shead">
+    <h3>15 · 나 · 모두 지우기 <code>delete</code></h3>
+    <a class="fb" href="https://github.com/vxbrandon/stryke/issues/new?title=%5Bdesign%5D+%EB%82%98+%C2%B7+%EB%AA%A8%EB%91%90+%EC%A7%80%EC%9A%B0%EA%B8%B0%3A+&body=%23%23%23+%ED%99%94%EB%A9%B4+%C2%B7+Screen%0A%EB%82%98+%C2%B7+%EB%AA%A8%EB%91%90+%EC%A7%80%EC%9A%B0%EA%B8%B0+%28%60delete%60%29%0A%0A%23%23%23+%EB%AC%B4%EC%97%87%EC%9D%B4+%EC%9D%B4%EC%83%81%ED%95%9C%EA%B0%80+%C2%B7+What+is+wrong%0A%0A%28%EC%97%AC%EA%B8%B0%EC%97%90+%EC%A0%81%EC%96%B4+%EC%A3%BC%EC%84%B8%EC%9A%94%29%0A%0A%23%23%23+%EC%B0%B8%EA%B3%A0+%C2%B7+Reference%0A%28%EB%B8%8C%EB%9E%9C%EB%93%9C+%2F+%EB%AA%A9%EC%97%85+%2F+%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7+%EB%A7%81%ED%81%AC%29%0A%0A%23%23%23+%EC%8B%AC%EA%B0%81%EB%8F%84+%C2%B7+Severity%0A-+%5B+%5D+BLOCKING++-+%5B+%5D+MAJOR++-+%5B+%5D+MINOR%0A%0A%EA%B8%B0%EB%A1%9D+%C2%B7+https%3A%2F%2Fvxbrandon.github.io%2Fopencap-monocular%2Fstryke%2Fdesign.html%23delete&labels=design-feedback%2Cscreen%3Adelete" target="_blank" rel="noopener">피드백 남기기 ↗</a>
+  </div>
+  <p class="shows">기기와 서버를 함께 지운다고 말하는 확인 시트</p>
+  <div class="pair">
+    <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-delete.png" alt="나 · 모두 지우기 before"></figure>
+    <figure><figcaption>AFTER · v5 (2026-09-13 21:38)</figcaption><img loading="lazy" src="design-v5/img/after-delete.png" alt="나 · 모두 지우기 after"></figure>
+  </div>
+</section>
+
+<h2 id="lane3d">3D 레인 — 그림</h2>
+<div class="lane"><h2>PICTURE lane · v5</h2>
+<h3>2026-09-14 · Start</h3>
+<p>Read the complete brief and thought log, and inspected r6 against all five current frames. Working in ordered, simulator-verified commits. Existing backend/native changes belong to other lanes.</p>
+<p>The current Home card is an SVG projection rather than ShotScene; chrome must mount ShotScene for the full environment to inherit. Render token coordination requested because the thought log assigns theme.ts to chrome while the brief requires its values to change.</p>
+<p>Dev gallery: <code>stryke://dev/scene?mode=shot</code> (also keeper/session/compare/card/camera); state and calibration query parameters allow repeatable fixture checks. Release route uses the existing conditional-require gate. All fixtures are labelled 테스트.</p>
+<h3>2026-09-14 · Step 1 in progress</h3>
+<p>DataTexture uploads render correctly on the simulator. PBR is compiling. Correcting an existing cyan lighting rig (the brief's statement that no lights exist was stale) and near-camera ground clipping. Testing real PCF shadow maps with a dedicated sphere probe. Removed duplicate lighting before tuning the turf.</p>
+<p>Coordination: applied exactly the three render token values mandated by the brief (RenderPitch #24452A, RenderPitchBand #305333, GoalWireframe #E1E6E2). No other theme lines changed. Added the scene dev route to gallery-gate.test.ts with a release conditional-require assertion; the old route-list assertion intentionally allowed only ui.tsx.</p>
+<p>Current full-suite blocker belongs to chrome: two source-shape tests in axis-arrival.test.ts fail during the axis.tsx rewrite (settled/Animated.View assertions). Will rerun before committing. No chrome files edited.</p>
+<p>Step 1 simulator result: <b>PBR, DataTexture and PCFSoftShadowMap all work.</b> <code>01-shadow-on.png</code> versus <code>01-shadow-off.png</code> is a fresh-context A/B, with no fake contact shadow in either. White sphere highlights and its dark cast shadow are visible. Neutral hemisphere + two directional floods replace the older saturated cyan rig. NoToneMapping is explicit in renderer and Canvas (<code>flat</code>).</p>
+<p>Ground uses deterministic 128² RGBA noise with mipmaps, five-metre mown bands in vertex colours, and a broad ground-only edge falloff. EXGL still dropped grazing triangles at 128 and 256 subdivisions; 192 subdivisions plus a 43 cm staggered underlay eliminated visible holes in both the low shot and 4:3 keeper frame. Two ground draws, shared geometry/material inputs; no image assets. <code>01-before.png</code> → <code>01-after.png</code>; keeper check <code>01-keeper-ground.png</code>.</p>
+<p><b>Awaiting chrome's remaining axis-arrival test fix before the step 1 commit.</b> Full suite now 722 tests, 721 passing, one failure: “has exactly two arrivals, and both are read against a settled flag” expects two <code>if (settled)</code> occurrences but the new axis has one. TypeScript passes. This is not a scene grammar failure; no axis source/test edited by PICTURE.</p>
+<p>Pixel check (Pillow, saved frames): lower shot-ground ROI x=0…941/y=520…999 contains 365,376 green-dominant pixels / 452,160 (80.8%). Shadow A/B ROI x=390…659/y=650…779 has 378 pixels changing by &gt;12/255. No device performance claim; static scenes retain demand rendering.</p>
+<p>06:22 — Chrome corrected the remaining arrival assertion. Full suite <b>722/722 passes</b>, TypeScript passes. Step 1 accepted. Three render-token lines are the only theme changes included.</p>
+<h3>2026-09-14 · Step 2</h3>
+<p>Step 1 commit: <code>8688506</code> — light the pitch and texture the turf. Another lane changed the shared checkout from improve/field-accuracy-latency to main during the step; no branch switch performed by PICTURE.</p>
+<p>White PBR goal: 12 cm diameter round posts, metalness 0.18 / roughness 0.32, slimmer back stanchions and fine translucent white net. Removed additive sleeves. The net builder and all declared/fallback dimension logic are unchanged. Searching/failed retain dim candidates and grey/red brackets; detected has lime brackets; verified has a thin lime confirmation line above the white crossbar. Environment white makes no calibration claim.</p>
+<p>Full suite 722/722 and TypeScript pass; waiting for simulator mutex to inspect calibration states.</p>
+<p>Chrome steer received after step 1 acceptance: thin 2–3 px tracer, ball/launch pool own lime glow; brighter cool-white key and separate mown bands; haze around visible floodlight heads; goal brightest after ball. Chrome is mounting the real scene in Home's ~362×132 pt card. Applied environment adjustment with step 2: key 4.2, rim 2.0, neutral hemisphere 0.8; stronger band separation, broad edge falloff rather than dimming the near field; small distant floodlight heads and horizon haze. Goal/material acceptance awaits the shared simulator (chrome holds mutex since ~06:24).</p>
+<h3>2026-09-14 · 06:34 · Simulator retry window exhausted</h3>
+<p>The mutex remained present throughout the brief's ten-minute retry window, including the final attempt at 06:34. It is another lane's lock; PICTURE neither removed it nor drove the simulator while it was held. Asked chrome whether it is still in use. Step 2's goal and revised environment therefore remain <b>uncommitted and not visually accepted</b>. Final checks: <b>722/722 tests pass; <code>pnpm exec tsc --noEmit</code> passes; <code>git diff --check</code> passes.</b></p>
+<p>Resume at step 2: acquire mutex, capture default plus searching/detected/verified/failed at <code>stryke://dev/scene</code>, inspect the white posts/net and revised lights, release mutex, rerun required checks, explicitly stage only GoalFrame.tsx, scene-shared.tsx, this log, and the step-2 frames, then commit. Step 3–6 remain outstanding. Prepared ball topology code is in <code>/tmp/stryke-panel-ball.ts</code> (not applied): 12 pentagons + 20 hexagons, radial normals, recessed seams. Step 3 must also remove the fat arc halo and reduce the tracer to 2–3 px at panel scale; keep confidence-weighted ball and launch-pool glow. Step 4 must update both KeeperBody and the currently active baked CC0 MeshBody keeper path. Step 5 is the still-unstarted 30-minute Blender/baking spike. Step 6 includes Home's new real-scene card at ~362×132 pt and all five final scene frames.</p>
+<h3>Previous pause (resolved by chrome’s resume instruction)</h3>
+<p><b>BLOCKED: shared simulator mutex <code>/tmp/stryke-sim.lock</code> remained occupied for the maximum ten-minute retry window; step 2 cannot be verified or committed.</b></p>
+<p>Commit list:</p>
+<ul>
+<li><code>8688506</code> — <code>feat(fe-mobile): v5 — light the pitch and texture the turf</code> (step 1; simulator accepted, PBR/DataTexture/PCF shadow A/B verified).</li>
+</ul>
+<p>Uncommitted PICTURE work: GoalFrame.tsx, scene-shared.tsx, this log, and <code>frames/3d/02-before.png</code>. No steps 2–6 claimed complete.</p>
+<h3>2026-09-14 · Resumed</h3>
+<p>Chrome released its capture lock and withdrew the ten-minute timeout. Poll every 30 seconds without a cap. Home now mounts the real static scene at 362×132 pt; verify the goal and entire trajectory in that letterbox. Resuming step 2 before the remaining ordered commits.</p>
+<figure><figcaption>01-after.png</figcaption><img loading="lazy" src="design-v5/img/3d-01-after.png" alt="01-after.png"></figure><figure><figcaption>01-before.png</figcaption><img loading="lazy" src="design-v5/img/3d-01-before.png" alt="01-before.png"></figure><figure><figcaption>01-ground-check.png</figcaption><img loading="lazy" src="design-v5/img/3d-01-ground-check.png" alt="01-ground-check.png"></figure><figure><figcaption>01-keeper-ground.png</figcaption><img loading="lazy" src="design-v5/img/3d-01-keeper-ground.png" alt="01-keeper-ground.png"></figure><figure><figcaption>01-pbr-probe.png</figcaption><img loading="lazy" src="design-v5/img/3d-01-pbr-probe.png" alt="01-pbr-probe.png"></figure><figure><figcaption>01-shadow-off.png</figcaption><img loading="lazy" src="design-v5/img/3d-01-shadow-off.png" alt="01-shadow-off.png"></figure><figure><figcaption>01-shadow-on.png</figcaption><img loading="lazy" src="design-v5/img/3d-01-shadow-on.png" alt="01-shadow-on.png"></figure><figure><figcaption>02-after.png</figcaption><img loading="lazy" src="design-v5/img/3d-02-after.png" alt="02-after.png"></figure><figure><figcaption>02-before.png</figcaption><img loading="lazy" src="design-v5/img/3d-02-before.png" alt="02-before.png"></figure><figure><figcaption>02-detected.png</figcaption><img loading="lazy" src="design-v5/img/3d-02-detected.png" alt="02-detected.png"></figure><figure><figcaption>02-failed.png</figcaption><img loading="lazy" src="design-v5/img/3d-02-failed.png" alt="02-failed.png"></figure><figure><figcaption>02-searching.png</figcaption><img loading="lazy" src="design-v5/img/3d-02-searching.png" alt="02-searching.png"></figure><figure><figcaption>02-verified.png</figcaption><img loading="lazy" src="design-v5/img/3d-02-verified.png" alt="02-verified.png"></figure></div>
+
+<h2 id="kit">디자인 키트 — 코드에서 읽어 온 값</h2>
+<h4>색 (dark palette, <code>src/constants/theme.ts</code>)</h4>
+<div class="swatches"><div class="sw"><i style="background:#141A20"></i><b>card</b><span>#141A20</span></div><div class="sw"><i style="background:#0B0F13"></i><b>ground</b><span>#0B0F13</span></div><div class="sw"><i style="background:#1C242C"></i><b>raised</b><span>#1C242C</span></div><div class="sw"><i style="background:rgba(255,255,255,0.08)"></i><b>hairline</b><span>rgba(255,255,255,0.08)</span></div><div class="sw"><i style="background:rgba(255,255,255,0.14)"></i><b>hairlineStrong</b><span>rgba(255,255,255,0.14)</span></div><div class="sw"><i style="background:rgba(11,15,19,0.72)"></i><b>scrim</b><span>rgba(11,15,19,0.72)</span></div><div class="sw"><i style="background:#C8FF00"></i><b>lime</b><span>#C8FF00</span></div><div class="sw"><i style="background:#0B0F13"></i><b>limeInk</b><span>#0B0F13</span></div><div class="sw"><i style="background:rgba(11,15,19,0.30)"></i><b>markRule</b><span>rgba(11,15,19,0.30)</span></div><div class="sw"><i style="background:#55D9FF"></i><b>cyan</b><span>#55D9FF</span></div><div class="sw"><i style="background:#F2F5F7"></i><b>text</b><span>#F2F5F7</span></div><div class="sw"><i style="background:#B3BCC4"></i><b>text2</b><span>#B3BCC4</span></div><div class="sw"><i style="background:#808C94"></i><b>text3</b><span>#808C94</span></div><div class="sw"><i style="background:#64727E"></i><b>text4</b><span>#64727E</span></div><div class="sw"><i style="background:#8FE38F"></i><b>positive</b><span>#8FE38F</span></div><div class="sw"><i style="background:#FF5A5F"></i><b>danger</b><span>#FF5A5F</span></div></div>
+<h4>간격 · Space</h4><table><tr><th>s1</th><th>s2</th><th>s3</th><th>s4</th><th>s5</th><th>s6</th><th>s7</th><th>s8</th></tr><tr><td>4 pt</td><td>8 pt</td><td>12 pt</td><td>16 pt</td><td>20 pt</td><td>24 pt</td><td>32 pt</td><td>48 pt</td></tr></table>
+<h4>모서리 · Radii</h4><table><tr><th>card</th><th>button</th><th>chip</th><th>sheet</th><th>bar</th><th>full</th><th>none</th></tr><tr><td>16</td><td>14</td><td>8</td><td>20</td><td>2</td><td>999</td><td>0</td></tr></table>
+<h4>타입 · Type (Pretendard for words, Inter Tight for numerals)</h4><table><thead><tr><th>role</th><th>size</th><th>line</th></tr></thead><tbody><tr><td>display</td><td>32</td><td>38</td></tr><tr><td>title</td><td>24</td><td>30</td></tr><tr><td>heading</td><td>20</td><td>26</td></tr><tr><td>body</td><td>17</td><td>24</td></tr><tr><td>text</td><td>15</td><td>22</td></tr><tr><td>caption</td><td>13</td><td>18</td></tr><tr><td>overline</td><td>11</td><td>14</td></tr><tr><td>stat</td><td>28</td><td>32</td></tr><tr><td>statSm</td><td>20</td><td>24</td></tr></tbody></table>
+<h4>글꼴 파일</h4><p><code>InterTight-Bold.ttf</code> <code>InterTight-Medium.ttf</code> <code>InterTight-Regular.ttf</code> <code>Pretendard-Black.ttf</code> <code>Pretendard-Bold.ttf</code> <code>Pretendard-Medium.ttf</code> <code>Pretendard-Regular.ttf</code></p>
+<h4>아이콘 — Lucide, 닫힌 어휘 (32개, stroke 1.75, 20/24/32)</h4>
+<div class="icons"><div><code>House</code>Home tab</div><div><code>Video</code>Capture — the centre tab-bar button</div><div><code>ChartColumn</code>기록 tab</div><div><code>CircleUser</code>나 tab; an avatar placeholder</div><div><code>Settings</code>Settings</div><div><code>ChevronLeft</code>Back</div><div><code>ChevronRight</code>Forward / open</div><div><code>Share2</code>Share</div><div><code>Info</code>Info / why — opens the measurement sheet</div><div><code>X</code>Close</div><div><code>Play</code>Play</div><div><code>Pause</code>Pause</div><div><code>RotateCcw</code>Replay again</div><div><code>PersonStanding</code>Body mesh; whole body in frame</div><div><code>Focus</code>Fit / reset camera</div><div><code>Calendar</code>Session</div><div><code>Target</code>Shot count</div><div><code>Check</code>Contact detected (inside a 20px circle, `positive`); the chosen row in a settings picker (bare glyph, `text`)</div><div><code>LoaderCircle</code>Pending / analysing (animated)</div><div><code>Minus</code>Not measured (inside a 20px circle, `text4`)</div><div><code>Lightbulb</code>Coach focus</div><div><code>TrendingUp</code>Progress up</div><div><code>Trophy</code>Rankings</div><div><code>BadgeCheck</code>Verified record</div><div><code>Camera</code>Camera / setup</div><div><code>Smartphone</code>Phone tilt</div><div><code>Frame</code>Goal in frame</div><div><code>Trash2</code>Delete</div><div><code>Download</code>Export</div><div><code>FileText</code>Licences (a notice that ships with the app)</div><div><code>TriangleAlert</code>Error (`danger`)</div><div><code>WifiOff</code>Offline</div></div>
+
+<h2 id="assets">에셋 — 어디에 무엇이 있나</h2>
+<h2>Design assets — where everything lives</h2>
+<p>One table. Paths are from the repo root (<code>~/Desktop/programming/stryke</code>) unless marked. Licences are stated where an asset ships in the binary; anything marked <b>not shippable</b> may be used for research and records only.</p>
+<table><thead><tr><th>Asset</th><th>Path</th><th>What it is</th><th>Licence / rule</th></tr></thead><tbody>
+<tr><td><b>Published record</b></td><td>https://vxbrandon.github.io/opencap-monocular/stryke/design.html</td><td>The v5 design record — before/after per screen, feedback buttons, design kit</td><td>gh-pages checkout <code>~/Desktop/programming/opencap-pages/stryke/</code> (<code>design.html</code>, <code>design-v5/img/</code>, <code>design-v4.html</code> superseded, <code>design-r5.html</code> superseded)</td></tr>
+<tr><td><b>Feedback inbox</b></td><td><code>docs/design/feedback/inbox.{json,md}</code></td><td>Open GitHub issues labelled <code>design-feedback</code>, pulled by the console</td><td><code>node tools/design/design.mjs feedback pull</code></td></tr>
+<tr><td><b>The console</b></td><td><code>tools/design/design.mjs</code></td><td><code>shoot</code> / <code>report</code> / <code>publish</code> / <code>feedback</code> / <code>labels</code></td><td>node + <code>sips</code> + <code>xcrun</code> + <code>idb</code> + <code>gh</code></td></tr>
+<tr><td><b>Screens + recipes</b></td><td><code>docs/design/v5/screens.json</code></td><td>The 15 screens, their names, and how the simulator reaches each</td><td>Tap coordinates are layout-dependent; <code>verified</code> dates them</td></tr>
+<tr><td>v5 frames (after)</td><td><code>docs/design/v5/frames/&lt;key&gt;.png</code></td><td>Simulator captures of the v5 app, 1206×2622</td><td>Re-shot by <code>shoot</code></td></tr>
+<tr><td>v5 3D lane frames</td><td><code>docs/design/v5/frames/3d/</code></td><td>The Codex picture lane's step-by-step captures</td><td>Written by the 3D lane</td></tr>
+<tr><td>v3/v4 frames (before)</td><td><code>docs/design/v3/final/NN-key.png</code>, <code>docs/design/v3/after/</code>, <code>docs/design/v3/audit/</code></td><td>The record the founder rejected (final = v4.1), state frames, the original audit</td><td>Gated by <code>tools/frames.mjs check</code> + <code>docs/design/v3/frames.json</code></td></tr>
+<tr><td>Thought logs</td><td><code>docs/design/v5/00-THOUGHT-LOG.md</code>, <code>docs/design/v3/00-THOUGHT-LOG.md</code></td><td>Dated reasoning, never rewritten</td><td>—</td></tr>
+<tr><td>Specs</td><td><code>docs/design/v3/01-PRODUCT.md</code>, <code>02-SYSTEM.md</code>, <code>03-SCREENS.md</code></td><td>Product spec, binding tokens/components, per-screen spec</td><td>v5 amends by dated sections, does not rewrite</td></tr>
+<tr><td>Verdicts</td><td><code>docs/design/v3/04…08-VERDICTS-*.md</code></td><td>Five rounds of adversarial critic verdicts, verbatim</td><td>—</td></tr>
+<tr><td>3D brief</td><td><code>docs/design/v5/01-BRIEF-3D.md</code>, <code>10-3D-LANE.md</code></td><td>The picture lane's brief and its log</td><td>—</td></tr>
+<tr><td><b>References</b></td><td><code>docs/design/reference/r6-journey.png</code></td><td>The look the founder kept: floodlit night pitch, real grass, white goal, one lime arc</td><td>Generated concept art — reference only, never shipped</td></tr>
+<tr><td>References (superseded)</td><td><code>docs/design/reference/r3-<i>.png</code>, <code>r4-</i>.png</code>, <code>r5-*.png</code>, <code>r5-screens.md</code></td><td>The hologram-style mockups v5 leaves</td><td>Reference only</td></tr>
+<tr><td>Asset kit spec</td><td><code>docs/design/reference/asset-kit-v1.md</code></td><td>The founder's visual asset kit board, transcribed, with the honesty collisions marked</td><td>—</td></tr>
+<tr><td><b>Tokens</b></td><td><code>apps/fe-mobile/src/constants/theme.ts</code></td><td>Dark palette, <code>Space</code>, <code>Radii</code>, <code>Type</code>, numeral styles, render-world colours</td><td>The only place a colour or spacing number lives</td></tr>
+<tr><td><b>Fonts</b></td><td><code>apps/fe-mobile/assets/fonts/</code> (<code>Pretendard-<i>.ttf</code>, <code>InterTight-</i>.ttf</code>, <code>OFL.txt</code>)</td><td>Pretendard for words, Inter Tight for numerals</td><td>SIL OFL 1.1 — shipped, listed in-app under 라이선스</td></tr>
+<tr><td><b>Icons</b></td><td><code>lucide-react-native@1.40.0</code> via <code>apps/fe-mobile/src/components/ui/icon-map.ts</code></td><td>The closed vocabulary (<code>ICON_NAMES</code> + <code>MEANING</code>), stroke 1.75, sizes 20/24/32</td><td>ISC (Lucide) — shipped; add a row before using a new icon</td></tr>
+<tr><td>3D — bundled bodies</td><td><code>apps/fe-mobile/assets/models/quaternius-*.glb</code>, <code>LICENSES.md</code></td><td>CC0 low-poly bodies</td><td>CC0 1.0 — shipped</td></tr>
+<tr><td>3D — baked body</td><td><code>apps/fe-mobile/src/render/body-mesh-data.ts</code> via <code>assets/models/bake-body-mesh.mjs</code></td><td>A GLB baked into typed arrays (no runtime loader)</td><td>Same as its source GLB</td></tr>
+<tr><td>3D — scene code</td><td><code>apps/fe-mobile/src/render/</code> (<code>ShotScene</code>, <code>GoalFrame</code>, <code>KeeperBody</code>, <code>BallVisual</code>, <code>scene-shared</code>, <code>compose</code>, <code>scene-light</code>)</td><td>The three.js scene, camera fit, and light rules</td><td>Picture lane owns it in v5</td></tr>
+<tr><td>3D — Blender</td><td><code>tools/blender/</code> (the picture lane will create it), <code>/Applications/Blender.app</code> 5.1.1</td><td>Headless bake scripts → GLB/TS data</td><td>Bake outputs land beside the GLBs above</td></tr>
+<tr><td>Body mesh (server)</td><td><code>~/Desktop/programming/stryke-pipeline/</code> (<code>pipeline/heroshot.py</code>, <code>assets/hero_body_*.npz</code>)</td><td>Server-side hero render; SMPL/SMPL-X derived</td><td><b>Not shippable</b> — MPI research licence, per-user registration, never redistribute</td></tr>
+<tr><td>Demo clip</td><td><code>apps/fe-mobile/assets/clips/static_goal.mov</code></td><td>The bundled fixture clip (carries the 테스트 mark wherever shown)</td><td>Internal</td></tr>
+<tr><td>App icons</td><td><code>apps/fe-mobile/assets/images/</code>, <code>assets/expo.icon/</code></td><td>Launcher icons</td><td>Internal</td></tr>
+<tr><td>Frames gate</td><td><code>tools/frames.mjs</code>, <code>docs/design/v3/frames.json</code></td><td>Fails CI when a v3 frame's source moved without a re-shoot</td><td>Run from the repo root</td></tr>
+</tbody></table>
+
+<p class="meta" style="margin-top:48px">Built by <code>tools/design/design.mjs report</code>. Frames are simulator captures of <code>apps/fe-mobile</code>; nothing here is a mockup.</p>
+</main></body></html>
