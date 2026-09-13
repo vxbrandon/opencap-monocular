@@ -22,7 +22,7 @@ ul,ol{color:var(--text2);padding-left:22px}li{margin:4px 0}
 @media(max-width:720px){.pair,.refs{grid-template-columns:1fr}.icons{columns:1}}
 </style></head><body><main>
 <h1>STRYKE — 디자인 기록 v5</h1>
-<p class="lede">앱이 지금 어떻게 보이는지, 왜 그렇게 바꾸는지, 그리고 어디를 눌러 피드백을 남기는지. <span class="meta">생성 2026-09-13 21:41Z · <a href="https://github.com/vxbrandon/stryke/issues?q=is%3Aissue+label%3Adesign-feedback">열린 피드백 보기</a></span></p>
+<p class="lede">앱이 지금 어떻게 보이는지, 왜 그렇게 바꾸는지, 그리고 어디를 눌러 피드백을 남기는지. <span class="meta">생성 2026-09-13 22:57Z · <a href="https://github.com/vxbrandon/stryke/issues?q=is%3Aissue+label%3Adesign-feedback">열린 피드백 보기</a></span></p>
 <nav class="toc"><a href="#log">진단</a><a href="#refs">레퍼런스</a><a href="#screens">화면 (15)</a><a href="#lane3d">3D 레인</a><a href="#kit">디자인 키트</a><a href="#assets">에셋</a><a href="#howto">피드백 방법</a></nav>
 
 <div class="card" id="howto"><h3>피드백 남기는 법 · How to leave feedback</h3>
@@ -86,6 +86,34 @@ ul,ol{color:var(--text2);padding-left:22px}li{margin:4px 0}
 <p><b>What went with it.</b> <code>axisLabelLayout</code> (the anchored pair's collision rule) and its 13 tests — a function with no caller is a claim the app does not make. 735 → 722 tests, all green. The frames gate is red until the console re-shoots: every frame that draws an axis, a button or the shell has moved, by design.</p>
 <p><b>Left alone on purpose.</b> The 2D picture well on Home's card (<code>shot-arc.tsx</code>) still carries a <code>GroundLight</code> — it is inside a picture, and the picture lane is rebuilding what a picture is; decide it after that lands. <code>groundLit</code> / <code>groundShade</code> stay as tokens with tests (<code>light-mix.test.ts</code>) and no caller in chrome: the picture well is their last reader.</p>
 <p><b>Seen while shooting, not mine.</b> 슛 opens on 원본 with 리플레이를 받지 못했어요 because this machine's be-api serves no replay rows for the demo shot (flagged since v4.1). 세션's panel showed 3D 장면 준비 중 while the picture lane was mid-edit — expected on a shared Metro.</p>
+<h3>2026-09-14 06:45 — Home's card carries the real picture (<code>375bd86</code>), and the lock</h3>
+<p><b>The decision.</b> The picture lane's first log entry said the thing the brief had missed: Home's card was a 2D SVG projection (<code>shot-arc.tsx</code>), so the one screen a player opens every time could never inherit the lit pitch. Two ways out: restyle the SVG (white posts, a green gradient — a drawing pretending to be the picture) or mount the picture. The card now mounts the same static <code>ShotSceneMount</code> the session map uses, at 362 × 132 pt, in a <code>pointerEvents=&quot;none&quot;</code> well so the card stays one press and the scene's orbit drag can never steal a scroll. Three attempts to get the height right: the mount's canvas carries <code>height: 300</code> AND <code>minHeight: 220</code>, and a <code>style</code> override of one is beaten by the other — the picture ran 88 pt into the card's text until both were overridden. <code>/tmp/stryke-v5/home6.png</code> is the result: a white goal, grass, one lime tracer, nothing spilling.</p>
+<p><b>What it costs.</b> A GL canvas on the Home tab. It renders on demand (static motion, no striker loop), and the first frame takes 3–6 s on the sim — a grey well until then. Worth a <code>SceneSkeleton</code> that draws the goal mouth rather than a blank; flagged, not fixed.</p>
+<p><b>The lock incident.</b> Three lanes drive one simulator behind <code>/tmp/stryke-sim.lock</code>. At 06:38 I took the lock and found the app parked on the 모두 지울까요? sheet — the delete-all confirmation — with no lock held. Its primary button wipes the device and the server rows, and every lane taps by coordinates. Nobody pressed it. Rules sent to both lanes and now binding: hold the lock for a WHOLE run, never leave a sheet or nested route open on release, return to Home, poll every 30 s with no cap (the picture lane had given up after the brief's ten-minute window and declared itself blocked — my fault, the cap was too short).</p>
+<p><b>Reviewed, not changed.</b> 세팅, 랭킹, 비교 and 설정 (v3 <code>final/</code>): their tells were the primitives' — the section title size, the anchored pair on 비교's reference axis, the 테스트 chip — and are fixed by the batch above. 세팅's camera guide is a schematic because the simulator has no camera; on a phone the r6 SET UP frame (live preview with lime corner brackets) is what the capture screen already draws. Nothing there for this wave.</p>
+<h3>2026-09-14 07:30 — the picture lane is done, and what the gate does now</h3>
+<p><b>The picture lane (Codex, gpt-6-astra) finished its six steps</b> in seven commits (<code>8688506</code> → <code>1da9864</code>), each verified on the simulator with a before/after frame under <code>frames/3d/</code>. Its own log is <code>10-3D-LANE.md</code>. What the scene is now, against the brief's table:</p>
+<table><thead><tr><th>Was</th><th>Now</th></tr></thead><tbody>
+<tr><td>every material unlit</td><td>PBR (<code>MeshStandardMaterial</code>), hemisphere sky + two directional floods, PCF soft shadow maps — A/B proven on expo-gl with a sphere probe (<code>01-shadow-on/off.png</code>)</td></tr>
+<tr><td>near-black turf</td><td>deterministic 128² noise <code>DataTexture</code>, five-metre mown bands in vertex colour, an edge falloff on the ground only; 80.8 % of the lower shot ROI is green-dominant</td></tr>
+<tr><td>cyan wire goal, 1 px net</td><td>white 12 cm round posts (metalness 0.18 / roughness 0.32), slimmer stanchions, fine translucent white net; four calibration states still distinct</td></tr>
+<tr><td>flat pearl sphere</td><td>panelled ball, lit, with a contact shadow</td></tr>
+<tr><td>additive cyan hologram keeper</td><td>solid figure, cyan shirt, dark shorts, light gloves — after my correction: the first matte DARK kit vanished against the net at panel size (<code>04-silhouette-crop.png</code>)</td></tr>
+<tr><td>fat glowing tube</td><td>thin tracer; the ball is the bright point; the launch pool stays and still scales with the band</td></tr>
+<tr><td>키퍼 framed the 18 m flight</td><td>키퍼 frames the SAVE: the goal spans ~80 % of the width and the arc enters from the edge, because that screen is labelled a simulation and the measurement lives in the card below. 슛 · 세션 · 비교 · 홈 keep <code>contained</code></td></tr>
+</tbody></table>
+<p><b>Blender.</b> The founder asked for &quot;blender or whatever&quot;. The lane ran the spike: Blender 5.1.1 headless exported a 32-panel ball (<code>tools/blender/v5-ball.py</code>, 30 KB GLB, 360 triangles), <code>assets/models/bake-v5-ball.mjs</code> baked it to a data module through the installed GLTFLoader, and it rendered on the sim (<code>05-after.png</code>). Decision, the lane's and mine: <b>ship the procedural ball, keep the Blender pipeline as a tool.</b> Same triangle count, same seams, same PBR response — a second copy of the same object with a different panel orientation is not a better model, and the procedural one reads its colours from the theme tokens. The pipeline is there for the day a real asset (a branded ball, a kit) is worth its bytes.</p>
+<p><b>The gate moves to v5.</b> <code>tools/frames.mjs</code> now reads <code>docs/design/v5/frames.json</code> (15 frames shot by the console into <code>frames/&lt;key&gt;.png</code>; <code>frames/3d/</code> is proof, not gated). The v3 record stays on disk as the BEFORE half of the report and is no longer gated — <code>FRAMES_RECORD=docs/design/v3</code> runs the old check. The <code>scene</code> group now names every file in <code>src/render/</code> plus the mount, so a picture change reddens the five scene frames.</p>
+<p><b>The console's first full shoot was wrong for nine screens</b> — every chained recipe photographed the previous screen, and the GL screens were caught on their &quot;3D 장면 준비 중&quot; skeleton. The tool exited 0 and printed &quot;recipe UNVERIFIED — read the frame&quot; beside each, which is honest but is not a gate. Sent back with the rule that a shoot READS each frame and asserts the screen before saving it, and the timings (≥3 s after a push, ≥18 s after a reload, ≥8 s after arriving on a GL screen). Nothing is stamped until that returns.</p>
+<h3>2026-09-14 07:45 — &quot;touch is dead&quot; was the simulator's software GL, and a stale route</h3>
+<p>The console lane reported that from ~07:00 taps reached JS (each Home CTA press created a session row) but nothing repainted, on every screen. Measured rather than guessed:</p>
+<ul>
+<li><code>STRYKE</code> sat at <b>100 % CPU on Home, and stayed at 100 % on 라이선스</b>.</li>
+<li>A 3 s <code>sample</code> of the process: the hot frames are <code>gldMergeScanlines2x2</code>, <code>gldRenderFillTriangles</code>, <code>powf</code>, <code>exp2f</code> in <b><code>GLRendererFloat</code></b> — the iOS simulator's SOFTWARE OpenGL rasterizer. There is no GPU under expo-gl on the sim. A PBR scene with a 1024² PCF-soft shadow map and a 192-segment textured ground, drawn twice at 3×, costs seconds per frame there.</li>
+<li><code>createRenderer</code> drains EXGL's command batch with a synchronous <code>gl.getError()</code> after every <code>render()</code> (the fix for the r163 black canvas), so <b>each frame blocks the JS thread for its whole duration.</b> Handlers run between frames; React never gets a turn to paint. That is the exact symptom.</li>
+<li>Why it was CONTINUOUS: <code>frameloop=&quot;demand&quot;</code> on a static scene renders only when asked. A <b>replay</b> scene (<code>always</code>) left mounted underneath — the dev client re-opens its LAST URL on every reload, and the day's driving had left <code>dev/scene?mode=keeper</code> and the keeper screen on the stack — keeps the loop running forever. <code>simctl terminate</code> + a fresh dev-client launch on Home: <b>1.3–1.5 % CPU</b>, taps repaint, the seeded session is still Home's recent card.</li>
+</ul>
+<p><b>What this does and does not say.</b> On the simulator the new picture is expensive enough that a replay screen pins the process; a static screen is fine. On a phone expo-gl is Metal-backed and this scene is small by mobile standards (two ground draws, one shadow pass, one goal, one figure) — but that is an expectation, not a measurement. <b>A device run is the founder's item #2 and this is one more reason for it.</b> Rules added to the console: a shoot relaunches the app (not just reloads) before the first frame, and never leaves a replay screen mounted when it releases the lock.</p>
 
 <h2 id="refs">레퍼런스 보드</h2>
 <p>왼쪽이 창업자가 남긴 방향(r6): 조명 아래의 진짜 잔디, 흰 골대와 그물, 하나의 라임 궤적. 오른쪽 둘(r5)은 홀로그램 계열 — 앱이 지금까지 따라가던 쪽이고, v5가 떠나는 쪽.</p>
@@ -102,7 +130,7 @@ ul,ol{color:var(--text2);padding-left:22px}li{margin:4px 0}
   <p class="shows">이번 주 최고, 이번 주 카운트, 최근 세션 카드, 촬영 시작</p>
   <div class="pair">
     <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-home.png" alt="홈 before"></figure>
-    <figure><figcaption>AFTER · v5 (2026-09-13 21:37)</figcaption><img loading="lazy" src="design-v5/img/after-home.png" alt="홈 after"></figure>
+    <figure><figcaption>AFTER · v5 (2026-09-13 22:56)</figcaption><img loading="lazy" src="design-v5/img/after-home.png" alt="홈 after"></figure>
   </div>
 </section>
 
@@ -114,7 +142,7 @@ ul,ol{color:var(--text2);padding-left:22px}li{margin:4px 0}
   <p class="shows">골대 투영과 두 개의 높이 브래킷, 눈금이 새겨진 L자 자</p>
   <div class="pair">
     <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-setup.png" alt="세팅 before"></figure>
-    <figure><figcaption>AFTER · v5</figcaption><div class="empty">아직 다시 찍지 않음<br><small>not yet re-shot — <code>design.mjs shoot ${s.key}</code></small></div></figure>
+    <figure><figcaption>AFTER · v5 (2026-09-13 22:55)</figcaption><img loading="lazy" src="design-v5/img/after-setup.png" alt="세팅 after"></figure>
   </div>
 </section>
 
@@ -126,7 +154,7 @@ ul,ol{color:var(--text2);padding-left:22px}li{margin:4px 0}
   <p class="shows">가로 화면 — 슛 카운터, 3×3 배치 셀, 전폭 눈금 위의 마지막 슛 밴드</p>
   <div class="pair">
     <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-capture.png" alt="촬영 before"></figure>
-    <figure><figcaption>AFTER · v5</figcaption><div class="empty">아직 다시 찍지 않음<br><small>not yet re-shot — <code>design.mjs shoot ${s.key}</code></small></div></figure>
+    <figure><figcaption>AFTER · v5 (2026-09-13 22:55)</figcaption><img loading="lazy" src="design-v5/img/after-capture.png" alt="촬영 after"></figure>
   </div>
 </section>
 
@@ -138,7 +166,7 @@ ul,ol{color:var(--text2);padding-left:22px}li{margin:4px 0}
   <p class="shows">골대 렌더 위의 궤적, 히어로 그루브, 그 아래 필드 위의 슛 목록</p>
   <div class="pair">
     <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-session.png" alt="세션 before"></figure>
-    <figure><figcaption>AFTER · v5</figcaption><div class="empty">아직 다시 찍지 않음<br><small>not yet re-shot — <code>design.mjs shoot ${s.key}</code></small></div></figure>
+    <figure><figcaption>AFTER · v5 (2026-09-13 22:37)</figcaption><img loading="lazy" src="design-v5/img/after-session.png" alt="세션 after"></figure>
   </div>
 </section>
 
@@ -150,7 +178,7 @@ ul,ol{color:var(--text2);padding-left:22px}li{margin:4px 0}
   <p class="shows">3D 장면과 그 아래 하나의 측정</p>
   <div class="pair">
     <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-shot.png" alt="슛 before"></figure>
-    <figure><figcaption>AFTER · v5</figcaption><div class="empty">아직 다시 찍지 않음<br><small>not yet re-shot — <code>design.mjs shoot ${s.key}</code></small></div></figure>
+    <figure><figcaption>AFTER · v5 (2026-09-13 22:53)</figcaption><img loading="lazy" src="design-v5/img/after-shot.png" alt="슛 after"></figure>
   </div>
 </section>
 
@@ -162,7 +190,7 @@ ul,ol{color:var(--text2);padding-left:22px}li{margin:4px 0}
   <p class="shows">주간 컬럼 차트, 카드 스케일의 개인 최고, 세션 목록의 머리</p>
   <div class="pair">
     <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-records.png" alt="기록 before"></figure>
-    <figure><figcaption>AFTER · v5 (2026-09-13 21:37)</figcaption><img loading="lazy" src="design-v5/img/after-records.png" alt="기록 after"></figure>
+    <figure><figcaption>AFTER · v5 (2026-09-13 22:24)</figcaption><img loading="lazy" src="design-v5/img/after-records.png" alt="기록 after"></figure>
   </div>
 </section>
 
@@ -174,7 +202,7 @@ ul,ol{color:var(--text2);padding-left:22px}li{margin:4px 0}
   <p class="shows">게스트 문장과 카드 스케일 개인 최고, 랭킹·인증·내보내기·설정 행</p>
   <div class="pair">
     <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-me.png" alt="나 before"></figure>
-    <figure><figcaption>AFTER · v5 (2026-09-13 21:37)</figcaption><img loading="lazy" src="design-v5/img/after-me.png" alt="나 after"></figure>
+    <figure><figcaption>AFTER · v5 (2026-09-13 22:24)</figcaption><img loading="lazy" src="design-v5/img/after-me.png" alt="나 after"></figure>
   </div>
 </section>
 
@@ -186,7 +214,7 @@ ul,ol{color:var(--text2);padding-left:22px}li{margin:4px 0}
   <p class="shows">값 컬럼 앞에서 멈추는 필드 위의 포인트</p>
   <div class="pair">
     <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-rankings.png" alt="랭킹 before"></figure>
-    <figure><figcaption>AFTER · v5 (2026-09-13 21:37)</figcaption><img loading="lazy" src="design-v5/img/after-rankings.png" alt="랭킹 after"></figure>
+    <figure><figcaption>AFTER · v5 (2026-09-13 22:24)</figcaption><img loading="lazy" src="design-v5/img/after-rankings.png" alt="랭킹 after"></figure>
   </div>
 </section>
 
@@ -198,7 +226,7 @@ ul,ol{color:var(--text2);padding-left:22px}li{margin:4px 0}
   <p class="shows">하나의 눈금 위에 두 밴드 — 이번 슛과 이전 최고</p>
   <div class="pair">
     <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-compare.png" alt="비교 before"></figure>
-    <figure><figcaption>AFTER · v5</figcaption><div class="empty">아직 다시 찍지 않음<br><small>not yet re-shot — <code>design.mjs shoot ${s.key}</code></small></div></figure>
+    <figure><figcaption>AFTER · v5 (2026-09-13 22:37)</figcaption><img loading="lazy" src="design-v5/img/after-compare.png" alt="비교 after"></figure>
   </div>
 </section>
 
@@ -210,7 +238,7 @@ ul,ol{color:var(--text2);padding-left:22px}li{margin:4px 0}
   <p class="shows">단위·언어·라이선스·내 데이터 지우기 (나 위의 시트)</p>
   <div class="pair">
     <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-settings.png" alt="설정 before"></figure>
-    <figure><figcaption>AFTER · v5</figcaption><div class="empty">아직 다시 찍지 않음<br><small>not yet re-shot — <code>design.mjs shoot ${s.key}</code></small></div></figure>
+    <figure><figcaption>AFTER · v5 (2026-09-13 22:55)</figcaption><img loading="lazy" src="design-v5/img/after-settings.png" alt="설정 after"></figure>
   </div>
 </section>
 
@@ -222,7 +250,7 @@ ul,ol{color:var(--text2);padding-left:22px}li{margin:4px 0}
   <p class="shows">스크롤 중간에서 되풀이되는 눈금과, 자기 줄 위에 놓인 마크들</p>
   <div class="pair">
     <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-session-list.png" alt="기록 · 세션 목록 before"></figure>
-    <figure><figcaption>AFTER · v5</figcaption><div class="empty">아직 다시 찍지 않음<br><small>not yet re-shot — <code>design.mjs shoot ${s.key}</code></small></div></figure>
+    <figure><figcaption>AFTER · v5 (2026-09-13 22:53)</figcaption><img loading="lazy" src="design-v5/img/after-session-list.png" alt="기록 · 세션 목록 after"></figure>
   </div>
 </section>
 
@@ -234,7 +262,7 @@ ul,ol{color:var(--text2);padding-left:22px}li{margin:4px 0}
   <p class="shows">골문 앞 키퍼가 그려진 시뮬레이션과 그 아래 측정 — 다이빙 중간에 찍는다</p>
   <div class="pair">
     <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-keeper.png" alt="키퍼 before"></figure>
-    <figure><figcaption>AFTER · v5</figcaption><div class="empty">아직 다시 찍지 않음<br><small>not yet re-shot — <code>design.mjs shoot ${s.key}</code></small></div></figure>
+    <figure><figcaption>AFTER · v5 (2026-09-13 22:53)</figcaption><img loading="lazy" src="design-v5/img/after-keeper.png" alt="키퍼 after"></figure>
   </div>
 </section>
 
@@ -246,7 +274,7 @@ ul,ol{color:var(--text2);padding-left:22px}li{margin:4px 0}
   <p class="shows">빈 골대, 빈 그루브, 마크가 하나도 없는 슛 목록 (측정이 거부된 세션이 목록에 있어야 한다)</p>
   <div class="pair">
     <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-session-refused.png" alt="세션 · 측정 안 됨 before"></figure>
-    <figure><figcaption>AFTER · v5</figcaption><div class="empty">아직 다시 찍지 않음<br><small>not yet re-shot — <code>design.mjs shoot ${s.key}</code></small></div></figure>
+    <figure><figcaption>AFTER · v5 (2026-09-13 22:37)</figcaption><img loading="lazy" src="design-v5/img/after-session-refused.png" alt="세션 · 측정 안 됨 after"></figure>
   </div>
 </section>
 
@@ -258,7 +286,7 @@ ul,ol{color:var(--text2);padding-left:22px}li{margin:4px 0}
   <p class="shows">글꼴·모델과 오픈소스 목록</p>
   <div class="pair">
     <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-licences.png" alt="라이선스 before"></figure>
-    <figure><figcaption>AFTER · v5 (2026-09-13 21:37)</figcaption><img loading="lazy" src="design-v5/img/after-licences.png" alt="라이선스 after"></figure>
+    <figure><figcaption>AFTER · v5 (2026-09-13 22:25)</figcaption><img loading="lazy" src="design-v5/img/after-licences.png" alt="라이선스 after"></figure>
   </div>
 </section>
 
@@ -270,7 +298,7 @@ ul,ol{color:var(--text2);padding-left:22px}li{margin:4px 0}
   <p class="shows">기기와 서버를 함께 지운다고 말하는 확인 시트</p>
   <div class="pair">
     <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-delete.png" alt="나 · 모두 지우기 before"></figure>
-    <figure><figcaption>AFTER · v5 (2026-09-13 21:38)</figcaption><img loading="lazy" src="design-v5/img/after-delete.png" alt="나 · 모두 지우기 after"></figure>
+    <figure><figcaption>AFTER · v5 (2026-09-13 22:25)</figcaption><img loading="lazy" src="design-v5/img/after-delete.png" alt="나 · 모두 지우기 after"></figure>
   </div>
 </section>
 
@@ -306,7 +334,46 @@ ul,ol{color:var(--text2);padding-left:22px}li{margin:4px 0}
 <p>Uncommitted PICTURE work: GoalFrame.tsx, scene-shared.tsx, this log, and <code>frames/3d/02-before.png</code>. No steps 2–6 claimed complete.</p>
 <h3>2026-09-14 · Resumed</h3>
 <p>Chrome released its capture lock and withdrew the ten-minute timeout. Poll every 30 seconds without a cap. Home now mounts the real static scene at 362×132 pt; verify the goal and entire trajectory in that letterbox. Resuming step 2 before the remaining ordered commits.</p>
-<figure><figcaption>01-after.png</figcaption><img loading="lazy" src="design-v5/img/3d-01-after.png" alt="01-after.png"></figure><figure><figcaption>01-before.png</figcaption><img loading="lazy" src="design-v5/img/3d-01-before.png" alt="01-before.png"></figure><figure><figcaption>01-ground-check.png</figcaption><img loading="lazy" src="design-v5/img/3d-01-ground-check.png" alt="01-ground-check.png"></figure><figure><figcaption>01-keeper-ground.png</figcaption><img loading="lazy" src="design-v5/img/3d-01-keeper-ground.png" alt="01-keeper-ground.png"></figure><figure><figcaption>01-pbr-probe.png</figcaption><img loading="lazy" src="design-v5/img/3d-01-pbr-probe.png" alt="01-pbr-probe.png"></figure><figure><figcaption>01-shadow-off.png</figcaption><img loading="lazy" src="design-v5/img/3d-01-shadow-off.png" alt="01-shadow-off.png"></figure><figure><figcaption>01-shadow-on.png</figcaption><img loading="lazy" src="design-v5/img/3d-01-shadow-on.png" alt="01-shadow-on.png"></figure><figure><figcaption>02-after.png</figcaption><img loading="lazy" src="design-v5/img/3d-02-after.png" alt="02-after.png"></figure><figure><figcaption>02-before.png</figcaption><img loading="lazy" src="design-v5/img/3d-02-before.png" alt="02-before.png"></figure><figure><figcaption>02-detected.png</figcaption><img loading="lazy" src="design-v5/img/3d-02-detected.png" alt="02-detected.png"></figure><figure><figcaption>02-failed.png</figcaption><img loading="lazy" src="design-v5/img/3d-02-failed.png" alt="02-failed.png"></figure><figure><figcaption>02-searching.png</figcaption><img loading="lazy" src="design-v5/img/3d-02-searching.png" alt="02-searching.png"></figure><figure><figcaption>02-verified.png</figcaption><img loading="lazy" src="design-v5/img/3d-02-verified.png" alt="02-verified.png"></figure></div>
+<p>06:43 — Step 2 accepted on simulator: <code>02-after.png</code> plus <code>02-searching/detected/verified/failed.png</code>. White round posts/specular and translucent white net are visible; all four calibration states differ. Lowered the distant floodlight heads to fit the low camera rather than leaving cropped black masts. Revised key and stripe separation are visible.</p>
+<p>The first rapid gallery batch was blank and rejected. Dev gallery now unmounts its canvas on blur, keeps the same scene mounted for calibration changes, and validates query calibration values. Fresh-client recaptures succeeded. Full suite <b>722/722</b>, TypeScript and diff whitespace checks pass. Simulator lock released.</p>
+<h3>2026-09-14 · Step 3</h3>
+<p>Step 2 commit: <code>ea66c60</code> — build a white floodlit goal.</p>
+<p>06:59 — Panelled PBR ball accepted in <code>03-ball-close.png</code>: 12 black pentagons, 20 white hexagons, recessed seams, radial normals and shadow casting. Turf now meets y=0. Replay hold and impact pulse constants/driver unchanged. Zero grant means no lime rim; the ball shells spend only supplied band-weighted glow.</p>
+<p><code>03-before.png</code> → <code>03-after.png</code>: replaced the additive arc sleeve with ordinary mesh screen-facing ink at 2.2 layout points, about 5 screenshot pixels at this simulator's 2.34 scale. Thin from launch to goal. Ball is the single endpoint highlight; starburst removed. Continuous invisible selection tube and dashed/quiet states remain. Band weight still controls launch pool and ball glow.</p>
+<p>Three's Line2 experiment produced a blank frame and was replaced by a 192-triangle ordinary mesh ribbon. Blank frames also occurred on gallery Canvas mode replacements; a true JS reload via the gallery title resolves that native context lifecycle (250 ms remount delay alone did not). No claim Line2 alone caused blanks. Development title offers reload; rendered captures replace rejected blanks. Full suite <b>724/724</b>, TypeScript passes.</p>
+<h3>2026-09-14 · Step 4</h3>
+<p>Step 3 commit: <code>19cb4d5</code> — light a panelled ball on a thin tracer.</p>
+<p>07:06 — Active CC0 MeshBody keeper now renders one opaque, matte PBR surface: dark kit, subdued cyan chest trim, neutral head, pose-correct normals and shadow casting. Removed its hologram hulls, wire, bones and joints from the benchmark draw path; removed the cyan floor pool. Updated the procedural KeeperBody fallback to matte kit/shadow casting as well. Imperative update signatures, pose keys, mirroring, hip translation/roll and dive timing are unchanged.</p>
+<p><code>04-before.png</code> → <code>04-after.png</code>; <code>04-left.png</code> and <code>04-idle.png</code> verify both dive directions and ready stance in the required 4:3 viewport. Goal/ball remain brighter than the figure. PBR keeper renders with castShadow on; disabling it did not resolve the intermittent gallery blank, so it is restored. Temporary renderer instrumentation removed. Use fresh reload and wait for the rendered frame before capture. Mutex released.</p>
+<p>Step 4 checks: <b>724/724 tests</b>, TypeScript and diff whitespace pass.</p>
+<h3>2026-09-14 · Step 4 correction, chrome review</h3>
+<p>Chrome accepted steps 2–3 and rejected the dark keeper's small-scale legibility. Changed to a lit cyan fabric shirt (benchmark token at 0.5 linear intensity, no emission), dark shorts/legs and light gloves. Also accepted chrome's narrowed composition rule: <b>keeper simulation only</b> fits the declared goal/net and allows the arc to enter from outside; Home/shot/session/compare still fit every solved sample. <code>compose.ts</code> API and contained semantics unchanged. Increasing goal-only breathing room to target approximately 80% width. Re-shooting before continuing the Blender spike; export/bake prepared, not yet visually accepted.</p>
+<p>07:13 — Revised <code>04-after.png</code>, <code>04-left.png</code>, <code>04-idle.png</code> accepted. Goal spans approximately <b>81.6%</b> of panel width. <code>04-silhouette-crop.png</code> preserves actual screenshot pixels and shows cyan torso, distinct dark legs and light gloves. The full screenshot is <b>1206×2622, 3× layout points</b> (the image viewer downscales to 942×2048); earlier log's 2.34 scale was the viewer scale, not file scale. The 2.2 pt tracer is therefore ~6.6 native screenshot pixels, or ~5 in the viewer. Existing contained tests for full measurement maps still pass. Required checks <b>724/724</b>, TypeScript pass. Mutex released.</p>
+<h3>2026-09-14 · Step 5 — Blender spike and decision</h3>
+<p>Step 4 correction commit: <code>03b9e02</code> — frame the save and clarify the keeper silhouette (initial matte-kit commit <code>db81b8c</code>).</p>
+<p>07:07–07:14, within the 30-minute cap (interrupted for chrome's step-4 correction): Blender <b>5.1.1</b> exported original 32-panel ball geometry using <code>tools/blender/v5-ball.py</code>. GLB is <b>30,012 bytes / 360 triangles / no images or textures</b>. <code>assets/models/bake-v5-ball.mjs</code> parses it with the installed GLTFLoader offline and emits development-only positions/normals/colours. <code>05-after.png</code> proves this GLB's bake renders on the actual simulator, against the procedural <code>05-before.png</code> at the same camera and scale.</p>
+<p><b>Decision: retain the procedural production ball and the existing baked CC0 keeper.</b> The Blender ball renders but is not visibly better: same 360-triangle topology, same recessed seams and PBR response, with a different panel orientation. The procedural implementation keeps theme-token colours and avoids shipping a duplicate data module in the product. Kept the script, GLB, provenance and dev-only bake so the experiment is reproducible. No runtime GLTF loader, new dependency, Metro config change, image texture or research-licensed mesh. Simulator mutex released.</p>
+<p>Step 5 checks: <b>724/724 tests</b>, TypeScript and diff whitespace pass.</p>
+<h3>2026-09-14 · Step 6 — card fit and integrated frames</h3>
+<p>Step 5 commit: <code>5e8542a</code> — prove the Blender ball bake on the simulator.</p>
+<p>07:16 — <code>06-card-fit.png</code> verifies the literal 362×132 pt letterbox with the entire arc/goal/net. <code>06-home.png</code> verifies chrome's actual Home ShotSceneMount using the seeded 18 m shot. No camera API change needed for the card. Added four fixture-range card containment tests plus a 4:3 keeper goal-width/net-containment check; full suite <b>729/729</b>, TypeScript passes.</p>
+<p>Integration captures use the existing read-only seeded data: shot-mtti1kul-fgtckl and session-mtti1gpr-jpl1xd. Home, session and the remaining actual routes are being re-shot. Important refinement of earlier blank diagnosis: the integrated session remained on its preparation skeleton at the first check, then rendered correctly after an additional 15 seconds without any reload or code change. Early captures can precede GL readiness on this simulator. Do not treat every early blank as a persistent renderer failure; wait for the scene, then inspect. Physical-device launch/performance is not measured here.</p>
+<p>07:20 — Actual keeper screen exposed a gallery-only assumption: the gallery explicitly passed framing=&quot;goal&quot;, but the real screen omits it and uses the keeper default. Fixed the save-subject guard to read <b>framingKind</b>, the resolved framing. Re-verified the actual screen in <code>06-keeper.png</code>: goal ~82% of its 4:3 card, cyan figure, arc entering at the right edge. This integration check is why the final pass uses real routes. Home/shot/session/compare retain their full-arc subject. Final check after fix: <b>729/729 tests</b>, TypeScript passes.</p>
+<p>07:21 — All five actual app frames inspected and accepted: <code>06-home.png</code>, <code>06-shot.png</code> (3D tab), <code>06-session.png</code>, <code>06-compare.png</code> (shot 03 against the prior high-right best, both arcs visible), <code>06-keeper.png</code>. <code>06-before.png</code> is the v3 Home reference; <code>06-card-fit.png</code> is the exact-size gallery proof. Only the keeper simulation allows off-screen launch. All requested changes are implemented; no physical-device performance claim. Simulator mutex released.</p>
+<h3>STATUS</h3>
+<p><b>DONE — 2026-09-14 07:22 simulator time.</b> All six ordered steps verified and committed, including chrome's keeper silhouette/composition correction. Tests <b>729/729</b>, TypeScript clean. Simulator lock released. Production uses procedural turf/goal/ball and the original baked CC0 keeper; the Blender GLB comparison remains dev-only. Device performance remains unmeasured; allow simulator GL warm-up before judging a capture.</p>
+<p>Commits:</p>
+<ul>
+<li><code>8688506</code> — light the pitch and texture the turf.</li>
+<li><code>ea66c60</code> — build a white floodlit goal.</li>
+<li><code>19cb4d5</code> — light a panelled ball on a thin tracer.</li>
+<li><code>db81b8c</code> — dress the keeper in a matte dark kit.</li>
+<li><code>03b9e02</code> — frame the save and clarify the keeper silhouette (cyan shirt/light gloves).</li>
+<li><code>5e8542a</code> — prove the Blender ball bake on the simulator; retain procedural production ball.</li>
+<li><code>e2897ae</code> — verify the card fit and five live scene frames; correct keeper default framing.</li>
+</ul>
+<p>Final frames: <a href="frames/3d/06-home.png">Home</a>, <a href="frames/3d/06-shot.png">shot</a>, <a href="frames/3d/06-session.png">session</a>, <a href="frames/3d/06-compare.png">compare</a>, <a href="frames/3d/06-keeper.png">keeper</a>. Additional proofs: <a href="frames/3d/06-card-fit.png">362×132 card</a>, <a href="frames/3d/04-silhouette-crop.png">keeper crop</a>, <a href="frames/3d/05-after.png">Blender bake</a>.</p>
+<figure><figcaption>01-after.png</figcaption><img loading="lazy" src="design-v5/img/3d-01-after.png" alt="01-after.png"></figure><figure><figcaption>01-before.png</figcaption><img loading="lazy" src="design-v5/img/3d-01-before.png" alt="01-before.png"></figure><figure><figcaption>01-ground-check.png</figcaption><img loading="lazy" src="design-v5/img/3d-01-ground-check.png" alt="01-ground-check.png"></figure><figure><figcaption>01-keeper-ground.png</figcaption><img loading="lazy" src="design-v5/img/3d-01-keeper-ground.png" alt="01-keeper-ground.png"></figure><figure><figcaption>01-pbr-probe.png</figcaption><img loading="lazy" src="design-v5/img/3d-01-pbr-probe.png" alt="01-pbr-probe.png"></figure><figure><figcaption>01-shadow-off.png</figcaption><img loading="lazy" src="design-v5/img/3d-01-shadow-off.png" alt="01-shadow-off.png"></figure><figure><figcaption>01-shadow-on.png</figcaption><img loading="lazy" src="design-v5/img/3d-01-shadow-on.png" alt="01-shadow-on.png"></figure><figure><figcaption>02-after.png</figcaption><img loading="lazy" src="design-v5/img/3d-02-after.png" alt="02-after.png"></figure><figure><figcaption>02-before.png</figcaption><img loading="lazy" src="design-v5/img/3d-02-before.png" alt="02-before.png"></figure><figure><figcaption>02-detected.png</figcaption><img loading="lazy" src="design-v5/img/3d-02-detected.png" alt="02-detected.png"></figure><figure><figcaption>02-failed.png</figcaption><img loading="lazy" src="design-v5/img/3d-02-failed.png" alt="02-failed.png"></figure><figure><figcaption>02-searching.png</figcaption><img loading="lazy" src="design-v5/img/3d-02-searching.png" alt="02-searching.png"></figure><figure><figcaption>02-verified.png</figcaption><img loading="lazy" src="design-v5/img/3d-02-verified.png" alt="02-verified.png"></figure><figure><figcaption>03-after.png</figcaption><img loading="lazy" src="design-v5/img/3d-03-after.png" alt="03-after.png"></figure><figure><figcaption>03-ball-close.png</figcaption><img loading="lazy" src="design-v5/img/3d-03-ball-close.png" alt="03-ball-close.png"></figure><figure><figcaption>03-before.png</figcaption><img loading="lazy" src="design-v5/img/3d-03-before.png" alt="03-before.png"></figure><figure><figcaption>04-after.png</figcaption><img loading="lazy" src="design-v5/img/3d-04-after.png" alt="04-after.png"></figure><figure><figcaption>04-before.png</figcaption><img loading="lazy" src="design-v5/img/3d-04-before.png" alt="04-before.png"></figure><figure><figcaption>04-idle.png</figcaption><img loading="lazy" src="design-v5/img/3d-04-idle.png" alt="04-idle.png"></figure><figure><figcaption>04-left.png</figcaption><img loading="lazy" src="design-v5/img/3d-04-left.png" alt="04-left.png"></figure><figure><figcaption>04-silhouette-crop.png</figcaption><img loading="lazy" src="design-v5/img/3d-04-silhouette-crop.png" alt="04-silhouette-crop.png"></figure><figure><figcaption>05-after.png</figcaption><img loading="lazy" src="design-v5/img/3d-05-after.png" alt="05-after.png"></figure><figure><figcaption>05-before.png</figcaption><img loading="lazy" src="design-v5/img/3d-05-before.png" alt="05-before.png"></figure><figure><figcaption>06-before.png</figcaption><img loading="lazy" src="design-v5/img/3d-06-before.png" alt="06-before.png"></figure><figure><figcaption>06-card-fit.png</figcaption><img loading="lazy" src="design-v5/img/3d-06-card-fit.png" alt="06-card-fit.png"></figure><figure><figcaption>06-compare.png</figcaption><img loading="lazy" src="design-v5/img/3d-06-compare.png" alt="06-compare.png"></figure><figure><figcaption>06-home.png</figcaption><img loading="lazy" src="design-v5/img/3d-06-home.png" alt="06-home.png"></figure><figure><figcaption>06-keeper.png</figcaption><img loading="lazy" src="design-v5/img/3d-06-keeper.png" alt="06-keeper.png"></figure><figure><figcaption>06-session.png</figcaption><img loading="lazy" src="design-v5/img/3d-06-session.png" alt="06-session.png"></figure><figure><figcaption>06-shot.png</figcaption><img loading="lazy" src="design-v5/img/3d-06-shot.png" alt="06-shot.png"></figure></div>
 
 <h2 id="kit">디자인 키트 — 코드에서 읽어 온 값</h2>
 <h4>색 (dark palette, <code>src/constants/theme.ts</code>)</h4>
