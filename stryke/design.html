@@ -22,7 +22,7 @@ ul,ol{color:var(--text2);padding-left:22px}li{margin:4px 0}
 @media(max-width:720px){.pair,.refs{grid-template-columns:1fr}.icons{columns:1}}
 </style></head><body><main>
 <h1>STRYKE — 디자인 기록 v5</h1>
-<p class="lede">앱이 지금 어떻게 보이는지, 왜 그렇게 바꾸는지, 그리고 어디를 눌러 피드백을 남기는지. <span class="meta">생성 2026-09-14 06:56Z · <a href="https://github.com/vxbrandon/stryke/issues?q=is%3Aissue+label%3Adesign-feedback">열린 피드백 보기</a></span></p>
+<p class="lede">앱이 지금 어떻게 보이는지, 왜 그렇게 바꾸는지, 그리고 어디를 눌러 피드백을 남기는지. <span class="meta">생성 2026-09-14 07:09Z · <a href="https://github.com/vxbrandon/stryke/issues?q=is%3Aissue+label%3Adesign-feedback">열린 피드백 보기</a></span></p>
 <nav class="toc"><a href="#log">진단</a><a href="#refs">레퍼런스</a><a href="#screens">화면 (15)</a><a href="#lane3d">3D 레인</a><a href="#kit">디자인 키트</a><a href="#assets">에셋</a><a href="#howto">피드백 방법</a></nav>
 
 <div class="card" id="howto"><h3>피드백 남기는 법 · How to leave feedback</h3>
@@ -123,6 +123,21 @@ ul,ol{color:var(--text2);padding-left:22px}li{margin:4px 0}
 </ol>
 <p>I shot the nine by hand under the lock, reading each frame: restored 한국어, deleted the two sessions the taps had made (device copy; the sheet says the server row stays, and it does), and took the keeper from a 36-second sampling of the replay — sample 5, the dive off the ground. The gate's fifteen entries were stamped only after each frame was read. Published: 15/15.</p>
 <p><b>The picture, judged by me before the judges.</b> 슛 and 세션 read as a floodlit pitch (<code>frames/shot.png</code>, <code>frames/session.png</code>): mown bands, the mast and its haze, a white goal, a thin tracer, the launch pool. 키퍼 frames the save. 홈's card carries the same picture at 132 pt. What I still see: the sky above the horizon is flat near-black where r6 has floodlight glare; the ball at the corner is a few pixels; the card's goal is small. The judges will say whether those are gaps or the honest cost of an 18 m flight drawn at scale.</p>
+<h3>2026-09-14 08:40 — the judges, and chrome batch 2 (<code>f0c0a35</code>)</h3>
+<p><b>What the judges were.</b> Four lenses over the fifteen frames — production (a Strava/NRC/Whoop designer), reference (r6 only, with crops), honesty, craft (pixels against the tokens) — with the evidence rule. Scores 56 / 58 / 58 / 66. <b>The refute stage did not run</b>: 37 of its 51 agents died on the account's session limit, so <code>09-VERDICTS-V5.md</code> holds one judge's claim per gap, unrefuted. I treated each as a claim to check, not a verdict.</p>
+<p><b>The one BLOCKING finding was right and was mine to catch.</b> Three frames were one byte-identical 세팅 screenshot filed as 기록 · 나 · 랭킹, and two more were the wrong screen — the console's second run had overwritten the fork's good frames from the morning and I had read only the frames I shot or deep-linked myself. Fixed by hand (<code>dfdeba5</code>), and the gate now refuses a duplicated image, which is the check that would have caught it.</p>
+<p><b>What batch 2 took from the chrome gaps, and why:</b></p>
+<ul>
+<li><b>랭킹 is the fourth tab.</b> The judges measured the 1:2 grouping (홈 361 px from the disc, 241 px between 기록 and 나) and named it the uneven rhythm no shipped bar has. Three tabs around a centred disc cannot be even; four can, and 랭킹 was already a destination with its own route. This reverses the v3 IA decision (3 + capture) — on evidence, not taste. Its back chevron and its duplicate row on 나 go with it.</li>
+<li><b>A refusal is a left-aligned heading</b>, not a centred display word: the state word was the loudest object on 세션 · 측정 안 됨.</li>
+<li><b>An empty axis prints <code>160 km/h</code> on one line.</b> The stacked unit was a second line under the last tick on every empty and card axis.</li>
+<li><b>An empty hero draws the instrument at the card's 12 pt.</b> The v3.4 rule (&quot;an absence draws the instrument&quot;) stands; 164 pt of groove for nothing did not.</li>
+<li><b>One drawing for 테스트</b>: <code>Tag</code> in list rows and on 비교; 나's card no longer carries two.</li>
+<li><b>Chart hedges share one foot line</b> (<code>기록 없음 · 진행 중</code>).</li>
+<li><b>키퍼: the measurement stands above the caveat</b>, and the value says where the ball crossed (골문 안 / 골문 밖) instead of 유효 — a verdict word on a drawn keeper was an honesty gap the honesty judge found.</li>
+<li>Copy: the delete row's one-syllable widow; <code>확인 중 0</code> is not printed.</li>
+</ul>
+<p><b>Left with the picture lane</b> (sent, with the judges' numbers): the mast head that reads as an iOS &quot;⋯&quot; on the header line, the 40 % black sky slab, the net moiré, the save framed without the ball, the card framing, the vertical-pole map view, the mannequin head, the horizon wedge, the launch pool. <b>Deferred</b>, with the reason: the keeper picture as a bleed (a layout change across a screen the picture lane is mid-edit on); lifting 비교's verdict out of its card; the 슛 segmented control's scrim; the 144 pt capture counter. Each is in <code>09-VERDICTS-V5.md</code> for the next batch.</p>
 
 <h2 id="refs">레퍼런스 보드</h2>
 <p>왼쪽이 창업자가 남긴 방향(r6): 조명 아래의 진짜 잔디, 흰 골대와 그물, 하나의 라임 궤적. 오른쪽 둘(r5)은 홀로그램 계열 — 앱이 지금까지 따라가던 쪽이고, v5가 떠나는 쪽.</p>
@@ -139,7 +154,7 @@ ul,ol{color:var(--text2);padding-left:22px}li{margin:4px 0}
   <p class="shows">이번 주 최고, 이번 주 카운트, 최근 세션 카드, 촬영 시작</p>
   <div class="pair">
     <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-home.png" alt="홈 before"></figure>
-    <figure><figcaption>AFTER · v5 (2026-09-13 22:56)</figcaption><img loading="lazy" src="design-v5/img/after-home.png" alt="홈 after"></figure>
+    <figure><figcaption>AFTER · v5 (2026-09-14 07:09)</figcaption><img loading="lazy" src="design-v5/img/after-home.png" alt="홈 after"></figure>
   </div>
 </section>
 
@@ -151,7 +166,7 @@ ul,ol{color:var(--text2);padding-left:22px}li{margin:4px 0}
   <p class="shows">주간 컬럼 차트, 카드 스케일의 개인 최고, 세션 목록의 머리</p>
   <div class="pair">
     <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-records.png" alt="기록 before"></figure>
-    <figure><figcaption>AFTER · v5 (2026-09-14 06:56)</figcaption><img loading="lazy" src="design-v5/img/after-records.png" alt="기록 after"></figure>
+    <figure><figcaption>AFTER · v5 (2026-09-14 07:09)</figcaption><img loading="lazy" src="design-v5/img/after-records.png" alt="기록 after"></figure>
   </div>
 </section>
 
@@ -163,7 +178,7 @@ ul,ol{color:var(--text2);padding-left:22px}li{margin:4px 0}
   <p class="shows">게스트 문장과 카드 스케일 개인 최고, 랭킹·인증·내보내기·설정 행</p>
   <div class="pair">
     <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-me.png" alt="나 before"></figure>
-    <figure><figcaption>AFTER · v5 (2026-09-14 06:56)</figcaption><img loading="lazy" src="design-v5/img/after-me.png" alt="나 after"></figure>
+    <figure><figcaption>AFTER · v5 (2026-09-14 07:09)</figcaption><img loading="lazy" src="design-v5/img/after-me.png" alt="나 after"></figure>
   </div>
 </section>
 
@@ -175,7 +190,7 @@ ul,ol{color:var(--text2);padding-left:22px}li{margin:4px 0}
   <p class="shows">값 컬럼 앞에서 멈추는 필드 위의 포인트</p>
   <div class="pair">
     <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-rankings.png" alt="랭킹 before"></figure>
-    <figure><figcaption>AFTER · v5 (2026-09-14 06:56)</figcaption><img loading="lazy" src="design-v5/img/after-rankings.png" alt="랭킹 after"></figure>
+    <figure><figcaption>AFTER · v5 (2026-09-14 07:09)</figcaption><img loading="lazy" src="design-v5/img/after-rankings.png" alt="랭킹 after"></figure>
   </div>
 </section>
 
@@ -199,7 +214,7 @@ ul,ol{color:var(--text2);padding-left:22px}li{margin:4px 0}
   <p class="shows">단위·언어·라이선스·내 데이터 지우기 (나 위의 시트)</p>
   <div class="pair">
     <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-settings.png" alt="설정 before"></figure>
-    <figure><figcaption>AFTER · v5 (2026-09-13 22:55)</figcaption><img loading="lazy" src="design-v5/img/after-settings.png" alt="설정 after"></figure>
+    <figure><figcaption>AFTER · v5 (2026-09-14 07:09)</figcaption><img loading="lazy" src="design-v5/img/after-settings.png" alt="설정 after"></figure>
   </div>
 </section>
 
@@ -211,7 +226,7 @@ ul,ol{color:var(--text2);padding-left:22px}li{margin:4px 0}
   <p class="shows">기기와 서버를 함께 지운다고 말하는 확인 시트</p>
   <div class="pair">
     <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-delete.png" alt="나 · 모두 지우기 before"></figure>
-    <figure><figcaption>AFTER · v5 (2026-09-14 06:56)</figcaption><img loading="lazy" src="design-v5/img/after-delete.png" alt="나 · 모두 지우기 after"></figure>
+    <figure><figcaption>AFTER · v5 (2026-09-14 07:09)</figcaption><img loading="lazy" src="design-v5/img/after-delete.png" alt="나 · 모두 지우기 after"></figure>
   </div>
 </section>
 
@@ -223,7 +238,7 @@ ul,ol{color:var(--text2);padding-left:22px}li{margin:4px 0}
   <p class="shows">골대 렌더 위의 궤적, 히어로 그루브, 그 아래 필드 위의 슛 목록</p>
   <div class="pair">
     <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-session.png" alt="세션 before"></figure>
-    <figure><figcaption>AFTER · v5 (2026-09-13 22:37)</figcaption><img loading="lazy" src="design-v5/img/after-session.png" alt="세션 after"></figure>
+    <figure><figcaption>AFTER · v5 (2026-09-14 07:09)</figcaption><img loading="lazy" src="design-v5/img/after-session.png" alt="세션 after"></figure>
   </div>
 </section>
 
@@ -247,7 +262,7 @@ ul,ol{color:var(--text2);padding-left:22px}li{margin:4px 0}
   <p class="shows">하나의 눈금 위에 두 밴드 — 이번 슛과 이전 최고</p>
   <div class="pair">
     <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-compare.png" alt="비교 before"></figure>
-    <figure><figcaption>AFTER · v5 (2026-09-13 22:37)</figcaption><img loading="lazy" src="design-v5/img/after-compare.png" alt="비교 after"></figure>
+    <figure><figcaption>AFTER · v5 (2026-09-14 07:09)</figcaption><img loading="lazy" src="design-v5/img/after-compare.png" alt="비교 after"></figure>
   </div>
 </section>
 
@@ -259,7 +274,7 @@ ul,ol{color:var(--text2);padding-left:22px}li{margin:4px 0}
   <p class="shows">골문 앞 키퍼가 그려진 시뮬레이션과 그 아래 측정 — 다이빙 중간에 찍는다</p>
   <div class="pair">
     <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-keeper.png" alt="키퍼 before"></figure>
-    <figure><figcaption>AFTER · v5 (2026-09-13 22:53)</figcaption><img loading="lazy" src="design-v5/img/after-keeper.png" alt="키퍼 after"></figure>
+    <figure><figcaption>AFTER · v5 (2026-09-14 07:09)</figcaption><img loading="lazy" src="design-v5/img/after-keeper.png" alt="키퍼 after"></figure>
   </div>
 </section>
 
@@ -271,7 +286,7 @@ ul,ol{color:var(--text2);padding-left:22px}li{margin:4px 0}
   <p class="shows">스크롤 중간에서 되풀이되는 눈금과, 자기 줄 위에 놓인 마크들</p>
   <div class="pair">
     <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-session-list.png" alt="기록 · 세션 목록 before"></figure>
-    <figure><figcaption>AFTER · v5 (2026-09-13 22:53)</figcaption><img loading="lazy" src="design-v5/img/after-session-list.png" alt="기록 · 세션 목록 after"></figure>
+    <figure><figcaption>AFTER · v5 (2026-09-14 07:09)</figcaption><img loading="lazy" src="design-v5/img/after-session-list.png" alt="기록 · 세션 목록 after"></figure>
   </div>
 </section>
 
@@ -283,7 +298,7 @@ ul,ol{color:var(--text2);padding-left:22px}li{margin:4px 0}
   <p class="shows">빈 골대, 빈 그루브, 마크가 하나도 없는 슛 목록 (측정이 거부된 세션이 목록에 있어야 한다)</p>
   <div class="pair">
     <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-session-refused.png" alt="세션 · 측정 안 됨 before"></figure>
-    <figure><figcaption>AFTER · v5 (2026-09-13 22:37)</figcaption><img loading="lazy" src="design-v5/img/after-session-refused.png" alt="세션 · 측정 안 됨 after"></figure>
+    <figure><figcaption>AFTER · v5 (2026-09-14 07:09)</figcaption><img loading="lazy" src="design-v5/img/after-session-refused.png" alt="세션 · 측정 안 됨 after"></figure>
   </div>
 </section>
 
