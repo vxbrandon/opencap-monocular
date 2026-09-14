@@ -22,7 +22,7 @@ ul,ol{color:var(--text2);padding-left:22px}li{margin:4px 0}
 @media(max-width:720px){.pair,.refs{grid-template-columns:1fr}.icons{columns:1}}
 </style></head><body><main>
 <h1>STRYKE — 디자인 기록 v5</h1>
-<p class="lede">앱이 지금 어떻게 보이는지, 왜 그렇게 바꾸는지, 그리고 어디를 눌러 피드백을 남기는지. <span class="meta">생성 2026-09-13 22:57Z · <a href="https://github.com/vxbrandon/stryke/issues?q=is%3Aissue+label%3Adesign-feedback">열린 피드백 보기</a></span></p>
+<p class="lede">앱이 지금 어떻게 보이는지, 왜 그렇게 바꾸는지, 그리고 어디를 눌러 피드백을 남기는지. <span class="meta">생성 2026-09-14 06:56Z · <a href="https://github.com/vxbrandon/stryke/issues?q=is%3Aissue+label%3Adesign-feedback">열린 피드백 보기</a></span></p>
 <nav class="toc"><a href="#log">진단</a><a href="#refs">레퍼런스</a><a href="#screens">화면 (15)</a><a href="#lane3d">3D 레인</a><a href="#kit">디자인 키트</a><a href="#assets">에셋</a><a href="#howto">피드백 방법</a></nav>
 
 <div class="card" id="howto"><h3>피드백 남기는 법 · How to leave feedback</h3>
@@ -114,6 +114,15 @@ ul,ol{color:var(--text2);padding-left:22px}li{margin:4px 0}
 <li>Why it was CONTINUOUS: <code>frameloop=&quot;demand&quot;</code> on a static scene renders only when asked. A <b>replay</b> scene (<code>always</code>) left mounted underneath — the dev client re-opens its LAST URL on every reload, and the day's driving had left <code>dev/scene?mode=keeper</code> and the keeper screen on the stack — keeps the loop running forever. <code>simctl terminate</code> + a fresh dev-client launch on Home: <b>1.3–1.5 % CPU</b>, taps repaint, the seeded session is still Home's recent card.</li>
 </ul>
 <p><b>What this does and does not say.</b> On the simulator the new picture is expensive enough that a replay screen pins the process; a static screen is fine. On a phone expo-gl is Metal-backed and this scene is small by mobile standards (two ground draws, one shadow pass, one goal, one figure) — but that is an expectation, not a measurement. <b>A device run is the founder's item #2 and this is one more reason for it.</b> Rules added to the console: a shoot relaunches the app (not just reloads) before the first frame, and never leaves a replay screen mounted when it releases the lock.</p>
+<h3>2026-09-14 08:00 — fifteen frames, the second console run, and what a tool may not do</h3>
+<p>The console's second run (<code>b5d904c</code>) fixed the waits but not the tapping: it photographed Home for <code>setup</code>, 세팅 for <code>capture</code>, and for <code>session-list</code>, <code>shot</code> and <code>keeper</code> it produced the SETTINGS SHEET in English over the wrong screen — its recipe had tapped the sheet's English row, so it also left the app in English and, through the Home CTA and 데모 슛, created a quick session with a demo shot that then became Home's &quot;이번 주 최고 31–115&quot; and its &quot;이어서 찍기&quot; state. Three lessons, all now in the console's brief:</p>
+<ol>
+<li>**A tool that drives a UI must READ what it produced before it says it did.** &quot;recipe UNVERIFIED — read the frame&quot; beside an exit code 0 is honest and useless; the assertion has to be in the tool.</li>
+<li><b>A screenshot run is a state change.</b> Two of the fifteen screens can only be reached by creating data (the CTA opens a session; 데모 슛 records a shot). The run owns the cleanup: delete that session through the app's own confirmation, then assert Home is back to the seeded card.</li>
+<li><b>Relaunch, never reload, before a run.</b> The dev client re-opens its last URL; a replay route it re-opens runs <code>frameloop=&quot;always&quot;</code> at one frame per three seconds on the simulator's software GL and blocks every tap.</li>
+</ol>
+<p>I shot the nine by hand under the lock, reading each frame: restored 한국어, deleted the two sessions the taps had made (device copy; the sheet says the server row stays, and it does), and took the keeper from a 36-second sampling of the replay — sample 5, the dive off the ground. The gate's fifteen entries were stamped only after each frame was read. Published: 15/15.</p>
+<p><b>The picture, judged by me before the judges.</b> 슛 and 세션 read as a floodlit pitch (<code>frames/shot.png</code>, <code>frames/session.png</code>): mown bands, the mast and its haze, a white goal, a thin tracer, the launch pool. 키퍼 frames the save. 홈's card carries the same picture at 132 pt. What I still see: the sky above the horizon is flat near-black where r6 has floodlight glare; the ball at the corner is a few pixels; the card's goal is small. The judges will say whether those are gaps or the honest cost of an 18 m flight drawn at scale.</p>
 
 <h2 id="refs">레퍼런스 보드</h2>
 <p>왼쪽이 창업자가 남긴 방향(r6): 조명 아래의 진짜 잔디, 흰 골대와 그물, 하나의 라임 궤적. 오른쪽 둘(r5)은 홀로그램 계열 — 앱이 지금까지 따라가던 쪽이고, v5가 떠나는 쪽.</p>
@@ -134,27 +143,75 @@ ul,ol{color:var(--text2);padding-left:22px}li{margin:4px 0}
   </div>
 </section>
 
-<section class="screen" id="setup">
+<section class="screen" id="records">
   <div class="shead">
-    <h3>02 · 세팅 <code>setup</code></h3>
-    <a class="fb" href="https://github.com/vxbrandon/stryke/issues/new?title=%5Bdesign%5D+%EC%84%B8%ED%8C%85%3A+&body=%23%23%23+%ED%99%94%EB%A9%B4+%C2%B7+Screen%0A%EC%84%B8%ED%8C%85+%28%60setup%60%29%0A%0A%23%23%23+%EB%AC%B4%EC%97%87%EC%9D%B4+%EC%9D%B4%EC%83%81%ED%95%9C%EA%B0%80+%C2%B7+What+is+wrong%0A%0A%28%EC%97%AC%EA%B8%B0%EC%97%90+%EC%A0%81%EC%96%B4+%EC%A3%BC%EC%84%B8%EC%9A%94%29%0A%0A%23%23%23+%EC%B0%B8%EA%B3%A0+%C2%B7+Reference%0A%28%EB%B8%8C%EB%9E%9C%EB%93%9C+%2F+%EB%AA%A9%EC%97%85+%2F+%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7+%EB%A7%81%ED%81%AC%29%0A%0A%23%23%23+%EC%8B%AC%EA%B0%81%EB%8F%84+%C2%B7+Severity%0A-+%5B+%5D+BLOCKING++-+%5B+%5D+MAJOR++-+%5B+%5D+MINOR%0A%0A%EA%B8%B0%EB%A1%9D+%C2%B7+https%3A%2F%2Fvxbrandon.github.io%2Fopencap-monocular%2Fstryke%2Fdesign.html%23setup&labels=design-feedback%2Cscreen%3Asetup" target="_blank" rel="noopener">피드백 남기기 ↗</a>
+    <h3>06 · 기록 <code>records</code></h3>
+    <a class="fb" href="https://github.com/vxbrandon/stryke/issues/new?title=%5Bdesign%5D+%EA%B8%B0%EB%A1%9D%3A+&body=%23%23%23+%ED%99%94%EB%A9%B4+%C2%B7+Screen%0A%EA%B8%B0%EB%A1%9D+%28%60records%60%29%0A%0A%23%23%23+%EB%AC%B4%EC%97%87%EC%9D%B4+%EC%9D%B4%EC%83%81%ED%95%9C%EA%B0%80+%C2%B7+What+is+wrong%0A%0A%28%EC%97%AC%EA%B8%B0%EC%97%90+%EC%A0%81%EC%96%B4+%EC%A3%BC%EC%84%B8%EC%9A%94%29%0A%0A%23%23%23+%EC%B0%B8%EA%B3%A0+%C2%B7+Reference%0A%28%EB%B8%8C%EB%9E%9C%EB%93%9C+%2F+%EB%AA%A9%EC%97%85+%2F+%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7+%EB%A7%81%ED%81%AC%29%0A%0A%23%23%23+%EC%8B%AC%EA%B0%81%EB%8F%84+%C2%B7+Severity%0A-+%5B+%5D+BLOCKING++-+%5B+%5D+MAJOR++-+%5B+%5D+MINOR%0A%0A%EA%B8%B0%EB%A1%9D+%C2%B7+https%3A%2F%2Fvxbrandon.github.io%2Fopencap-monocular%2Fstryke%2Fdesign.html%23records&labels=design-feedback%2Cscreen%3Arecords" target="_blank" rel="noopener">피드백 남기기 ↗</a>
   </div>
-  <p class="shows">골대 투영과 두 개의 높이 브래킷, 눈금이 새겨진 L자 자</p>
+  <p class="shows">주간 컬럼 차트, 카드 스케일의 개인 최고, 세션 목록의 머리</p>
   <div class="pair">
-    <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-setup.png" alt="세팅 before"></figure>
-    <figure><figcaption>AFTER · v5 (2026-09-13 22:55)</figcaption><img loading="lazy" src="design-v5/img/after-setup.png" alt="세팅 after"></figure>
+    <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-records.png" alt="기록 before"></figure>
+    <figure><figcaption>AFTER · v5 (2026-09-14 06:56)</figcaption><img loading="lazy" src="design-v5/img/after-records.png" alt="기록 after"></figure>
   </div>
 </section>
 
-<section class="screen" id="capture">
+<section class="screen" id="me">
   <div class="shead">
-    <h3>03 · 촬영 <code>capture</code></h3>
-    <a class="fb" href="https://github.com/vxbrandon/stryke/issues/new?title=%5Bdesign%5D+%EC%B4%AC%EC%98%81%3A+&body=%23%23%23+%ED%99%94%EB%A9%B4+%C2%B7+Screen%0A%EC%B4%AC%EC%98%81+%28%60capture%60%29%0A%0A%23%23%23+%EB%AC%B4%EC%97%87%EC%9D%B4+%EC%9D%B4%EC%83%81%ED%95%9C%EA%B0%80+%C2%B7+What+is+wrong%0A%0A%28%EC%97%AC%EA%B8%B0%EC%97%90+%EC%A0%81%EC%96%B4+%EC%A3%BC%EC%84%B8%EC%9A%94%29%0A%0A%23%23%23+%EC%B0%B8%EA%B3%A0+%C2%B7+Reference%0A%28%EB%B8%8C%EB%9E%9C%EB%93%9C+%2F+%EB%AA%A9%EC%97%85+%2F+%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7+%EB%A7%81%ED%81%AC%29%0A%0A%23%23%23+%EC%8B%AC%EA%B0%81%EB%8F%84+%C2%B7+Severity%0A-+%5B+%5D+BLOCKING++-+%5B+%5D+MAJOR++-+%5B+%5D+MINOR%0A%0A%EA%B8%B0%EB%A1%9D+%C2%B7+https%3A%2F%2Fvxbrandon.github.io%2Fopencap-monocular%2Fstryke%2Fdesign.html%23capture&labels=design-feedback%2Cscreen%3Acapture" target="_blank" rel="noopener">피드백 남기기 ↗</a>
+    <h3>07 · 나 <code>me</code></h3>
+    <a class="fb" href="https://github.com/vxbrandon/stryke/issues/new?title=%5Bdesign%5D+%EB%82%98%3A+&body=%23%23%23+%ED%99%94%EB%A9%B4+%C2%B7+Screen%0A%EB%82%98+%28%60me%60%29%0A%0A%23%23%23+%EB%AC%B4%EC%97%87%EC%9D%B4+%EC%9D%B4%EC%83%81%ED%95%9C%EA%B0%80+%C2%B7+What+is+wrong%0A%0A%28%EC%97%AC%EA%B8%B0%EC%97%90+%EC%A0%81%EC%96%B4+%EC%A3%BC%EC%84%B8%EC%9A%94%29%0A%0A%23%23%23+%EC%B0%B8%EA%B3%A0+%C2%B7+Reference%0A%28%EB%B8%8C%EB%9E%9C%EB%93%9C+%2F+%EB%AA%A9%EC%97%85+%2F+%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7+%EB%A7%81%ED%81%AC%29%0A%0A%23%23%23+%EC%8B%AC%EA%B0%81%EB%8F%84+%C2%B7+Severity%0A-+%5B+%5D+BLOCKING++-+%5B+%5D+MAJOR++-+%5B+%5D+MINOR%0A%0A%EA%B8%B0%EB%A1%9D+%C2%B7+https%3A%2F%2Fvxbrandon.github.io%2Fopencap-monocular%2Fstryke%2Fdesign.html%23me&labels=design-feedback%2Cscreen%3Ame" target="_blank" rel="noopener">피드백 남기기 ↗</a>
   </div>
-  <p class="shows">가로 화면 — 슛 카운터, 3×3 배치 셀, 전폭 눈금 위의 마지막 슛 밴드</p>
+  <p class="shows">게스트 문장과 카드 스케일 개인 최고, 랭킹·인증·내보내기·설정 행</p>
   <div class="pair">
-    <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-capture.png" alt="촬영 before"></figure>
-    <figure><figcaption>AFTER · v5 (2026-09-13 22:55)</figcaption><img loading="lazy" src="design-v5/img/after-capture.png" alt="촬영 after"></figure>
+    <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-me.png" alt="나 before"></figure>
+    <figure><figcaption>AFTER · v5 (2026-09-14 06:56)</figcaption><img loading="lazy" src="design-v5/img/after-me.png" alt="나 after"></figure>
+  </div>
+</section>
+
+<section class="screen" id="rankings">
+  <div class="shead">
+    <h3>08 · 랭킹 <code>rankings</code></h3>
+    <a class="fb" href="https://github.com/vxbrandon/stryke/issues/new?title=%5Bdesign%5D+%EB%9E%AD%ED%82%B9%3A+&body=%23%23%23+%ED%99%94%EB%A9%B4+%C2%B7+Screen%0A%EB%9E%AD%ED%82%B9+%28%60rankings%60%29%0A%0A%23%23%23+%EB%AC%B4%EC%97%87%EC%9D%B4+%EC%9D%B4%EC%83%81%ED%95%9C%EA%B0%80+%C2%B7+What+is+wrong%0A%0A%28%EC%97%AC%EA%B8%B0%EC%97%90+%EC%A0%81%EC%96%B4+%EC%A3%BC%EC%84%B8%EC%9A%94%29%0A%0A%23%23%23+%EC%B0%B8%EA%B3%A0+%C2%B7+Reference%0A%28%EB%B8%8C%EB%9E%9C%EB%93%9C+%2F+%EB%AA%A9%EC%97%85+%2F+%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7+%EB%A7%81%ED%81%AC%29%0A%0A%23%23%23+%EC%8B%AC%EA%B0%81%EB%8F%84+%C2%B7+Severity%0A-+%5B+%5D+BLOCKING++-+%5B+%5D+MAJOR++-+%5B+%5D+MINOR%0A%0A%EA%B8%B0%EB%A1%9D+%C2%B7+https%3A%2F%2Fvxbrandon.github.io%2Fopencap-monocular%2Fstryke%2Fdesign.html%23rankings&labels=design-feedback%2Cscreen%3Arankings" target="_blank" rel="noopener">피드백 남기기 ↗</a>
+  </div>
+  <p class="shows">값 컬럼 앞에서 멈추는 필드 위의 포인트</p>
+  <div class="pair">
+    <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-rankings.png" alt="랭킹 before"></figure>
+    <figure><figcaption>AFTER · v5 (2026-09-14 06:56)</figcaption><img loading="lazy" src="design-v5/img/after-rankings.png" alt="랭킹 after"></figure>
+  </div>
+</section>
+
+<section class="screen" id="licences">
+  <div class="shead">
+    <h3>14 · 라이선스 <code>licences</code></h3>
+    <a class="fb" href="https://github.com/vxbrandon/stryke/issues/new?title=%5Bdesign%5D+%EB%9D%BC%EC%9D%B4%EC%84%A0%EC%8A%A4%3A+&body=%23%23%23+%ED%99%94%EB%A9%B4+%C2%B7+Screen%0A%EB%9D%BC%EC%9D%B4%EC%84%A0%EC%8A%A4+%28%60licences%60%29%0A%0A%23%23%23+%EB%AC%B4%EC%97%87%EC%9D%B4+%EC%9D%B4%EC%83%81%ED%95%9C%EA%B0%80+%C2%B7+What+is+wrong%0A%0A%28%EC%97%AC%EA%B8%B0%EC%97%90+%EC%A0%81%EC%96%B4+%EC%A3%BC%EC%84%B8%EC%9A%94%29%0A%0A%23%23%23+%EC%B0%B8%EA%B3%A0+%C2%B7+Reference%0A%28%EB%B8%8C%EB%9E%9C%EB%93%9C+%2F+%EB%AA%A9%EC%97%85+%2F+%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7+%EB%A7%81%ED%81%AC%29%0A%0A%23%23%23+%EC%8B%AC%EA%B0%81%EB%8F%84+%C2%B7+Severity%0A-+%5B+%5D+BLOCKING++-+%5B+%5D+MAJOR++-+%5B+%5D+MINOR%0A%0A%EA%B8%B0%EB%A1%9D+%C2%B7+https%3A%2F%2Fvxbrandon.github.io%2Fopencap-monocular%2Fstryke%2Fdesign.html%23licences&labels=design-feedback%2Cscreen%3Alicences" target="_blank" rel="noopener">피드백 남기기 ↗</a>
+  </div>
+  <p class="shows">글꼴·모델과 오픈소스 목록</p>
+  <div class="pair">
+    <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-licences.png" alt="라이선스 before"></figure>
+    <figure><figcaption>AFTER · v5 (2026-09-14 06:56)</figcaption><img loading="lazy" src="design-v5/img/after-licences.png" alt="라이선스 after"></figure>
+  </div>
+</section>
+
+<section class="screen" id="settings">
+  <div class="shead">
+    <h3>10 · 설정 <code>settings</code></h3>
+    <a class="fb" href="https://github.com/vxbrandon/stryke/issues/new?title=%5Bdesign%5D+%EC%84%A4%EC%A0%95%3A+&body=%23%23%23+%ED%99%94%EB%A9%B4+%C2%B7+Screen%0A%EC%84%A4%EC%A0%95+%28%60settings%60%29%0A%0A%23%23%23+%EB%AC%B4%EC%97%87%EC%9D%B4+%EC%9D%B4%EC%83%81%ED%95%9C%EA%B0%80+%C2%B7+What+is+wrong%0A%0A%28%EC%97%AC%EA%B8%B0%EC%97%90+%EC%A0%81%EC%96%B4+%EC%A3%BC%EC%84%B8%EC%9A%94%29%0A%0A%23%23%23+%EC%B0%B8%EA%B3%A0+%C2%B7+Reference%0A%28%EB%B8%8C%EB%9E%9C%EB%93%9C+%2F+%EB%AA%A9%EC%97%85+%2F+%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7+%EB%A7%81%ED%81%AC%29%0A%0A%23%23%23+%EC%8B%AC%EA%B0%81%EB%8F%84+%C2%B7+Severity%0A-+%5B+%5D+BLOCKING++-+%5B+%5D+MAJOR++-+%5B+%5D+MINOR%0A%0A%EA%B8%B0%EB%A1%9D+%C2%B7+https%3A%2F%2Fvxbrandon.github.io%2Fopencap-monocular%2Fstryke%2Fdesign.html%23settings&labels=design-feedback%2Cscreen%3Asettings" target="_blank" rel="noopener">피드백 남기기 ↗</a>
+  </div>
+  <p class="shows">단위·언어·라이선스·내 데이터 지우기 (나 위의 시트)</p>
+  <div class="pair">
+    <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-settings.png" alt="설정 before"></figure>
+    <figure><figcaption>AFTER · v5 (2026-09-13 22:55)</figcaption><img loading="lazy" src="design-v5/img/after-settings.png" alt="설정 after"></figure>
+  </div>
+</section>
+
+<section class="screen" id="delete">
+  <div class="shead">
+    <h3>15 · 나 · 모두 지우기 <code>delete</code></h3>
+    <a class="fb" href="https://github.com/vxbrandon/stryke/issues/new?title=%5Bdesign%5D+%EB%82%98+%C2%B7+%EB%AA%A8%EB%91%90+%EC%A7%80%EC%9A%B0%EA%B8%B0%3A+&body=%23%23%23+%ED%99%94%EB%A9%B4+%C2%B7+Screen%0A%EB%82%98+%C2%B7+%EB%AA%A8%EB%91%90+%EC%A7%80%EC%9A%B0%EA%B8%B0+%28%60delete%60%29%0A%0A%23%23%23+%EB%AC%B4%EC%97%87%EC%9D%B4+%EC%9D%B4%EC%83%81%ED%95%9C%EA%B0%80+%C2%B7+What+is+wrong%0A%0A%28%EC%97%AC%EA%B8%B0%EC%97%90+%EC%A0%81%EC%96%B4+%EC%A3%BC%EC%84%B8%EC%9A%94%29%0A%0A%23%23%23+%EC%B0%B8%EA%B3%A0+%C2%B7+Reference%0A%28%EB%B8%8C%EB%9E%9C%EB%93%9C+%2F+%EB%AA%A9%EC%97%85+%2F+%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7+%EB%A7%81%ED%81%AC%29%0A%0A%23%23%23+%EC%8B%AC%EA%B0%81%EB%8F%84+%C2%B7+Severity%0A-+%5B+%5D+BLOCKING++-+%5B+%5D+MAJOR++-+%5B+%5D+MINOR%0A%0A%EA%B8%B0%EB%A1%9D+%C2%B7+https%3A%2F%2Fvxbrandon.github.io%2Fopencap-monocular%2Fstryke%2Fdesign.html%23delete&labels=design-feedback%2Cscreen%3Adelete" target="_blank" rel="noopener">피드백 남기기 ↗</a>
+  </div>
+  <p class="shows">기기와 서버를 함께 지운다고 말하는 확인 시트</p>
+  <div class="pair">
+    <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-delete.png" alt="나 · 모두 지우기 before"></figure>
+    <figure><figcaption>AFTER · v5 (2026-09-14 06:56)</figcaption><img loading="lazy" src="design-v5/img/after-delete.png" alt="나 · 모두 지우기 after"></figure>
   </div>
 </section>
 
@@ -182,42 +239,6 @@ ul,ol{color:var(--text2);padding-left:22px}li{margin:4px 0}
   </div>
 </section>
 
-<section class="screen" id="records">
-  <div class="shead">
-    <h3>06 · 기록 <code>records</code></h3>
-    <a class="fb" href="https://github.com/vxbrandon/stryke/issues/new?title=%5Bdesign%5D+%EA%B8%B0%EB%A1%9D%3A+&body=%23%23%23+%ED%99%94%EB%A9%B4+%C2%B7+Screen%0A%EA%B8%B0%EB%A1%9D+%28%60records%60%29%0A%0A%23%23%23+%EB%AC%B4%EC%97%87%EC%9D%B4+%EC%9D%B4%EC%83%81%ED%95%9C%EA%B0%80+%C2%B7+What+is+wrong%0A%0A%28%EC%97%AC%EA%B8%B0%EC%97%90+%EC%A0%81%EC%96%B4+%EC%A3%BC%EC%84%B8%EC%9A%94%29%0A%0A%23%23%23+%EC%B0%B8%EA%B3%A0+%C2%B7+Reference%0A%28%EB%B8%8C%EB%9E%9C%EB%93%9C+%2F+%EB%AA%A9%EC%97%85+%2F+%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7+%EB%A7%81%ED%81%AC%29%0A%0A%23%23%23+%EC%8B%AC%EA%B0%81%EB%8F%84+%C2%B7+Severity%0A-+%5B+%5D+BLOCKING++-+%5B+%5D+MAJOR++-+%5B+%5D+MINOR%0A%0A%EA%B8%B0%EB%A1%9D+%C2%B7+https%3A%2F%2Fvxbrandon.github.io%2Fopencap-monocular%2Fstryke%2Fdesign.html%23records&labels=design-feedback%2Cscreen%3Arecords" target="_blank" rel="noopener">피드백 남기기 ↗</a>
-  </div>
-  <p class="shows">주간 컬럼 차트, 카드 스케일의 개인 최고, 세션 목록의 머리</p>
-  <div class="pair">
-    <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-records.png" alt="기록 before"></figure>
-    <figure><figcaption>AFTER · v5 (2026-09-13 22:24)</figcaption><img loading="lazy" src="design-v5/img/after-records.png" alt="기록 after"></figure>
-  </div>
-</section>
-
-<section class="screen" id="me">
-  <div class="shead">
-    <h3>07 · 나 <code>me</code></h3>
-    <a class="fb" href="https://github.com/vxbrandon/stryke/issues/new?title=%5Bdesign%5D+%EB%82%98%3A+&body=%23%23%23+%ED%99%94%EB%A9%B4+%C2%B7+Screen%0A%EB%82%98+%28%60me%60%29%0A%0A%23%23%23+%EB%AC%B4%EC%97%87%EC%9D%B4+%EC%9D%B4%EC%83%81%ED%95%9C%EA%B0%80+%C2%B7+What+is+wrong%0A%0A%28%EC%97%AC%EA%B8%B0%EC%97%90+%EC%A0%81%EC%96%B4+%EC%A3%BC%EC%84%B8%EC%9A%94%29%0A%0A%23%23%23+%EC%B0%B8%EA%B3%A0+%C2%B7+Reference%0A%28%EB%B8%8C%EB%9E%9C%EB%93%9C+%2F+%EB%AA%A9%EC%97%85+%2F+%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7+%EB%A7%81%ED%81%AC%29%0A%0A%23%23%23+%EC%8B%AC%EA%B0%81%EB%8F%84+%C2%B7+Severity%0A-+%5B+%5D+BLOCKING++-+%5B+%5D+MAJOR++-+%5B+%5D+MINOR%0A%0A%EA%B8%B0%EB%A1%9D+%C2%B7+https%3A%2F%2Fvxbrandon.github.io%2Fopencap-monocular%2Fstryke%2Fdesign.html%23me&labels=design-feedback%2Cscreen%3Ame" target="_blank" rel="noopener">피드백 남기기 ↗</a>
-  </div>
-  <p class="shows">게스트 문장과 카드 스케일 개인 최고, 랭킹·인증·내보내기·설정 행</p>
-  <div class="pair">
-    <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-me.png" alt="나 before"></figure>
-    <figure><figcaption>AFTER · v5 (2026-09-13 22:24)</figcaption><img loading="lazy" src="design-v5/img/after-me.png" alt="나 after"></figure>
-  </div>
-</section>
-
-<section class="screen" id="rankings">
-  <div class="shead">
-    <h3>08 · 랭킹 <code>rankings</code></h3>
-    <a class="fb" href="https://github.com/vxbrandon/stryke/issues/new?title=%5Bdesign%5D+%EB%9E%AD%ED%82%B9%3A+&body=%23%23%23+%ED%99%94%EB%A9%B4+%C2%B7+Screen%0A%EB%9E%AD%ED%82%B9+%28%60rankings%60%29%0A%0A%23%23%23+%EB%AC%B4%EC%97%87%EC%9D%B4+%EC%9D%B4%EC%83%81%ED%95%9C%EA%B0%80+%C2%B7+What+is+wrong%0A%0A%28%EC%97%AC%EA%B8%B0%EC%97%90+%EC%A0%81%EC%96%B4+%EC%A3%BC%EC%84%B8%EC%9A%94%29%0A%0A%23%23%23+%EC%B0%B8%EA%B3%A0+%C2%B7+Reference%0A%28%EB%B8%8C%EB%9E%9C%EB%93%9C+%2F+%EB%AA%A9%EC%97%85+%2F+%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7+%EB%A7%81%ED%81%AC%29%0A%0A%23%23%23+%EC%8B%AC%EA%B0%81%EB%8F%84+%C2%B7+Severity%0A-+%5B+%5D+BLOCKING++-+%5B+%5D+MAJOR++-+%5B+%5D+MINOR%0A%0A%EA%B8%B0%EB%A1%9D+%C2%B7+https%3A%2F%2Fvxbrandon.github.io%2Fopencap-monocular%2Fstryke%2Fdesign.html%23rankings&labels=design-feedback%2Cscreen%3Arankings" target="_blank" rel="noopener">피드백 남기기 ↗</a>
-  </div>
-  <p class="shows">값 컬럼 앞에서 멈추는 필드 위의 포인트</p>
-  <div class="pair">
-    <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-rankings.png" alt="랭킹 before"></figure>
-    <figure><figcaption>AFTER · v5 (2026-09-13 22:24)</figcaption><img loading="lazy" src="design-v5/img/after-rankings.png" alt="랭킹 after"></figure>
-  </div>
-</section>
-
 <section class="screen" id="compare">
   <div class="shead">
     <h3>09 · 비교 <code>compare</code></h3>
@@ -227,30 +248,6 @@ ul,ol{color:var(--text2);padding-left:22px}li{margin:4px 0}
   <div class="pair">
     <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-compare.png" alt="비교 before"></figure>
     <figure><figcaption>AFTER · v5 (2026-09-13 22:37)</figcaption><img loading="lazy" src="design-v5/img/after-compare.png" alt="비교 after"></figure>
-  </div>
-</section>
-
-<section class="screen" id="settings">
-  <div class="shead">
-    <h3>10 · 설정 <code>settings</code></h3>
-    <a class="fb" href="https://github.com/vxbrandon/stryke/issues/new?title=%5Bdesign%5D+%EC%84%A4%EC%A0%95%3A+&body=%23%23%23+%ED%99%94%EB%A9%B4+%C2%B7+Screen%0A%EC%84%A4%EC%A0%95+%28%60settings%60%29%0A%0A%23%23%23+%EB%AC%B4%EC%97%87%EC%9D%B4+%EC%9D%B4%EC%83%81%ED%95%9C%EA%B0%80+%C2%B7+What+is+wrong%0A%0A%28%EC%97%AC%EA%B8%B0%EC%97%90+%EC%A0%81%EC%96%B4+%EC%A3%BC%EC%84%B8%EC%9A%94%29%0A%0A%23%23%23+%EC%B0%B8%EA%B3%A0+%C2%B7+Reference%0A%28%EB%B8%8C%EB%9E%9C%EB%93%9C+%2F+%EB%AA%A9%EC%97%85+%2F+%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7+%EB%A7%81%ED%81%AC%29%0A%0A%23%23%23+%EC%8B%AC%EA%B0%81%EB%8F%84+%C2%B7+Severity%0A-+%5B+%5D+BLOCKING++-+%5B+%5D+MAJOR++-+%5B+%5D+MINOR%0A%0A%EA%B8%B0%EB%A1%9D+%C2%B7+https%3A%2F%2Fvxbrandon.github.io%2Fopencap-monocular%2Fstryke%2Fdesign.html%23settings&labels=design-feedback%2Cscreen%3Asettings" target="_blank" rel="noopener">피드백 남기기 ↗</a>
-  </div>
-  <p class="shows">단위·언어·라이선스·내 데이터 지우기 (나 위의 시트)</p>
-  <div class="pair">
-    <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-settings.png" alt="설정 before"></figure>
-    <figure><figcaption>AFTER · v5 (2026-09-13 22:55)</figcaption><img loading="lazy" src="design-v5/img/after-settings.png" alt="설정 after"></figure>
-  </div>
-</section>
-
-<section class="screen" id="session-list">
-  <div class="shead">
-    <h3>11 · 기록 · 세션 목록 <code>session-list</code></h3>
-    <a class="fb" href="https://github.com/vxbrandon/stryke/issues/new?title=%5Bdesign%5D+%EA%B8%B0%EB%A1%9D+%C2%B7+%EC%84%B8%EC%85%98+%EB%AA%A9%EB%A1%9D%3A+&body=%23%23%23+%ED%99%94%EB%A9%B4+%C2%B7+Screen%0A%EA%B8%B0%EB%A1%9D+%C2%B7+%EC%84%B8%EC%85%98+%EB%AA%A9%EB%A1%9D+%28%60session-list%60%29%0A%0A%23%23%23+%EB%AC%B4%EC%97%87%EC%9D%B4+%EC%9D%B4%EC%83%81%ED%95%9C%EA%B0%80+%C2%B7+What+is+wrong%0A%0A%28%EC%97%AC%EA%B8%B0%EC%97%90+%EC%A0%81%EC%96%B4+%EC%A3%BC%EC%84%B8%EC%9A%94%29%0A%0A%23%23%23+%EC%B0%B8%EA%B3%A0+%C2%B7+Reference%0A%28%EB%B8%8C%EB%9E%9C%EB%93%9C+%2F+%EB%AA%A9%EC%97%85+%2F+%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7+%EB%A7%81%ED%81%AC%29%0A%0A%23%23%23+%EC%8B%AC%EA%B0%81%EB%8F%84+%C2%B7+Severity%0A-+%5B+%5D+BLOCKING++-+%5B+%5D+MAJOR++-+%5B+%5D+MINOR%0A%0A%EA%B8%B0%EB%A1%9D+%C2%B7+https%3A%2F%2Fvxbrandon.github.io%2Fopencap-monocular%2Fstryke%2Fdesign.html%23session-list&labels=design-feedback%2Cscreen%3Asession-list" target="_blank" rel="noopener">피드백 남기기 ↗</a>
-  </div>
-  <p class="shows">스크롤 중간에서 되풀이되는 눈금과, 자기 줄 위에 놓인 마크들</p>
-  <div class="pair">
-    <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-session-list.png" alt="기록 · 세션 목록 before"></figure>
-    <figure><figcaption>AFTER · v5 (2026-09-13 22:53)</figcaption><img loading="lazy" src="design-v5/img/after-session-list.png" alt="기록 · 세션 목록 after"></figure>
   </div>
 </section>
 
@@ -266,6 +263,18 @@ ul,ol{color:var(--text2);padding-left:22px}li{margin:4px 0}
   </div>
 </section>
 
+<section class="screen" id="session-list">
+  <div class="shead">
+    <h3>11 · 기록 · 세션 목록 <code>session-list</code></h3>
+    <a class="fb" href="https://github.com/vxbrandon/stryke/issues/new?title=%5Bdesign%5D+%EA%B8%B0%EB%A1%9D+%C2%B7+%EC%84%B8%EC%85%98+%EB%AA%A9%EB%A1%9D%3A+&body=%23%23%23+%ED%99%94%EB%A9%B4+%C2%B7+Screen%0A%EA%B8%B0%EB%A1%9D+%C2%B7+%EC%84%B8%EC%85%98+%EB%AA%A9%EB%A1%9D+%28%60session-list%60%29%0A%0A%23%23%23+%EB%AC%B4%EC%97%87%EC%9D%B4+%EC%9D%B4%EC%83%81%ED%95%9C%EA%B0%80+%C2%B7+What+is+wrong%0A%0A%28%EC%97%AC%EA%B8%B0%EC%97%90+%EC%A0%81%EC%96%B4+%EC%A3%BC%EC%84%B8%EC%9A%94%29%0A%0A%23%23%23+%EC%B0%B8%EA%B3%A0+%C2%B7+Reference%0A%28%EB%B8%8C%EB%9E%9C%EB%93%9C+%2F+%EB%AA%A9%EC%97%85+%2F+%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7+%EB%A7%81%ED%81%AC%29%0A%0A%23%23%23+%EC%8B%AC%EA%B0%81%EB%8F%84+%C2%B7+Severity%0A-+%5B+%5D+BLOCKING++-+%5B+%5D+MAJOR++-+%5B+%5D+MINOR%0A%0A%EA%B8%B0%EB%A1%9D+%C2%B7+https%3A%2F%2Fvxbrandon.github.io%2Fopencap-monocular%2Fstryke%2Fdesign.html%23session-list&labels=design-feedback%2Cscreen%3Asession-list" target="_blank" rel="noopener">피드백 남기기 ↗</a>
+  </div>
+  <p class="shows">스크롤 중간에서 되풀이되는 눈금과, 자기 줄 위에 놓인 마크들</p>
+  <div class="pair">
+    <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-session-list.png" alt="기록 · 세션 목록 before"></figure>
+    <figure><figcaption>AFTER · v5 (2026-09-13 22:53)</figcaption><img loading="lazy" src="design-v5/img/after-session-list.png" alt="기록 · 세션 목록 after"></figure>
+  </div>
+</section>
+
 <section class="screen" id="session-refused">
   <div class="shead">
     <h3>13 · 세션 · 측정 안 됨 <code>session-refused</code></h3>
@@ -278,27 +287,27 @@ ul,ol{color:var(--text2);padding-left:22px}li{margin:4px 0}
   </div>
 </section>
 
-<section class="screen" id="licences">
+<section class="screen" id="setup">
   <div class="shead">
-    <h3>14 · 라이선스 <code>licences</code></h3>
-    <a class="fb" href="https://github.com/vxbrandon/stryke/issues/new?title=%5Bdesign%5D+%EB%9D%BC%EC%9D%B4%EC%84%A0%EC%8A%A4%3A+&body=%23%23%23+%ED%99%94%EB%A9%B4+%C2%B7+Screen%0A%EB%9D%BC%EC%9D%B4%EC%84%A0%EC%8A%A4+%28%60licences%60%29%0A%0A%23%23%23+%EB%AC%B4%EC%97%87%EC%9D%B4+%EC%9D%B4%EC%83%81%ED%95%9C%EA%B0%80+%C2%B7+What+is+wrong%0A%0A%28%EC%97%AC%EA%B8%B0%EC%97%90+%EC%A0%81%EC%96%B4+%EC%A3%BC%EC%84%B8%EC%9A%94%29%0A%0A%23%23%23+%EC%B0%B8%EA%B3%A0+%C2%B7+Reference%0A%28%EB%B8%8C%EB%9E%9C%EB%93%9C+%2F+%EB%AA%A9%EC%97%85+%2F+%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7+%EB%A7%81%ED%81%AC%29%0A%0A%23%23%23+%EC%8B%AC%EA%B0%81%EB%8F%84+%C2%B7+Severity%0A-+%5B+%5D+BLOCKING++-+%5B+%5D+MAJOR++-+%5B+%5D+MINOR%0A%0A%EA%B8%B0%EB%A1%9D+%C2%B7+https%3A%2F%2Fvxbrandon.github.io%2Fopencap-monocular%2Fstryke%2Fdesign.html%23licences&labels=design-feedback%2Cscreen%3Alicences" target="_blank" rel="noopener">피드백 남기기 ↗</a>
+    <h3>02 · 세팅 <code>setup</code></h3>
+    <a class="fb" href="https://github.com/vxbrandon/stryke/issues/new?title=%5Bdesign%5D+%EC%84%B8%ED%8C%85%3A+&body=%23%23%23+%ED%99%94%EB%A9%B4+%C2%B7+Screen%0A%EC%84%B8%ED%8C%85+%28%60setup%60%29%0A%0A%23%23%23+%EB%AC%B4%EC%97%87%EC%9D%B4+%EC%9D%B4%EC%83%81%ED%95%9C%EA%B0%80+%C2%B7+What+is+wrong%0A%0A%28%EC%97%AC%EA%B8%B0%EC%97%90+%EC%A0%81%EC%96%B4+%EC%A3%BC%EC%84%B8%EC%9A%94%29%0A%0A%23%23%23+%EC%B0%B8%EA%B3%A0+%C2%B7+Reference%0A%28%EB%B8%8C%EB%9E%9C%EB%93%9C+%2F+%EB%AA%A9%EC%97%85+%2F+%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7+%EB%A7%81%ED%81%AC%29%0A%0A%23%23%23+%EC%8B%AC%EA%B0%81%EB%8F%84+%C2%B7+Severity%0A-+%5B+%5D+BLOCKING++-+%5B+%5D+MAJOR++-+%5B+%5D+MINOR%0A%0A%EA%B8%B0%EB%A1%9D+%C2%B7+https%3A%2F%2Fvxbrandon.github.io%2Fopencap-monocular%2Fstryke%2Fdesign.html%23setup&labels=design-feedback%2Cscreen%3Asetup" target="_blank" rel="noopener">피드백 남기기 ↗</a>
   </div>
-  <p class="shows">글꼴·모델과 오픈소스 목록</p>
+  <p class="shows">골대 투영과 두 개의 높이 브래킷, 눈금이 새겨진 L자 자</p>
   <div class="pair">
-    <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-licences.png" alt="라이선스 before"></figure>
-    <figure><figcaption>AFTER · v5 (2026-09-13 22:25)</figcaption><img loading="lazy" src="design-v5/img/after-licences.png" alt="라이선스 after"></figure>
+    <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-setup.png" alt="세팅 before"></figure>
+    <figure><figcaption>AFTER · v5 (2026-09-13 22:55)</figcaption><img loading="lazy" src="design-v5/img/after-setup.png" alt="세팅 after"></figure>
   </div>
 </section>
 
-<section class="screen" id="delete">
+<section class="screen" id="capture">
   <div class="shead">
-    <h3>15 · 나 · 모두 지우기 <code>delete</code></h3>
-    <a class="fb" href="https://github.com/vxbrandon/stryke/issues/new?title=%5Bdesign%5D+%EB%82%98+%C2%B7+%EB%AA%A8%EB%91%90+%EC%A7%80%EC%9A%B0%EA%B8%B0%3A+&body=%23%23%23+%ED%99%94%EB%A9%B4+%C2%B7+Screen%0A%EB%82%98+%C2%B7+%EB%AA%A8%EB%91%90+%EC%A7%80%EC%9A%B0%EA%B8%B0+%28%60delete%60%29%0A%0A%23%23%23+%EB%AC%B4%EC%97%87%EC%9D%B4+%EC%9D%B4%EC%83%81%ED%95%9C%EA%B0%80+%C2%B7+What+is+wrong%0A%0A%28%EC%97%AC%EA%B8%B0%EC%97%90+%EC%A0%81%EC%96%B4+%EC%A3%BC%EC%84%B8%EC%9A%94%29%0A%0A%23%23%23+%EC%B0%B8%EA%B3%A0+%C2%B7+Reference%0A%28%EB%B8%8C%EB%9E%9C%EB%93%9C+%2F+%EB%AA%A9%EC%97%85+%2F+%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7+%EB%A7%81%ED%81%AC%29%0A%0A%23%23%23+%EC%8B%AC%EA%B0%81%EB%8F%84+%C2%B7+Severity%0A-+%5B+%5D+BLOCKING++-+%5B+%5D+MAJOR++-+%5B+%5D+MINOR%0A%0A%EA%B8%B0%EB%A1%9D+%C2%B7+https%3A%2F%2Fvxbrandon.github.io%2Fopencap-monocular%2Fstryke%2Fdesign.html%23delete&labels=design-feedback%2Cscreen%3Adelete" target="_blank" rel="noopener">피드백 남기기 ↗</a>
+    <h3>03 · 촬영 <code>capture</code></h3>
+    <a class="fb" href="https://github.com/vxbrandon/stryke/issues/new?title=%5Bdesign%5D+%EC%B4%AC%EC%98%81%3A+&body=%23%23%23+%ED%99%94%EB%A9%B4+%C2%B7+Screen%0A%EC%B4%AC%EC%98%81+%28%60capture%60%29%0A%0A%23%23%23+%EB%AC%B4%EC%97%87%EC%9D%B4+%EC%9D%B4%EC%83%81%ED%95%9C%EA%B0%80+%C2%B7+What+is+wrong%0A%0A%28%EC%97%AC%EA%B8%B0%EC%97%90+%EC%A0%81%EC%96%B4+%EC%A3%BC%EC%84%B8%EC%9A%94%29%0A%0A%23%23%23+%EC%B0%B8%EA%B3%A0+%C2%B7+Reference%0A%28%EB%B8%8C%EB%9E%9C%EB%93%9C+%2F+%EB%AA%A9%EC%97%85+%2F+%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7+%EB%A7%81%ED%81%AC%29%0A%0A%23%23%23+%EC%8B%AC%EA%B0%81%EB%8F%84+%C2%B7+Severity%0A-+%5B+%5D+BLOCKING++-+%5B+%5D+MAJOR++-+%5B+%5D+MINOR%0A%0A%EA%B8%B0%EB%A1%9D+%C2%B7+https%3A%2F%2Fvxbrandon.github.io%2Fopencap-monocular%2Fstryke%2Fdesign.html%23capture&labels=design-feedback%2Cscreen%3Acapture" target="_blank" rel="noopener">피드백 남기기 ↗</a>
   </div>
-  <p class="shows">기기와 서버를 함께 지운다고 말하는 확인 시트</p>
+  <p class="shows">가로 화면 — 슛 카운터, 3×3 배치 셀, 전폭 눈금 위의 마지막 슛 밴드</p>
   <div class="pair">
-    <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-delete.png" alt="나 · 모두 지우기 before"></figure>
-    <figure><figcaption>AFTER · v5 (2026-09-13 22:25)</figcaption><img loading="lazy" src="design-v5/img/after-delete.png" alt="나 · 모두 지우기 after"></figure>
+    <figure><figcaption>BEFORE · v4.1 (13 Sep)</figcaption><img loading="lazy" src="design-v5/img/before-capture.png" alt="촬영 before"></figure>
+    <figure><figcaption>AFTER · v5 (2026-09-13 22:55)</figcaption><img loading="lazy" src="design-v5/img/after-capture.png" alt="촬영 after"></figure>
   </div>
 </section>
 
