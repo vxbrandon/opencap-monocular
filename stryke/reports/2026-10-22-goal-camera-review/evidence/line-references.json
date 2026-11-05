@@ -1,0 +1,151 @@
+{
+  "lines": {
+    "jk-0060": [
+      {
+        "name": "goal-area front, assumed 5.5 m",
+        "world": [
+          [
+            -9.16,
+            0,
+            5.5
+          ],
+          [
+            9.16,
+            0,
+            5.5
+          ]
+        ],
+        "pixels": [
+          [
+            72,
+            253
+          ],
+          [
+            842,
+            216
+          ]
+        ]
+      },
+      {
+        "name": "penalty-area front, assumed 16.5 m",
+        "world": [
+          [
+            -20.16,
+            0,
+            16.5
+          ],
+          [
+            20.16,
+            0,
+            16.5
+          ]
+        ],
+        "pixels": [
+          [
+            140,
+            314
+          ],
+          [
+            794,
+            273
+          ]
+        ]
+      }
+    ],
+    "platform-curling-05-A": [
+      {
+        "name": "candidate penalty-area front; identity not surveyed",
+        "world": [
+          [
+            -20.16,
+            0,
+            16.5
+          ],
+          [
+            20.16,
+            0,
+            16.5
+          ]
+        ],
+        "pixels": [
+          [
+            70,
+            548
+          ],
+          [
+            1800,
+            620
+          ]
+        ]
+      }
+    ],
+    "platform-curling-05-B": [
+      {
+        "name": "candidate penalty-area front; identity not surveyed",
+        "world": [
+          [
+            -20.16,
+            0,
+            16.5
+          ],
+          [
+            20.16,
+            0,
+            16.5
+          ]
+        ],
+        "pixels": [
+          [
+            70,
+            747
+          ],
+          [
+            1800,
+            625
+          ]
+        ]
+      }
+    ]
+  },
+  "holdout_points": {
+    "jk-0060": [
+      {
+        "name": "left goal-area corner at goal line",
+        "world": [
+          -9.16,
+          0,
+          0
+        ],
+        "pixel": [
+          127,
+          232
+        ]
+      },
+      {
+        "name": "left goal-area front corner",
+        "world": [
+          -9.16,
+          0,
+          5.5
+        ],
+        "pixel": [
+          72,
+          253
+        ]
+      },
+      {
+        "name": "left penalty arc intersection",
+        "world": [
+          -7.3125,
+          0,
+          16.5
+        ],
+        "pixel": [
+          118,
+          315
+        ]
+      }
+    ]
+  },
+  "source": "visually selected painted lines, no automatic semantic line acceptance"
+}

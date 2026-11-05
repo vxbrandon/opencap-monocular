@@ -1,0 +1,312 @@
+{
+  "model": "OnlineHMR",
+  "scope": "causal_camera_coordinate_body_with_yolo11n",
+  "world_slam_included": false,
+  "detector_substituted": true,
+  "independent_accuracy_measured": false,
+  "phone_latency_measured": false,
+  "crop_dilation": 1.2,
+  "body_batch_size": 1,
+  "future_image_frames_used": 0,
+  "joints_coordinate_convention": "SMPL coordinates; add trans_full for camera coordinates",
+  "source_sha256": "5d48078a25b05d6a8f60f79aab03bc9bc1a4b8b9ed83c5d3e8e6fc5fdf0b18b4",
+  "checkpoint_sha256": "c8d82aeb99cd8732eb0a10506ac6965b37696af78ab3eca5a7701b0b5f4072aa",
+  "detector_sha256": "0ebbc80d4a7680d14987a577cd21342b65ecfd94632bd9a8da63ae6417644ee1",
+  "manifest_sha256": "a326849c19a20db42023dd28e5263b9c5dda3c426d78accfea2976f9b9fab5f5",
+  "upstream_commit": "5236d2206068027e1b73480e34903092728f84f5",
+  "gpu": "Tesla T4",
+  "torch": "2.7.1+cu126",
+  "clock": "CUDA-synchronized per-frame wall time including decode, YOLO, crop, body, projection and sampled exports. Excludes model initialization, input hashing/ffprobe, final NPZ writes, upload, transport and phone display.",
+  "initialization_seconds": 9.199299206000205,
+  "date": "2026-11-02",
+  "unique_clips": 5,
+  "unique_frames": 263,
+  "repeats": 2,
+  "estimated_frame_instances": 526,
+  "independent_3d_accuracy_measured": false,
+  "artifact_archive_sha256": "e1e0e7c16890bd13af8fed469c7447f877a30cc3b3c4beebc3cd654d5537e75f",
+  "source_and_timestamps_verified": true,
+  "qualitative_review": "Sampled football overlays show visible head/foot projection errors, especially red-shirt frame 11 and JK kick frame 36. Complete output coverage is not anatomical accuracy.",
+  "runs": [
+    {
+      "clip": "indoor-dark",
+      "repeat": 0,
+      "source_sha256": "ee842d42efa33f64dc02d88ad3faa746600e9bdf6b1a1378e2c6b31684d0a774",
+      "frames": 60,
+      "estimated_frames": 60,
+      "seconds": 16.643367187000194,
+      "processing_fps": 3.605039732997348,
+      "first_frame_seconds": 0.9945564399999967,
+      "peak_gpu_allocated_bytes": 4143401984,
+      "subject_selection": "exactly_one_person",
+      "intrinsics_source": "manifest",
+      "stage_milliseconds": {
+        "total_seconds": {
+          "median": 265.83873449999373,
+          "p95": 286.2571100501441
+        },
+        "detector_seconds": {
+          "median": 11.535351000020455,
+          "p95": 15.00306264995288
+        },
+        "crop_and_body_seconds": {
+          "median": 250.3460940001787,
+          "p95": 260.1259566500289
+        }
+      },
+      "max_cache_tokens_per_layer": 384
+    },
+    {
+      "clip": "indoor-white",
+      "repeat": 0,
+      "source_sha256": "bfb89f7d67d1064bd427a46bd4f177926873db4a51af902e893e32327fd03d59",
+      "frames": 60,
+      "estimated_frames": 60,
+      "seconds": 18.087937724000085,
+      "processing_fps": 3.3171277409026376,
+      "first_frame_seconds": 0.23631054800011952,
+      "peak_gpu_allocated_bytes": 4143401984,
+      "subject_selection": "exactly_one_person",
+      "intrinsics_source": "manifest",
+      "stage_milliseconds": {
+        "total_seconds": {
+          "median": 309.06343399999514,
+          "p95": 357.9585394500782
+        },
+        "detector_seconds": {
+          "median": 11.360641000010219,
+          "p95": 12.110584000117788
+        },
+        "crop_and_body_seconds": {
+          "median": 294.3871784999601,
+          "p95": 342.7849785499461
+        }
+      },
+      "max_cache_tokens_per_layer": 384
+    },
+    {
+      "clip": "ronaldo-screen-20261020",
+      "repeat": 0,
+      "source_sha256": "77377a9239ba5d2d2522ee4f4df369f820227e08cec68956c1375fdb0ca7e931",
+      "frames": 23,
+      "estimated_frames": 23,
+      "seconds": 2.843827377000025,
+      "processing_fps": 8.087692025900276,
+      "first_frame_seconds": 0.19795635900004527,
+      "peak_gpu_allocated_bytes": 4143401984,
+      "subject_selection": "seeded_previous_box_iou",
+      "intrinsics_source": "image_diagonal_focal_heuristic",
+      "stage_milliseconds": {
+        "total_seconds": {
+          "median": 123.01879499977986,
+          "p95": 145.7406277998643
+        },
+        "detector_seconds": {
+          "median": 12.70237299991095,
+          "p95": 14.324297100074544
+        },
+        "crop_and_body_seconds": {
+          "median": 103.28211999990344,
+          "p95": 120.0681804999931
+        }
+      },
+      "max_cache_tokens_per_layer": 384
+    },
+    {
+      "clip": "ronaldo-screen-white-20261020",
+      "repeat": 0,
+      "source_sha256": "5e298b7c7d783d280549563125eecc651ebb4bbef7a976217aea62b29508a668",
+      "frames": 48,
+      "estimated_frames": 48,
+      "seconds": 8.331201086000192,
+      "processing_fps": 5.76147418655631,
+      "first_frame_seconds": 0.13393165900015447,
+      "peak_gpu_allocated_bytes": 4143401984,
+      "subject_selection": "seeded_previous_box_iou",
+      "intrinsics_source": "image_diagonal_focal_heuristic",
+      "stage_milliseconds": {
+        "total_seconds": {
+          "median": 168.87305900002048,
+          "p95": 227.50231675011034
+        },
+        "detector_seconds": {
+          "median": 11.324677499942482,
+          "p95": 15.283396050062946
+        },
+        "crop_and_body_seconds": {
+          "median": 153.42988999987028,
+          "p95": 205.3347482001072
+        }
+      },
+      "max_cache_tokens_per_layer": 384
+    },
+    {
+      "clip": "jk-messi-style-20261020",
+      "repeat": 0,
+      "source_sha256": "ab066b2cb20584a00e2aeb8c5c171dccd1b2a655a47977d9d5336ba35f0342b1",
+      "frames": 72,
+      "estimated_frames": 72,
+      "seconds": 11.765103724000028,
+      "processing_fps": 6.119793049773526,
+      "first_frame_seconds": 0.2033208459999969,
+      "peak_gpu_allocated_bytes": 4143401984,
+      "subject_selection": "seeded_previous_box_iou",
+      "intrinsics_source": "image_diagonal_focal_heuristic",
+      "stage_milliseconds": {
+        "total_seconds": {
+          "median": 164.02841849992456,
+          "p95": 178.94404009995245
+        },
+        "detector_seconds": {
+          "median": 12.426592499878097,
+          "p95": 14.380918400081555
+        },
+        "crop_and_body_seconds": {
+          "median": 149.07221649991698,
+          "p95": 159.2318889500234
+        }
+      },
+      "max_cache_tokens_per_layer": 384
+    },
+    {
+      "clip": "indoor-dark",
+      "repeat": 1,
+      "source_sha256": "ee842d42efa33f64dc02d88ad3faa746600e9bdf6b1a1378e2c6b31684d0a774",
+      "frames": 60,
+      "estimated_frames": 60,
+      "seconds": 15.377598693999971,
+      "processing_fps": 3.901779542693541,
+      "first_frame_seconds": 0.3201694159999988,
+      "peak_gpu_allocated_bytes": 4143401984,
+      "subject_selection": "exactly_one_person",
+      "intrinsics_source": "manifest",
+      "stage_milliseconds": {
+        "total_seconds": {
+          "median": 255.07013900005404,
+          "p95": 270.91016290016796
+        },
+        "detector_seconds": {
+          "median": 14.922806500067054,
+          "p95": 16.796149049969245
+        },
+        "crop_and_body_seconds": {
+          "median": 234.32224200007568,
+          "p95": 244.59548160000395
+        }
+      },
+      "max_cache_tokens_per_layer": 384
+    },
+    {
+      "clip": "indoor-white",
+      "repeat": 1,
+      "source_sha256": "bfb89f7d67d1064bd427a46bd4f177926873db4a51af902e893e32327fd03d59",
+      "frames": 60,
+      "estimated_frames": 60,
+      "seconds": 19.17260797300014,
+      "processing_fps": 3.1294647073833204,
+      "first_frame_seconds": 0.3203600800000004,
+      "peak_gpu_allocated_bytes": 4143401984,
+      "subject_selection": "exactly_one_person",
+      "intrinsics_source": "manifest",
+      "stage_milliseconds": {
+        "total_seconds": {
+          "median": 334.2575645000352,
+          "p95": 379.53134560008266
+        },
+        "detector_seconds": {
+          "median": 12.049940999872888,
+          "p95": 17.57414074999133
+        },
+        "crop_and_body_seconds": {
+          "median": 317.03904099992997,
+          "p95": 363.3076257499738
+        }
+      },
+      "max_cache_tokens_per_layer": 384
+    },
+    {
+      "clip": "ronaldo-screen-20261020",
+      "repeat": 1,
+      "source_sha256": "77377a9239ba5d2d2522ee4f4df369f820227e08cec68956c1375fdb0ca7e931",
+      "frames": 23,
+      "estimated_frames": 23,
+      "seconds": 4.094230395000068,
+      "processing_fps": 5.617661387128562,
+      "first_frame_seconds": 0.21816869700001007,
+      "peak_gpu_allocated_bytes": 4143401984,
+      "subject_selection": "seeded_previous_box_iou",
+      "intrinsics_source": "image_diagonal_focal_heuristic",
+      "stage_milliseconds": {
+        "total_seconds": {
+          "median": 173.5880769999767,
+          "p95": 189.81876410014138
+        },
+        "detector_seconds": {
+          "median": 11.108116000059454,
+          "p95": 13.08472030007124
+        },
+        "crop_and_body_seconds": {
+          "median": 158.51048200011064,
+          "p95": 174.79579579999154
+        }
+      },
+      "max_cache_tokens_per_layer": 384
+    },
+    {
+      "clip": "ronaldo-screen-white-20261020",
+      "repeat": 1,
+      "source_sha256": "5e298b7c7d783d280549563125eecc651ebb4bbef7a976217aea62b29508a668",
+      "frames": 48,
+      "estimated_frames": 48,
+      "seconds": 8.120599267999978,
+      "processing_fps": 5.910893816562126,
+      "first_frame_seconds": 0.2085318389999884,
+      "peak_gpu_allocated_bytes": 4143401984,
+      "subject_selection": "seeded_previous_box_iou",
+      "intrinsics_source": "image_diagonal_focal_heuristic",
+      "stage_milliseconds": {
+        "total_seconds": {
+          "median": 167.11282749997736,
+          "p95": 182.30987484995467
+        },
+        "detector_seconds": {
+          "median": 10.973714500096321,
+          "p95": 11.249959099905027
+        },
+        "crop_and_body_seconds": {
+          "median": 153.53190400003314,
+          "p95": 168.2175180999593
+        }
+      },
+      "max_cache_tokens_per_layer": 384
+    },
+    {
+      "clip": "jk-messi-style-20261020",
+      "repeat": 1,
+      "source_sha256": "ab066b2cb20584a00e2aeb8c5c171dccd1b2a655a47977d9d5336ba35f0342b1",
+      "frames": 72,
+      "estimated_frames": 72,
+      "seconds": 11.911454613999922,
+      "processing_fps": 6.044601799966231,
+      "first_frame_seconds": 0.19957240799999454,
+      "peak_gpu_allocated_bytes": 4143401984,
+      "subject_selection": "seeded_previous_box_iou",
+      "intrinsics_source": "image_diagonal_focal_heuristic",
+      "stage_milliseconds": {
+        "total_seconds": {
+          "median": 166.08030650002092,
+          "p95": 172.5796400499121
+        },
+        "detector_seconds": {
+          "median": 12.646403000076134,
+          "p95": 14.705514649926954
+        },
+        "crop_and_body_seconds": {
+          "median": 151.00384950005719,
+          "p95": 156.5024574500285
+        }
+      },
+      "max_cache_tokens_per_layer": 384
+    }
+  ]
+}

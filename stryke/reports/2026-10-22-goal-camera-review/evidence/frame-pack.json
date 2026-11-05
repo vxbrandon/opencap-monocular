@@ -1,0 +1,86 @@
+[
+  {
+    "id": "jk-0030",
+    "source": "JK curl",
+    "frame": 30,
+    "path": "/Users/tbg/stryke-data/research/2026-10-22-goal-camera/frames/jk-0030.jpg"
+  },
+  {
+    "id": "jk-0060",
+    "source": "JK curl",
+    "frame": 60,
+    "path": "/Users/tbg/stryke-data/research/2026-10-22-goal-camera/frames/jk-0060.jpg"
+  },
+  {
+    "id": "jk-0090",
+    "source": "JK curl",
+    "frame": 90,
+    "path": "/Users/tbg/stryke-data/research/2026-10-22-goal-camera/frames/jk-0090.jpg"
+  },
+  {
+    "id": "jk-0120",
+    "source": "JK curl",
+    "frame": 120,
+    "path": "/Users/tbg/stryke-data/research/2026-10-22-goal-camera/frames/jk-0120.jpg"
+  },
+  {
+    "id": "platform-curling-04-A",
+    "source": "\ud50c\ub7ab\ud3fc \uc790\ub8cc.mov",
+    "frame": 0,
+    "path": "/Users/tbg/stryke-data/research/2026-10-22-goal-camera/frames/platform-curling-04-A.jpg"
+  },
+  {
+    "id": "platform-curling-04-B",
+    "source": "\ud50c\ub7ab\ud3fc \uc790\ub8cc.mov",
+    "frame": 0,
+    "path": "/Users/tbg/stryke-data/research/2026-10-22-goal-camera/frames/platform-curling-04-B.jpg"
+  },
+  {
+    "id": "platform-curling-05-A",
+    "source": "\ud50c\ub7ab\ud3fc \uc790\ub8cc.mov",
+    "frame": 0,
+    "path": "/Users/tbg/stryke-data/research/2026-10-22-goal-camera/frames/platform-curling-05-A.jpg"
+  },
+  {
+    "id": "platform-curling-05-B",
+    "source": "\ud50c\ub7ab\ud3fc \uc790\ub8cc.mov",
+    "frame": 0,
+    "path": "/Users/tbg/stryke-data/research/2026-10-22-goal-camera/frames/platform-curling-05-B.jpg"
+  },
+  {
+    "id": "platform-knuckleball-07-A",
+    "source": "\ud50c\ub7ab\ud3fc \uc790\ub8cc.mov",
+    "frame": 0,
+    "path": "/Users/tbg/stryke-data/research/2026-10-22-goal-camera/frames/platform-knuckleball-07-A.jpg"
+  },
+  {
+    "id": "platform-knuckleball-07-B",
+    "source": "\ud50c\ub7ab\ud3fc \uc790\ub8cc.mov",
+    "frame": 0,
+    "path": "/Users/tbg/stryke-data/research/2026-10-22-goal-camera/frames/platform-knuckleball-07-B.jpg"
+  },
+  {
+    "id": "platform-driven-04-A",
+    "source": "\ud50c\ub7ab\ud3fc \uc790\ub8cc.mov",
+    "frame": 0,
+    "path": "/Users/tbg/stryke-data/research/2026-10-22-goal-camera/frames/platform-driven-04-A.jpg"
+  },
+  {
+    "id": "platform-driven-04-B",
+    "source": "\ud50c\ub7ab\ud3fc \uc790\ub8cc.mov",
+    "frame": 0,
+    "path": "/Users/tbg/stryke-data/research/2026-10-22-goal-camera/frames/platform-driven-04-B.jpg"
+  },
+  {
+    "id": "platform-curling-01-A",
+    "source": "\ud50c\ub7ab\ud3fc \uc790\ub8cc.mov",
+    "frame": 0,
+    "path": "/Users/tbg/stryke-data/research/2026-10-22-goal-camera/frames/platform-curling-01-A.jpg"
+  },
+  {
+    "id": "platform-curling-01-B",
+    "source": "\ud50c\ub7ab\ud3fc \uc790\ub8cc.mov",
+    "frame": 0,
+    "path": "/Users/tbg/stryke-data/research/2026-10-22-goal-camera/frames/platform-curling-01-B.jpg"
+  }
+]

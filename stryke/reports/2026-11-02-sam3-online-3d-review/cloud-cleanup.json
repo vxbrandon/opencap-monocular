@@ -1,0 +1,16 @@
+{
+  "checked_at_utc": "2026-11-02T13:43:09.986218+00:00",
+  "instance_states": {
+    "T4": "stopped",
+    "L4": "stopped"
+  },
+  "new_instances_created": false,
+  "normal_stop_requested": true,
+  "temporary_ssh_rule_removed": true,
+  "temporary_security_group_rule_added_and_revoked": true,
+  "controller_stop_verification_window_seconds": 150,
+  "controller_initial_final_state": "stopping",
+  "verification": "fresh AWS EC2 describe responses; rule absence independently verified",
+  "artifact_archive_download_verified": true,
+  "cleanup_complete": true
+}

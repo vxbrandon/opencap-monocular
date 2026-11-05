@@ -1,0 +1,1702 @@
+{
+  "scope": "Three existing original-raster development frames. Learned outputs use saved author-threshold results. No new learned model or fine-tuning ran.",
+  "reference_method": "AI visual inspection of enlarged pixel grids, followed by entering coordinates. No mouse labeling tool and no independent human annotation. References are approximate development labels.",
+  "classical_method": "OpenCV Line Segment Detector on full grayscale image, length >= max(35px,2.5% width); >=55% adjacent-green support; >=45% white support. No manual ROI or reference input. Candidate line identities remain unknown.",
+  "coverage_definition": "Fraction of 200 samples on an AI-selected guide within 5 original pixels of a classical candidate with orientation within 5 degrees. Tunable development diagnostic, not recall or semantic accuracy.",
+  "frames": {
+    "jk-0060": {
+      "models": {
+        "nbjw": {
+          "points": 9,
+          "line_segments": 0,
+          "painted_field_line_segments": 0,
+          "goal_frame_line_segments": 0,
+          "thresholds": {
+            "point": 0.1486,
+            "line": 0.388
+          }
+        },
+        "pnl": {
+          "points": 2,
+          "line_segments": 1,
+          "painted_field_line_segments": 0,
+          "goal_frame_line_segments": 1,
+          "thresholds": {
+            "point": 0.3434,
+            "line": 0.7867
+          }
+        },
+        "pnl_wp": {
+          "points": 0,
+          "line_segments": 0,
+          "painted_field_line_segments": 0,
+          "goal_frame_line_segments": 0,
+          "thresholds": {
+            "point": 0.3434,
+            "line": 0.7867
+          }
+        }
+      },
+      "manual_corners": [
+        [
+          309,
+          108
+        ],
+        [
+          646,
+          100
+        ],
+        [
+          650,
+          208
+        ],
+        [
+          317,
+          223
+        ]
+      ],
+      "guides": [
+        {
+          "name": "goal-area front, assumed 5.5 m",
+          "world": [
+            [
+              -9.16,
+              0,
+              5.5
+            ],
+            [
+              9.16,
+              0,
+              5.5
+            ]
+          ],
+          "pixels": [
+            [
+              72,
+              253
+            ],
+            [
+              842,
+              216
+            ]
+          ],
+          "classical_coverage_5px": 1.0
+        },
+        {
+          "name": "penalty-area front, assumed 16.5 m",
+          "world": [
+            [
+              -20.16,
+              0,
+              16.5
+            ],
+            [
+              20.16,
+              0,
+              16.5
+            ]
+          ],
+          "pixels": [
+            [
+              140,
+              314
+            ],
+            [
+              794,
+              273
+            ]
+          ],
+          "classical_coverage_5px": 1.0
+        }
+      ],
+      "classical": {
+        "seconds": 0.062215125071816146,
+        "raw_lsd_segments": 1683,
+        "candidates": [
+          {
+            "pixels": [
+              [
+                906.9907836914062,
+                286.7348327636719
+              ],
+              [
+                736.8862915039062,
+                304.48321533203125
+              ]
+            ],
+            "length_px": 171.0279083251953,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 0.96875
+          },
+          {
+            "pixels": [
+              [
+                655.5794067382812,
+                309.7414855957031
+              ],
+              [
+                496.86480712890625,
+                317.92755126953125
+              ]
+            ],
+            "length_px": 158.92556762695312,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 0.96875
+          },
+          {
+            "pixels": [
+              [
+                635.6649780273438,
+                314.88348388671875
+              ],
+              [
+                773.1994018554688,
+                304.071533203125
+              ]
+            ],
+            "length_px": 137.958740234375,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 0.96875
+          },
+          {
+            "pixels": [
+              [
+                735.71875,
+                304.2608337402344
+              ],
+              [
+                655.7478637695312,
+                310.8631591796875
+              ]
+            ],
+            "length_px": 80.24296569824219,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 0.96875
+          },
+          {
+            "pixels": [
+              [
+                130.58250427246094,
+                317.68743896484375
+              ],
+              [
+                233.1288299560547,
+                323.0516357421875
+              ]
+            ],
+            "length_px": 102.68653106689453,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                498.122802734375,
+                317.9674072265625
+              ],
+              [
+                435.6175231933594,
+                318.84112548828125
+              ]
+            ],
+            "length_px": 62.51138687133789,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 0.9375
+          },
+          {
+            "pixels": [
+              [
+                399.373291015625,
+                320.1630554199219
+              ],
+              [
+                280.6249084472656,
+                320.6025390625
+              ]
+            ],
+            "length_px": 118.74919891357422,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                796.8020629882812,
+                301.1850891113281
+              ],
+              [
+                898.2401733398438,
+                290.4651184082031
+              ]
+            ],
+            "length_px": 102.00298309326172,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                484.3528747558594,
+                321.3936767578125
+              ],
+              [
+                535.6668090820312,
+                319.0333557128906
+              ]
+            ],
+            "length_px": 51.36819076538086,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                254.37319946289062,
+                320.664794921875
+              ],
+              [
+                130.5945587158203,
+                315.0453796386719
+              ]
+            ],
+            "length_px": 123.90613555908203,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                193.2101593017578,
+                306.9715881347656
+              ],
+              [
+                14.306087493896484,
+                318.2852783203125
+              ]
+            ],
+            "length_px": 179.26144409179688,
+            "adjacent_green_fraction": 0.984375,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                575.5956420898438,
+                316.30584716796875
+              ],
+              [
+                611.8779907226562,
+                314.4330139160156
+              ]
+            ],
+            "length_px": 36.330650329589844,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                234.37611389160156,
+                323.2988586425781
+              ],
+              [
+                483.1319274902344,
+                321.7044677734375
+              ]
+            ],
+            "length_px": 248.76092529296875,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                124.69049835205078,
+                231.50013732910156
+              ],
+              [
+                68.52953338623047,
+                251.74708557128906
+              ]
+            ],
+            "length_px": 59.699188232421875,
+            "adjacent_green_fraction": 0.984375,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                60.58587646484375,
+                317.2345275878906
+              ],
+              [
+                129.3585968017578,
+                315.9775085449219
+              ]
+            ],
+            "length_px": 68.78421020507812,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                353.18585205078125,
+                297.90521240234375
+              ],
+              [
+                194.39913940429688,
+                307.28369140625
+              ]
+            ],
+            "length_px": 159.0634307861328,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                698.1403198242188,
+                94.71768951416016
+              ],
+              [
+                653.1185302734375,
+                96.72997283935547
+              ]
+            ],
+            "length_px": 45.06673812866211,
+            "adjacent_green_fraction": 0.6796875,
+            "white_fraction": 0.65625
+          },
+          {
+            "pixels": [
+              [
+                794.417724609375,
+                271.3280029296875
+              ],
+              [
+                376.8653869628906,
+                296.7169189453125
+              ]
+            ],
+            "length_px": 418.323486328125,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                434.40362548828125,
+                319.1940002441406
+              ],
+              [
+                399.3952331542969,
+                320.1310119628906
+              ]
+            ],
+            "length_px": 35.020931243896484,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 0.96875
+          },
+          {
+            "pixels": [
+              [
+                1220.63134765625,
+                244.47705078125
+              ],
+              [
+                1039.380126953125,
+                255.7069091796875
+              ]
+            ],
+            "length_px": 181.59877014160156,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 0.65625
+          },
+          {
+            "pixels": [
+              [
+                134.39071655273438,
+                313.3962707519531
+              ],
+              [
+                494.4134826660156,
+                292.5394592285156
+              ]
+            ],
+            "length_px": 360.62640380859375,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                3.1580581665039062,
+                322.3088073730469
+              ],
+              [
+                59.36740493774414,
+                318.02532958984375
+              ]
+            ],
+            "length_px": 56.37232208251953,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                495.6016845703125,
+                292.80377197265625
+              ],
+              [
+                606.9005737304688,
+                284.72735595703125
+              ]
+            ],
+            "length_px": 111.59153747558594,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                69.32151794433594,
+                253.27098083496094
+              ],
+              [
+                416.9141540527344,
+                236.43321228027344
+              ]
+            ],
+            "length_px": 348.0002136230469,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 0.59375
+          },
+          {
+            "pixels": [
+              [
+                1278.1943359375,
+                241.90333557128906
+              ],
+              [
+                1221.8388671875,
+                244.95811462402344
+              ]
+            ],
+            "length_px": 56.438201904296875,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 0.84375
+          },
+          {
+            "pixels": [
+              [
+                1060.5390625,
+                256.60784912109375
+              ],
+              [
+                1278.119384765625,
+                244.2765655517578
+              ]
+            ],
+            "length_px": 217.92947387695312,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 0.6875
+          },
+          {
+            "pixels": [
+              [
+                670.672119140625,
+                281.5220947265625
+              ],
+              [
+                725.6517944335938,
+                278.63580322265625
+              ]
+            ],
+            "length_px": 55.055381774902344,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                905.6654663085938,
+                263.7303466796875
+              ],
+              [
+                795.5722045898438,
+                271.0849914550781
+              ]
+            ],
+            "length_px": 110.3386459350586,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 0.75
+          },
+          {
+            "pixels": [
+              [
+                616.9454956054688,
+                284.333984375
+              ],
+              [
+                670.5860595703125,
+                281.2073059082031
+              ]
+            ],
+            "length_px": 53.73161315917969,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                726.7940063476562,
+                278.1667175292969
+              ],
+              [
+                906.9061889648438,
+                266.0903015136719
+              ]
+            ],
+            "length_px": 180.51658630371094,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 0.84375
+          },
+          {
+            "pixels": [
+              [
+                873.1844482421875,
+                206.21554565429688
+              ],
+              [
+                825.6202392578125,
+                201.927490234375
+              ]
+            ],
+            "length_px": 47.757110595703125,
+            "adjacent_green_fraction": 0.9921875,
+            "white_fraction": 0.59375
+          },
+          {
+            "pixels": [
+              [
+                806.8287353515625,
+                202.3760986328125
+              ],
+              [
+                891.79638671875,
+                210.22579956054688
+              ]
+            ],
+            "length_px": 85.32947540283203,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 0.5
+          },
+          {
+            "pixels": [
+              [
+                418.1322021484375,
+                237.018310546875
+              ],
+              [
+                671.9318237304688,
+                224.25477600097656
+              ]
+            ],
+            "length_px": 254.12034606933594,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 0.875
+          },
+          {
+            "pixels": [
+              [
+                663.1547241210938,
+                222.49179077148438
+              ],
+              [
+                338.1265869140625,
+                238.15797424316406
+              ]
+            ],
+            "length_px": 325.40545654296875,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 0.8125
+          },
+          {
+            "pixels": [
+              [
+                336.84716796875,
+                237.57150268554688
+              ],
+              [
+                84.3573226928711,
+                250.273681640625
+              ]
+            ],
+            "length_px": 252.80914306640625,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 0.78125
+          },
+          {
+            "pixels": [
+              [
+                673.0771484375,
+                223.38809204101562
+              ],
+              [
+                889.3641357421875,
+                212.90150451660156
+              ]
+            ],
+            "length_px": 216.5410614013672,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 0.5625
+          },
+          {
+            "pixels": [
+              [
+                885.6293334960938,
+                210.71322631835938
+              ],
+              [
+                664.36181640625,
+                221.6077880859375
+              ]
+            ],
+            "length_px": 221.53555297851562,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 0.59375
+          }
+        ]
+      }
+    },
+    "platform-curling-05-A": {
+      "models": {
+        "nbjw": {
+          "points": 0,
+          "line_segments": 0,
+          "painted_field_line_segments": 0,
+          "goal_frame_line_segments": 0,
+          "thresholds": {
+            "point": 0.1486,
+            "line": 0.388
+          }
+        },
+        "pnl": {
+          "points": 0,
+          "line_segments": 0,
+          "painted_field_line_segments": 0,
+          "goal_frame_line_segments": 0,
+          "thresholds": {
+            "point": 0.3434,
+            "line": 0.7867
+          }
+        },
+        "pnl_wp": {
+          "points": 0,
+          "line_segments": 0,
+          "painted_field_line_segments": 0,
+          "goal_frame_line_segments": 0,
+          "thresholds": {
+            "point": 0.3434,
+            "line": 0.7867
+          }
+        }
+      },
+      "manual_corners": [
+        [
+          944,
+          409
+        ],
+        [
+          1299,
+          443
+        ],
+        [
+          1300,
+          573
+        ],
+        [
+          944,
+          553
+        ]
+      ],
+      "guides": [
+        {
+          "name": "candidate penalty-area front; identity not surveyed",
+          "world": [
+            [
+              -20.16,
+              0,
+              16.5
+            ],
+            [
+              20.16,
+              0,
+              16.5
+            ]
+          ],
+          "pixels": [
+            [
+              70,
+              548
+            ],
+            [
+              1800,
+              620
+            ]
+          ],
+          "classical_coverage_5px": 0.165
+        }
+      ],
+      "classical": {
+        "seconds": 0.16755637503229082,
+        "raw_lsd_segments": 5088,
+        "candidates": [
+          {
+            "pixels": [
+              [
+                1094.3427734375,
+                414.6775817871094
+              ],
+              [
+                940.4740600585938,
+                398.29254150390625
+              ]
+            ],
+            "length_px": 154.7386474609375,
+            "adjacent_green_fraction": 0.7109375,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                688.0347290039062,
+                539.5587158203125
+              ],
+              [
+                631.7716674804688,
+                536.0153198242188
+              ]
+            ],
+            "length_px": 56.37453079223633,
+            "adjacent_green_fraction": 0.734375,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                1589.3587646484375,
+                587.104248046875
+              ],
+              [
+                1524.50634765625,
+                582.5182495117188
+              ]
+            ],
+            "length_px": 65.01435852050781,
+            "adjacent_green_fraction": 0.5625,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                1369.2672119140625,
+                569.6303100585938
+              ],
+              [
+                1305.664306640625,
+                565.0763549804688
+              ]
+            ],
+            "length_px": 63.76572799682617,
+            "adjacent_green_fraction": 0.609375,
+            "white_fraction": 0.96875
+          },
+          {
+            "pixels": [
+              [
+                1280.6104736328125,
+                598.40380859375
+              ],
+              [
+                1360.65380859375,
+                602.5709228515625
+              ]
+            ],
+            "length_px": 80.1517333984375,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                1503.132080078125,
+                605.4347534179688
+              ],
+              [
+                1445.618896484375,
+                603.2882080078125
+              ]
+            ],
+            "length_px": 57.553226470947266,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                1735.6260986328125,
+                619.3526611328125
+              ],
+              [
+                1790.6168212890625,
+                622.0416870117188
+              ]
+            ],
+            "length_px": 55.05643081665039,
+            "adjacent_green_fraction": 0.9921875,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                1600.6588134765625,
+                611.3743896484375
+              ],
+              [
+                1549.2213134765625,
+                607.9021606445312
+              ]
+            ],
+            "length_px": 51.554561614990234,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                1853.091552734375,
+                625.036865234375
+              ],
+              [
+                1918.1151123046875,
+                628.3214721679688
+              ]
+            ],
+            "length_px": 65.1064682006836,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                1670.5924072265625,
+                619.8320922851562
+              ],
+              [
+                1723.0924072265625,
+                623.5819091796875
+              ]
+            ],
+            "length_px": 52.63374328613281,
+            "adjacent_green_fraction": 0.9375,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                1093.0087890625,
+                416.83197021484375
+              ],
+              [
+                1160.723388671875,
+                423.35382080078125
+              ]
+            ],
+            "length_px": 68.02794647216797,
+            "adjacent_green_fraction": 0.65625,
+            "white_fraction": 1.0
+          }
+        ]
+      }
+    },
+    "platform-curling-05-B": {
+      "models": {
+        "nbjw": {
+          "points": 1,
+          "line_segments": 0,
+          "painted_field_line_segments": 0,
+          "goal_frame_line_segments": 0,
+          "thresholds": {
+            "point": 0.1486,
+            "line": 0.388
+          }
+        },
+        "pnl": {
+          "points": 1,
+          "line_segments": 0,
+          "painted_field_line_segments": 0,
+          "goal_frame_line_segments": 0,
+          "thresholds": {
+            "point": 0.3434,
+            "line": 0.7867
+          }
+        },
+        "pnl_wp": {
+          "points": 0,
+          "line_segments": 0,
+          "painted_field_line_segments": 0,
+          "goal_frame_line_segments": 0,
+          "thresholds": {
+            "point": 0.3434,
+            "line": 0.7867
+          }
+        }
+      },
+      "manual_corners": [
+        [
+          465,
+          463
+        ],
+        [
+          820,
+          481
+        ],
+        [
+          821,
+          612
+        ],
+        [
+          466,
+          621
+        ]
+      ],
+      "guides": [
+        {
+          "name": "candidate penalty-area front; identity not surveyed",
+          "world": [
+            [
+              -20.16,
+              0,
+              16.5
+            ],
+            [
+              20.16,
+              0,
+              16.5
+            ]
+          ],
+          "pixels": [
+            [
+              70,
+              747
+            ],
+            [
+              1800,
+              625
+            ]
+          ],
+          "classical_coverage_5px": 0.26
+        }
+      ],
+      "classical": {
+        "seconds": 0.15050645801238716,
+        "raw_lsd_segments": 3956,
+        "candidates": [
+          {
+            "pixels": [
+              [
+                526.8900756835938,
+                457.9233703613281
+              ],
+              [
+                466.852294921875,
+                453.4283142089844
+              ]
+            ],
+            "length_px": 60.20581817626953,
+            "adjacent_green_fraction": 0.65625,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                814.3681640625,
+                610.264892578125
+              ],
+              [
+                623.1161499023438,
+                613.9100341796875
+              ]
+            ],
+            "length_px": 191.2867431640625,
+            "adjacent_green_fraction": 0.7421875,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                686.8680419921875,
+                610.3659057617188
+              ],
+              [
+                753.137451171875,
+                608.5910034179688
+              ]
+            ],
+            "length_px": 66.29317474365234,
+            "adjacent_green_fraction": 0.6015625,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                623.1348876953125,
+                616.1918334960938
+              ],
+              [
+                799.3749389648438,
+                613.1205444335938
+              ]
+            ],
+            "length_px": 176.26681518554688,
+            "adjacent_green_fraction": 0.7578125,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                1590.63525390625,
+                596.2823486328125
+              ],
+              [
+                1528.089111328125,
+                595.197998046875
+              ]
+            ],
+            "length_px": 62.5555419921875,
+            "adjacent_green_fraction": 0.796875,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                873.1632080078125,
+                681.0858764648438
+              ],
+              [
+                795.5745849609375,
+                687.5164184570312
+              ]
+            ],
+            "length_px": 77.85465240478516,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                718.1356201171875,
+                692.0021362304688
+              ],
+              [
+                610.5504760742188,
+                700.9823608398438
+              ]
+            ],
+            "length_px": 107.95928955078125,
+            "adjacent_green_fraction": 0.8515625,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                1506.9329833984375,
+                641.552001953125
+              ],
+              [
+                1416.816650390625,
+                647.1927490234375
+              ]
+            ],
+            "length_px": 90.2927017211914,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                1738.1978759765625,
+                625.3551025390625
+              ],
+              [
+                1663.055419921875,
+                630.938720703125
+              ]
+            ],
+            "length_px": 75.34962463378906,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                1464.376220703125,
+                659.111328125
+              ],
+              [
+                1400.6158447265625,
+                658.8074340820312
+              ]
+            ],
+            "length_px": 63.76110076904297,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                1293.1220703125,
+                661.0028076171875
+              ],
+              [
+                1351.8756103515625,
+                660.804443359375
+              ]
+            ],
+            "length_px": 58.753875732421875,
+            "adjacent_green_fraction": 0.859375,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                1134.403076171875,
+                664.930419921875
+              ],
+              [
+                1073.1201171875,
+                668.0281982421875
+              ]
+            ],
+            "length_px": 61.361202239990234,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                881.844482421875,
+                683.9314575195312
+              ],
+              [
+                930.7070922851562,
+                680.5678100585938
+              ]
+            ],
+            "length_px": 48.978248596191406,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                1086.876220703125,
+                605.4585571289062
+              ],
+              [
+                1018.1248779296875,
+                605.533203125
+              ]
+            ],
+            "length_px": 68.75138092041016,
+            "adjacent_green_fraction": 0.7734375,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                441.8800354003906,
+                618.3214721679688
+              ],
+              [
+                355.6226806640625,
+                620.5352172851562
+              ]
+            ],
+            "length_px": 86.28575897216797,
+            "adjacent_green_fraction": 0.7109375,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                1106.873291015625,
+                601.7652587890625
+              ],
+              [
+                1186.8726806640625,
+                600.4781494140625
+              ]
+            ],
+            "length_px": 80.0097427368164,
+            "adjacent_green_fraction": 0.703125,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                1316.89208984375,
+                655.912109375
+              ],
+              [
+                1369.428955078125,
+                652.7803955078125
+              ]
+            ],
+            "length_px": 52.630123138427734,
+            "adjacent_green_fraction": 0.84375,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                1399.38232421875,
+                658.9090576171875
+              ],
+              [
+                1350.6051025390625,
+                658.1400756835938
+              ]
+            ],
+            "length_px": 48.78328323364258,
+            "adjacent_green_fraction": 0.9609375,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                1661.9000244140625,
+                631.0143432617188
+              ],
+              [
+                1508.061767578125,
+                640.8909301757812
+              ]
+            ],
+            "length_px": 154.15496826171875,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                1918.148681640625,
+                613.4927368164062
+              ],
+              [
+                1861.8099365234375,
+                617.1134643554688
+              ]
+            ],
+            "length_px": 56.45497131347656,
+            "adjacent_green_fraction": 0.9453125,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                1393.0902099609375,
+                651.2353515625
+              ],
+              [
+                1453.1842041015625,
+                647.9628295898438
+              ]
+            ],
+            "length_px": 60.18303298950195,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                1859.373046875,
+                655.5529174804688
+              ],
+              [
+                1914.400634765625,
+                654.087646484375
+              ]
+            ],
+            "length_px": 55.04709243774414,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                1918.17041015625,
+                650.9038696289062
+              ],
+              [
+                1818.110107421875,
+                653.8734741210938
+              ]
+            ],
+            "length_px": 100.10436248779297,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                1404.3724365234375,
+                661.4786987304688
+              ],
+              [
+                1488.12548828125,
+                661.72509765625
+              ]
+            ],
+            "length_px": 83.75341033935547,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                1869.397216796875,
+                618.6198120117188
+              ],
+              [
+                1918.1610107421875,
+                616.42529296875
+              ]
+            ],
+            "length_px": 48.813148498535156,
+            "adjacent_green_fraction": 0.9140625,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                1800.63623046875,
+                655.2823486328125
+              ],
+              [
+                1579.388916015625,
+                658.0064697265625
+              ]
+            ],
+            "length_px": 221.2640838623047,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                899.3338623046875,
+                620.1344604492188
+              ],
+              [
+                990.6510009765625,
+                617.9752197265625
+              ]
+            ],
+            "length_px": 91.34265899658203,
+            "adjacent_green_fraction": 0.984375,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                1584.221923828125,
+                639.6710205078125
+              ],
+              [
+                1691.9832763671875,
+                632.1842651367188
+              ]
+            ],
+            "length_px": 108.02111053466797,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                300.6241760253906,
+                636.8263549804688
+              ],
+              [
+                359.3784484863281,
+                635.82861328125
+              ]
+            ],
+            "length_px": 58.76274490356445,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                1770.5908203125,
+                658.3377685546875
+              ],
+              [
+                1859.326904296875,
+                655.4144287109375
+              ]
+            ],
+            "length_px": 88.78422546386719,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                571.9137573242188,
+                626.9723510742188
+              ],
+              [
+                444.3755187988281,
+                630.6433715820312
+              ]
+            ],
+            "length_px": 127.59105682373047,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                804.3701782226562,
+                622.9285888671875
+              ],
+              [
+                868.14306640625,
+                621.358642578125
+              ]
+            ],
+            "length_px": 63.79220962524414,
+            "adjacent_green_fraction": 0.875,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                1570.61279296875,
+                661.1991577148438
+              ],
+              [
+                1620.6416015625,
+                660.2947387695312
+              ]
+            ],
+            "length_px": 50.03697967529297,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                463.15435791015625,
+                632.8230590820312
+              ],
+              [
+                514.3939208984375,
+                631.2361450195312
+              ]
+            ],
+            "length_px": 51.26413345336914,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                180.58413696289062,
+                633.4119873046875
+              ],
+              [
+                241.8905029296875,
+                635.0418090820312
+              ]
+            ],
+            "length_px": 61.328025817871094,
+            "adjacent_green_fraction": 0.9140625,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                220.62210083007812,
+                624.245849609375
+              ],
+              [
+                134.3875732421875,
+                626.1845092773438
+              ]
+            ],
+            "length_px": 86.25631713867188,
+            "adjacent_green_fraction": 0.671875,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                413.1506042480469,
+                631.58056640625
+              ],
+              [
+                340.63568115234375,
+                633.5232543945312
+              ]
+            ],
+            "length_px": 72.54093933105469,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                243.12423706054688,
+                633.1415405273438
+              ],
+              [
+                171.8523712158203,
+                629.8677368164062
+              ]
+            ],
+            "length_px": 71.34701538085938,
+            "adjacent_green_fraction": 0.703125,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                1511.86767578125,
+                661.6436157226562
+              ],
+              [
+                1571.8662109375,
+                661.3463745117188
+              ]
+            ],
+            "length_px": 59.999271392822266,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                536.8202514648438,
+                630.974609375
+              ],
+              [
+                588.1642456054688,
+                629.6671142578125
+              ]
+            ],
+            "length_px": 51.36063766479492,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                1774.3709716796875,
+                603.058837890625
+              ],
+              [
+                1644.3721923828125,
+                603.452392578125
+              ]
+            ],
+            "length_px": 129.99937438964844,
+            "adjacent_green_fraction": 0.9765625,
+            "white_fraction": 0.96875
+          },
+          {
+            "pixels": [
+              [
+                726.8168334960938,
+                617.324951171875
+              ],
+              [
+                658.086669921875,
+                619.2752685546875
+              ]
+            ],
+            "length_px": 68.75782775878906,
+            "adjacent_green_fraction": 0.5546875,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                1141.8851318359375,
+                610.9925537109375
+              ],
+              [
+                1060.627685546875,
+                613.2208251953125
+              ]
+            ],
+            "length_px": 81.28799438476562,
+            "adjacent_green_fraction": 1.0,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                761.8656616210938,
+                621.5462036132812
+              ],
+              [
+                668.1201171875,
+                624.2018432617188
+              ]
+            ],
+            "length_px": 93.78315734863281,
+            "adjacent_green_fraction": 0.9453125,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                1476.875,
+                600.5906982421875
+              ],
+              [
+                1415.625,
+                600.6402587890625
+              ]
+            ],
+            "length_px": 61.25001907348633,
+            "adjacent_green_fraction": 0.875,
+            "white_fraction": 1.0
+          },
+          {
+            "pixels": [
+              [
+                1538.1258544921875,
+                599.7269287109375
+              ],
+              [
+                1596.8785400390625,
+                599.5836791992188
+              ]
+            ],
+            "length_px": 58.75286102294922,
+            "adjacent_green_fraction": 0.859375,
+            "white_fraction": 1.0
+          }
+        ]
+      }
+    }
+  }
+}

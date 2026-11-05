@@ -1,0 +1,33 @@
+{
+  "checked_date": "2026-10-22",
+  "currency": "USD",
+  "scope": "Public list prices, not an account quote. Training hours below are illustrative, not measured time to train these models.",
+  "roboflow": {
+    "pricing_source": "https://roboflow.com/pricing",
+    "credit_source": "https://roboflow.com/credits",
+    "free_credits_per_month": 10,
+    "core_monthly_usd": 39,
+    "core_total_credits_per_month": 20,
+    "gpu_minutes_per_credit": 30,
+    "illustrative_gpu_hours": 12,
+    "illustrative_training_credits": 24,
+    "example_pack_usd_month": 89,
+    "example_pack_total_credits": 35
+  },
+  "custom_rented_gpu": {
+    "source": "https://www.runpod.io/pricing",
+    "example_gpu": "RTX 4090",
+    "listed_usd_per_hour": 0.89,
+    "illustrative_gpu_hours": 12,
+    "illustrative_gpu_cost_usd": 10.68
+  },
+  "excluded_costs": [
+    "labeling and human QA",
+    "storage and transfer",
+    "idle allocated GPU time",
+    "engineering and maintenance",
+    "app export/integration",
+    "commercial model licensing where applicable"
+  ],
+  "caution": "Equal GPU hours on different services are not equal completed training work. Benchmark actual runtime and held-out quality before comparing total cost."
+}

@@ -1,0 +1,1007 @@
+[
+  {
+    "frame": "jk-0060",
+    "variants": [
+      {
+        "frame": "jk-0060",
+        "K": [
+          [
+            1459.1208973928196,
+            0.0,
+            640.0
+          ],
+          [
+            0.0,
+            1459.1208973928196,
+            358.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "R_world_to_camera": [
+          [
+            0.9781451560540985,
+            -0.0317575073239639,
+            0.20548361106538854
+          ],
+          [
+            -0.06188384816333202,
+            -0.9879457255658155,
+            0.14189303250241764
+          ],
+          [
+            0.19850048620696414,
+            -0.15150809900729023,
+            -0.9683196026678361
+          ]
+        ],
+        "camera_m": [
+          -3.2721622980165272,
+          1.6674157298467116,
+          32.215131718795995
+        ],
+        "ball_m": [
+          -3.003537147943816,
+          0.11,
+          27.429970777498948
+        ],
+        "ball_camera_distance_m": 5.0393916756827295,
+        "focal_px": 1459.1208973928196,
+        "goal_corner_rms_px": 0.810941993486503,
+        "sphere_outline_rms_px": 0.27307568117480263,
+        "goal_projected": [
+          [
+            309.416667422169,
+            108.05321638011527
+          ],
+          [
+            646.1345665389942,
+            98.87737980507194
+          ],
+          [
+            649.5101353867508,
+            208.9559277089726
+          ],
+          [
+            316.91661665009855,
+            223.12231835829718
+          ]
+        ],
+        "weighted_sum_squared": 1.1879048023044496,
+        "parameters": [
+          7.285589408278868,
+          -2.9770479396896325,
+          0.07085554634842979,
+          -0.3056823961950568,
+          -3.2721622980165272,
+          0.5112749607070521,
+          32.215131718795995,
+          -3.003537147943816,
+          27.429970777498948
+        ],
+        "optimizer_success": true,
+        "at_bound": false,
+        "extra_lines": [],
+        "assumptions": [
+          "regulation inner goal dimensions 7.32 x 2.44 m",
+          "nominal ball diameter 0.22 m",
+          "stationary ball touches flat ground",
+          "square pixels; centred principal point; zero lens distortion",
+          "manual front corners and ball silhouette; no metric ground truth"
+        ],
+        "line_checks": [
+          {
+            "name": "goal-area front, assumed 5.5 m",
+            "rms_px": 2.257406041669606
+          },
+          {
+            "name": "penalty-area front, assumed 16.5 m",
+            "rms_px": 17.634597968816447
+          }
+        ],
+        "holdout_points": [
+          {
+            "name": "left goal-area corner at goal line",
+            "world": [
+              -9.16,
+              0,
+              0
+            ],
+            "pixel": [
+              127,
+              232
+            ],
+            "predicted": [
+              46.01410139541236,
+              234.66106052489124
+            ],
+            "error_px": 81.02960579880471
+          },
+          {
+            "name": "left goal-area front corner",
+            "world": [
+              -9.16,
+              0,
+              5.5
+            ],
+            "pixel": [
+              72,
+              253
+            ],
+            "predicted": [
+              -14.676194424130932,
+              253.9712822228822
+            ],
+            "error_px": 86.6816362847762
+          },
+          {
+            "name": "left penalty arc intersection",
+            "world": [
+              -7.3125,
+              0,
+              16.5
+            ],
+            "pixel": [
+              118,
+              315
+            ],
+            "predicted": [
+              -69.10213569589142,
+              324.92185013982737
+            ],
+            "error_px": 187.36502419651583
+          }
+        ],
+        "variant": "goal + ball"
+      },
+      {
+        "frame": "jk-0060",
+        "K": [
+          [
+            1364.8771312241274,
+            0.0,
+            640.0
+          ],
+          [
+            0.0,
+            1364.8771312241274,
+            358.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "R_world_to_camera": [
+          [
+            0.9735649146415913,
+            -0.032270642710234804,
+            0.2261193547619932
+          ],
+          [
+            -0.06763179242266226,
+            -0.9863045113878209,
+            0.1504305536442973
+          ],
+          [
+            0.21816804906449913,
+            -0.16174676638220703,
+            -0.9624139888490244
+          ]
+        ],
+        "camera_m": [
+          -3.502843326803921,
+          1.6673810666183189,
+          30.12944389470803
+        ],
+        "ball_m": [
+          -3.207964230710591,
+          0.11,
+          25.664764439326767
+        ],
+        "ball_camera_distance_m": 4.7376948094276345,
+        "focal_px": 1364.8771312241274,
+        "goal_corner_rms_px": 0.8116713645941432,
+        "sphere_outline_rms_px": 0.3110359349250884,
+        "goal_projected": [
+          [
+            309.12933211492924,
+            107.92028358391904
+          ],
+          [
+            646.0860388921243,
+            98.84093081248415
+          ],
+          [
+            649.4941173769722,
+            208.7026501375037
+          ],
+          [
+            317.27279626270223,
+            223.66125925029237
+          ]
+        ],
+        "weighted_sum_squared": 1.360203687794887,
+        "parameters": [
+          7.218819689812361,
+          -2.963892619106668,
+          0.07549176303731057,
+          -0.33572794662626804,
+          -3.502843326803921,
+          0.5112541718971129,
+          30.12944389470803,
+          -3.207964230710591,
+          25.664764439326767
+        ],
+        "optimizer_success": true,
+        "at_bound": false,
+        "extra_lines": [
+          {
+            "name": "goal-area front, assumed 5.5 m",
+            "world": [
+              [
+                -9.16,
+                0,
+                5.5
+              ],
+              [
+                9.16,
+                0,
+                5.5
+              ]
+            ],
+            "pixels": [
+              [
+                72,
+                253
+              ],
+              [
+                842,
+                216
+              ]
+            ]
+          }
+        ],
+        "assumptions": [
+          "regulation inner goal dimensions 7.32 x 2.44 m",
+          "nominal ball diameter 0.22 m",
+          "stationary ball touches flat ground",
+          "square pixels; centred principal point; zero lens distortion",
+          "manual front corners and ball silhouette; no metric ground truth"
+        ],
+        "line_checks": [
+          {
+            "name": "goal-area front, assumed 5.5 m",
+            "rms_px": 0.16395458252725567
+          },
+          {
+            "name": "penalty-area front, assumed 16.5 m",
+            "rms_px": 15.067188444269027
+          }
+        ],
+        "holdout_points": [
+          {
+            "name": "left goal-area corner at goal line",
+            "world": [
+              -9.16,
+              0,
+              0
+            ],
+            "pixel": [
+              127,
+              232
+            ],
+            "predicted": [
+              42.74736617439536,
+              236.0220511056674
+            ],
+            "error_px": 84.34858150347296
+          },
+          {
+            "name": "left goal-area front corner",
+            "world": [
+              -9.16,
+              0,
+              5.5
+            ],
+            "pixel": [
+              72,
+              253
+            ],
+            "predicted": [
+              -21.634190174834227,
+              257.28896351879536
+            ],
+            "error_px": 93.73236782330093
+          },
+          {
+            "name": "left penalty arc intersection",
+            "world": [
+              -7.3125,
+              0,
+              16.5
+            ],
+            "pixel": [
+              118,
+              315
+            ],
+            "predicted": [
+              -92.35226980262586,
+              341.90227998678284
+            ],
+            "error_px": 212.0655796672434
+          }
+        ],
+        "variant": "goal + ball + first field line"
+      },
+      {
+        "frame": "jk-0060",
+        "K": [
+          [
+            1561.289563266251,
+            0.0,
+            640.0
+          ],
+          [
+            0.0,
+            1561.289563266251,
+            358.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "R_world_to_camera": [
+          [
+            0.9521920015479841,
+            -0.032360948223763564,
+            0.3037814365923349
+          ],
+          [
+            -0.07367047917418905,
+            -0.9893514013919641,
+            0.12552475876098032
+          ],
+          [
+            0.2964844897904261,
+            -0.14190339528642656,
+            -0.944436537687893
+          ]
+        ],
+        "camera_m": [
+          -7.119521865083269,
+          1.6673420517244797,
+          33.282754900646275
+        ],
+        "ball_m": [
+          -6.260300271677367,
+          0.11,
+          28.218091759873417
+        ],
+        "ball_camera_distance_m": 5.3679035704963605,
+        "focal_px": 1561.289563266251,
+        "goal_corner_rms_px": 1.5733578279839935,
+        "sphere_outline_rms_px": 0.23926376781012146,
+        "goal_projected": [
+          [
+            309.8047090655574,
+            107.17124437687069
+          ],
+          [
+            645.811340580168,
+            98.5504414061219
+          ],
+          [
+            649.2894668856713,
+            209.22593510496978
+          ],
+          [
+            317.0719777587811,
+            225.10182286997838
+          ]
+        ],
+        "weighted_sum_squared": 4.244995173616639,
+        "parameters": [
+          7.353267401881727,
+          -2.969515812112356,
+          0.08102512237574562,
+          -0.4587000414566961,
+          -7.119521865083269,
+          0.5112307727167573,
+          33.282754900646275,
+          -6.260300271677367,
+          28.218091759873417
+        ],
+        "optimizer_success": true,
+        "at_bound": false,
+        "extra_lines": [
+          {
+            "name": "goal-area front, assumed 5.5 m",
+            "world": [
+              [
+                -9.16,
+                0,
+                5.5
+              ],
+              [
+                9.16,
+                0,
+                5.5
+              ]
+            ],
+            "pixels": [
+              [
+                72,
+                253
+              ],
+              [
+                842,
+                216
+              ]
+            ]
+          },
+          {
+            "name": "penalty-area front, assumed 16.5 m",
+            "world": [
+              [
+                -20.16,
+                0,
+                16.5
+              ],
+              [
+                20.16,
+                0,
+                16.5
+              ]
+            ],
+            "pixels": [
+              [
+                140,
+                314
+              ],
+              [
+                794,
+                273
+              ]
+            ]
+          }
+        ],
+        "assumptions": [
+          "regulation inner goal dimensions 7.32 x 2.44 m",
+          "nominal ball diameter 0.22 m",
+          "stationary ball touches flat ground",
+          "square pixels; centred principal point; zero lens distortion",
+          "manual front corners and ball silhouette; no metric ground truth"
+        ],
+        "line_checks": [
+          {
+            "name": "goal-area front, assumed 5.5 m",
+            "rms_px": 1.5519881526077273
+          },
+          {
+            "name": "penalty-area front, assumed 16.5 m",
+            "rms_px": 0.5623448358511953
+          }
+        ],
+        "holdout_points": [
+          {
+            "name": "left goal-area corner at goal line",
+            "world": [
+              -9.16,
+              0,
+              0
+            ],
+            "pixel": [
+              127,
+              232
+            ],
+            "predicted": [
+              36.91342411750628,
+              238.48993728173105
+            ],
+            "error_px": 90.3200445092511
+          },
+          {
+            "name": "left goal-area front corner",
+            "world": [
+              -9.16,
+              0,
+              5.5
+            ],
+            "pixel": [
+              72,
+              253
+            ],
+            "predicted": [
+              16.65596830404745,
+              256.1589563662078
+            ],
+            "error_px": 55.43411268962646
+          },
+          {
+            "name": "left penalty arc intersection",
+            "world": [
+              -7.3125,
+              0,
+              16.5
+            ],
+            "pixel": [
+              118,
+              315
+            ],
+            "predicted": [
+              130.7834682229301,
+              314.8665852720748
+            ],
+            "error_px": 12.784164395700303
+          }
+        ],
+        "variant": "goal + ball + both field lines"
+      }
+    ]
+  },
+  {
+    "frame": "platform-curling-05-A",
+    "variants": [
+      {
+        "frame": "platform-curling-05-A",
+        "K": [
+          [
+            1179.2808931638315,
+            0.0,
+            960.0
+          ],
+          [
+            0.0,
+            1179.2808931638315,
+            540.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "R_world_to_camera": [
+          [
+            0.9221781366643617,
+            0.047690519745362224,
+            0.3838138853463527
+          ],
+          [
+            0.04436790477220331,
+            -0.998861771854758,
+            0.017511417798054464
+          ],
+          [
+            0.3842121461957842,
+            0.0008803712799353332,
+            -0.9232444159928825
+          ]
+        ],
+        "camera_m": [
+          -10.938625275182622,
+          0.2550859411398898,
+          18.307179214371242
+        ],
+        "ball_m": [
+          -9.845998062927706,
+          0.11,
+          15.103707438385507
+        ],
+        "ball_camera_distance_m": 3.3877891868907066,
+        "focal_px": 1179.2808931638315,
+        "goal_corner_rms_px": 3.9235754649361057,
+        "sphere_outline_rms_px": 0.7280416522079385,
+        "goal_projected": [
+          [
+            947.4196536436986,
+            409.49949224837997
+          ],
+          [
+            1302.5909236452462,
+            442.8147382420559
+          ],
+          [
+            1296.5275552099286,
+            570.4853841589164
+          ],
+          [
+            940.4518543183353,
+            555.3947225717311
+          ]
+        ],
+        "weighted_sum_squared": 19.163650810201748,
+        "parameters": [
+          7.072660119119368,
+          3.088179579516924,
+          0.07395211246601394,
+          0.61696849320502,
+          -10.938625275182622,
+          -1.366154766525569,
+          18.307179214371242,
+          -9.845998062927706,
+          15.103707438385507
+        ],
+        "optimizer_success": true,
+        "at_bound": false,
+        "extra_lines": [],
+        "assumptions": [
+          "regulation inner goal dimensions 7.32 x 2.44 m",
+          "nominal ball diameter 0.22 m",
+          "stationary ball touches flat ground",
+          "square pixels; centred principal point; zero lens distortion",
+          "manual front corners and ball silhouette; no metric ground truth"
+        ],
+        "line_checks": [
+          {
+            "name": "candidate penalty-area front; identity not surveyed",
+            "rms_px": 119.60918168997433
+          }
+        ],
+        "holdout_points": [],
+        "variant": "goal + ball"
+      },
+      {
+        "frame": "platform-curling-05-A",
+        "K": [
+          [
+            1611.1060081924445,
+            0.0,
+            960.0
+          ],
+          [
+            0.0,
+            1611.1060081924445,
+            540.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "R_world_to_camera": [
+          [
+            0.9089317324269569,
+            0.05428530547174128,
+            0.4133959499041699
+          ],
+          [
+            0.049350644201191105,
+            -0.9985254538021164,
+            0.022614862949066592
+          ],
+          [
+            0.4140140332214098,
+            -0.00015401012095918667,
+            -0.9102704853924597
+          ]
+        ],
+        "camera_m": [
+          -14.647551428633443,
+          0.2601589948868565,
+          24.94088476870499
+        ],
+        "ball_m": [
+          -12.940332724343513,
+          0.11,
+          20.653607747186072
+        ],
+        "ball_camera_distance_m": 4.617129810528067,
+        "focal_px": 1611.1060081924445,
+        "goal_corner_rms_px": 4.09533605382692,
+        "sphere_outline_rms_px": 0.7181224189831675,
+        "goal_projected": [
+          [
+            947.8690462213701,
+            410.0302567340063
+          ],
+          [
+            1303.0633597486785,
+            442.25680737790293
+          ],
+          [
+            1296.0121161645154,
+            571.8804890239749
+          ],
+          [
+            940.0385604986593,
+            554.0693030532885
+          ]
+        ],
+        "weighted_sum_squared": 20.444578455506466,
+        "parameters": [
+          7.384676183738603,
+          3.0806167246648872,
+          0.08362635245362096,
+          0.6676571121398831,
+          -14.647551428633443,
+          -1.346462316072434,
+          24.94088476870499,
+          -12.940332724343513,
+          20.653607747186072
+        ],
+        "optimizer_success": true,
+        "at_bound": false,
+        "extra_lines": [
+          {
+            "name": "candidate penalty-area front; identity not surveyed",
+            "world": [
+              [
+                -20.16,
+                0,
+                16.5
+              ],
+              [
+                20.16,
+                0,
+                16.5
+              ]
+            ],
+            "pixels": [
+              [
+                70,
+                548
+              ],
+              [
+                1800,
+                620
+              ]
+            ]
+          }
+        ],
+        "assumptions": [
+          "regulation inner goal dimensions 7.32 x 2.44 m",
+          "nominal ball diameter 0.22 m",
+          "stationary ball touches flat ground",
+          "square pixels; centred principal point; zero lens distortion",
+          "manual front corners and ball silhouette; no metric ground truth"
+        ],
+        "line_checks": [
+          {
+            "name": "candidate penalty-area front; identity not surveyed",
+            "rms_px": 0.10585294015466354
+          }
+        ],
+        "holdout_points": [],
+        "variant": "goal + ball + first field line"
+      }
+    ]
+  },
+  {
+    "frame": "platform-curling-05-B",
+    "variants": [
+      {
+        "frame": "platform-curling-05-B",
+        "K": [
+          [
+            1677.8343644395518,
+            0.0,
+            960.0
+          ],
+          [
+            0.0,
+            1677.8343644395518,
+            540.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "R_world_to_camera": [
+          [
+            0.6884731902092761,
+            -0.0071481272747822375,
+            0.725226565039868
+          ],
+          [
+            0.011707007779554754,
+            -0.999711618032583,
+            -0.020967277828183722
+          ],
+          [
+            0.7251672995467403,
+            0.022925641695235373,
+            -0.6881909637745545
+          ]
+        ],
+        "camera_m": [
+          -17.189838284356412,
+          0.6031204413291829,
+          23.36577109846833
+        ],
+        "ball_m": [
+          -13.169647731703385,
+          0.11,
+          20.379523062956675
+        ],
+        "ball_camera_distance_m": 5.032174199975051,
+        "focal_px": 1677.8343644395518,
+        "goal_corner_rms_px": 0.3773551155260005,
+        "sphere_outline_rms_px": 0.19398613702146386,
+        "goal_projected": [
+          [
+            465.4749739588963,
+            463.1371043847194
+          ],
+          [
+            820.150051732322,
+            480.7989303167662
+          ],
+          [
+            820.8375682550628,
+            611.9294334642711
+          ],
+          [
+            465.53683463371414,
+            621.1279033024289
+          ]
+        ],
+        "weighted_sum_squared": 0.4099924128599356,
+        "parameters": [
+          7.425259172047451,
+          2.864582568393166,
+          0.003867842475827156,
+          1.2305422329570601,
+          -17.189838284356412,
+          -0.5056383653353869,
+          23.36577109846833,
+          -13.169647731703385,
+          20.379523062956675
+        ],
+        "optimizer_success": true,
+        "at_bound": false,
+        "extra_lines": [],
+        "assumptions": [
+          "regulation inner goal dimensions 7.32 x 2.44 m",
+          "nominal ball diameter 0.22 m",
+          "stationary ball touches flat ground",
+          "square pixels; centred principal point; zero lens distortion",
+          "manual front corners and ball silhouette; no metric ground truth"
+        ],
+        "line_checks": [
+          {
+            "name": "candidate penalty-area front; identity not surveyed",
+            "rms_px": 3.4672948244725585
+          }
+        ],
+        "holdout_points": [],
+        "variant": "goal + ball"
+      },
+      {
+        "frame": "platform-curling-05-B",
+        "K": [
+          [
+            1659.9081384882197,
+            0.0,
+            960.0
+          ],
+          [
+            0.0,
+            1659.9081384882197,
+            540.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "R_world_to_camera": [
+          [
+            0.6857031736295931,
+            -0.0041478556439607005,
+            0.7278694614887073
+          ],
+          [
+            0.01465933969800667,
+            -0.9997022453089554,
+            -0.01950703677783393
+          ],
+          [
+            0.7277336473146767,
+            0.024046122718438066,
+            -0.6854381974680777
+          ]
+        ],
+        "camera_m": [
+          -17.03629328521976,
+          0.5972860885476582,
+          23.057506989851934
+        ],
+        "ball_m": [
+          -13.03971626709177,
+          0.11,
+          20.122146281853855
+        ],
+        "ball_camera_distance_m": 4.982611572256047,
+        "focal_px": 1659.9081384882197,
+        "goal_corner_rms_px": 0.7856003688288128,
+        "sphere_outline_rms_px": 0.1985681370011653,
+        "goal_projected": [
+          [
+            465.70146187887127,
+            462.3811222354635
+          ],
+          [
+            820.4319534703794,
+            481.52028552749545
+          ],
+          [
+            820.7110558403236,
+            612.6495914111691
+          ],
+          [
+            465.22340355094366,
+            620.8333485709277
+          ]
+        ],
+        "weighted_sum_squared": 0.9525547993660206,
+        "parameters": [
+          7.414517541559262,
+          2.8623839080941127,
+          0.008925926631554401,
+          1.2360392202507815,
+          -17.03629328521976,
+          -0.5153590700765355,
+          23.057506989851934,
+          -13.03971626709177,
+          20.122146281853855
+        ],
+        "optimizer_success": true,
+        "at_bound": false,
+        "extra_lines": [
+          {
+            "name": "candidate penalty-area front; identity not surveyed",
+            "world": [
+              [
+                -20.16,
+                0,
+                16.5
+              ],
+              [
+                20.16,
+                0,
+                16.5
+              ]
+            ],
+            "pixels": [
+              [
+                70,
+                747
+              ],
+              [
+                1800,
+                625
+              ]
+            ]
+          }
+        ],
+        "assumptions": [
+          "regulation inner goal dimensions 7.32 x 2.44 m",
+          "nominal ball diameter 0.22 m",
+          "stationary ball touches flat ground",
+          "square pixels; centred principal point; zero lens distortion",
+          "manual front corners and ball silhouette; no metric ground truth"
+        ],
+        "line_checks": [
+          {
+            "name": "candidate penalty-area front; identity not surveyed",
+            "rms_px": 0.3316645617029408
+          }
+        ],
+        "holdout_points": [],
+        "variant": "goal + ball + first field line"
+      }
+    ]
+  }
+]

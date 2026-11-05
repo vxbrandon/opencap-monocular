@@ -1,0 +1,44 @@
+[
+  {
+    "model": "nbjw",
+    "source": "jk",
+    "frames": 161,
+    "proposal_frames": 161,
+    "meaning": "presence of proposals, not accuracy"
+  },
+  {
+    "model": "nbjw",
+    "source": "A",
+    "frames": 176,
+    "proposal_frames": 0,
+    "meaning": "presence of proposals, not accuracy"
+  },
+  {
+    "model": "nbjw",
+    "source": "B",
+    "frames": 176,
+    "proposal_frames": 0,
+    "meaning": "presence of proposals, not accuracy"
+  },
+  {
+    "model": "kicky",
+    "source": "jk",
+    "frames": 161,
+    "proposal_frames": 161,
+    "meaning": "presence of proposals, not accuracy"
+  },
+  {
+    "model": "kicky",
+    "source": "A",
+    "frames": 176,
+    "proposal_frames": 176,
+    "meaning": "presence of proposals, not accuracy"
+  },
+  {
+    "model": "kicky",
+    "source": "B",
+    "frames": 176,
+    "proposal_frames": 176,
+    "meaning": "presence of proposals, not accuracy"
+  }
+]

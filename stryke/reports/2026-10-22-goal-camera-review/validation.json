@@ -1,0 +1,17 @@
+{
+  "sphere_tangent_projection_max_error_px": 1.0327085035725797e-11,
+  "camera_fits_checked": 8,
+  "proper_rotations": true,
+  "camera_above_ground": true,
+  "data_json_parsed": 18,
+  "notes": "Math checks do not validate real camera/ball metric accuracy.",
+  "local_http_links_checked": 14,
+  "all_model_overlay_images_exist": true,
+  "all_goal_and_ball_depths_positive": true,
+  "app_model_changed": false,
+  "field_line_assets_http_checked": 25,
+  "field_line_model_image_switch_verified_in_browser": true,
+  "all_selected_grass_line_model_counts_zero": true,
+  "goal_crossbar_counted_separately": true,
+  "training_comparison_added": true
+}

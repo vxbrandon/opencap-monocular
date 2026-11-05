@@ -1,0 +1,1125 @@
+{
+  "protocol": "14 fixed development frames; 54 visible corners; agent-reviewed labels \u00b14px. One-to-one best spatial assignment among semantic goal points, ignores left/right class errors: generous diagnostic, not held-out accuracy or mAP. Both 8px and 16px tolerances reported. All misses remain in denominator. Whole goal IoU is a different task from front corner localization.",
+  "models": [
+    {
+      "totals": {
+        "model": "kicky",
+        "load_s": 2.889961790991947,
+        "first_frame_ms": 444.75083297584206,
+        "warm_median_ms": 45.83558300510049,
+        "warm_p95_ms": 63.329966808669234,
+        "goal_box_hits_iou50": 14,
+        "goal_box_median_iou": 0.891644944460636,
+        "complete_front_quads": "not an output"
+      },
+      "rows": [
+        {
+          "id": "jk-0030",
+          "visible_corners": 4,
+          "seconds": 0.44475083297584206,
+          "best_goal_box_iou": 0.9149632577182377,
+          "goal_count": 1
+        },
+        {
+          "id": "jk-0060",
+          "visible_corners": 4,
+          "seconds": 0.042818999965675175,
+          "best_goal_box_iou": 0.8879228824608922,
+          "goal_count": 1
+        },
+        {
+          "id": "jk-0090",
+          "visible_corners": 4,
+          "seconds": 0.04594591702334583,
+          "best_goal_box_iou": 0.9525812362186509,
+          "goal_count": 1
+        },
+        {
+          "id": "jk-0120",
+          "visible_corners": 4,
+          "seconds": 0.04392066702712327,
+          "best_goal_box_iou": 0.8942816609014167,
+          "goal_count": 1
+        },
+        {
+          "id": "platform-curling-04-A",
+          "visible_corners": 4,
+          "seconds": 0.07896966696716845,
+          "best_goal_box_iou": 0.9197076889001436,
+          "goal_count": 2
+        },
+        {
+          "id": "platform-curling-04-B",
+          "visible_corners": 4,
+          "seconds": 0.046037749969400465,
+          "best_goal_box_iou": 0.8664328148040044,
+          "goal_count": 1
+        },
+        {
+          "id": "platform-curling-05-A",
+          "visible_corners": 4,
+          "seconds": 0.04487512493506074,
+          "best_goal_box_iou": 0.8770992532774774,
+          "goal_count": 1
+        },
+        {
+          "id": "platform-curling-05-B",
+          "visible_corners": 4,
+          "seconds": 0.045250709052197635,
+          "best_goal_box_iou": 0.882005487289094,
+          "goal_count": 1
+        },
+        {
+          "id": "platform-knuckleball-07-A",
+          "visible_corners": 4,
+          "seconds": 0.04511016607284546,
+          "best_goal_box_iou": 0.8904546650778531,
+          "goal_count": 1
+        },
+        {
+          "id": "platform-knuckleball-07-B",
+          "visible_corners": 2,
+          "seconds": 0.045743583934381604,
+          "best_goal_box_iou": 0.8531466261195996,
+          "goal_count": 2
+        },
+        {
+          "id": "platform-driven-04-A",
+          "visible_corners": 4,
+          "seconds": 0.04583558300510049,
+          "best_goal_box_iou": 0.9091521879934834,
+          "goal_count": 2
+        },
+        {
+          "id": "platform-driven-04-B",
+          "visible_corners": 4,
+          "seconds": 0.04804095800500363,
+          "best_goal_box_iou": 0.8746700213944366,
+          "goal_count": 2
+        },
+        {
+          "id": "platform-curling-01-A",
+          "visible_corners": 4,
+          "seconds": 0.05022504203952849,
+          "best_goal_box_iou": 0.9393822570080853,
+          "goal_count": 1
+        },
+        {
+          "id": "platform-curling-01-B",
+          "visible_corners": 4,
+          "seconds": 0.05290350003633648,
+          "best_goal_box_iou": 0.8928352238434188,
+          "goal_count": 1
+        }
+      ]
+    },
+    {
+      "totals": {
+        "model": "nbjw",
+        "load_s": 3.4805582499830052,
+        "first_frame_ms": 1216.0379170672968,
+        "warm_median_ms": 292.5808329600841,
+        "warm_p95_ms": 302.5386832188815,
+        "hits_8px": 16,
+        "hits_16px": 16,
+        "visible_corner_count": 54,
+        "complete_8px": 4,
+        "complete_16px": 4,
+        "jk": {
+          "frames": 4,
+          "hits8": 16,
+          "hits16": 16,
+          "visible": 16,
+          "complete8": 4,
+          "complete16": 4
+        },
+        "platform": {
+          "frames": 10,
+          "hits8": 0,
+          "hits16": 0,
+          "visible": 38,
+          "complete8": 0,
+          "complete16": 0
+        }
+      },
+      "rows": [
+        {
+          "id": "jk-0030",
+          "visible_corners": 4,
+          "seconds": 1.2160379170672968,
+          "candidate_goal_points": 4,
+          "errors_px": [
+            6.6068966751621705,
+            4.154096264536262,
+            6.075740512144905,
+            3.6748057813800483
+          ],
+          "assigned_ids": [
+            "16",
+            "12",
+            "13",
+            "17"
+          ],
+          "hits_8px": 4,
+          "hits_16px": 4,
+          "complete_8px": true,
+          "complete_16px": true
+        },
+        {
+          "id": "jk-0060",
+          "visible_corners": 4,
+          "seconds": 0.2929904580814764,
+          "candidate_goal_points": 4,
+          "errors_px": [
+            5.138141086731729,
+            1.9961004507795348,
+            1.3340738684269795,
+            5.005971742471161
+          ],
+          "assigned_ids": [
+            "16",
+            "12",
+            "13",
+            "17"
+          ],
+          "hits_8px": 4,
+          "hits_16px": 4,
+          "complete_8px": true,
+          "complete_16px": true
+        },
+        {
+          "id": "jk-0090",
+          "visible_corners": 4,
+          "seconds": 0.2930559170199558,
+          "candidate_goal_points": 4,
+          "errors_px": [
+            3.68978867503172,
+            6.210544597499528,
+            1.3612106287629155,
+            4.77731263885701
+          ],
+          "assigned_ids": [
+            "16",
+            "12",
+            "13",
+            "17"
+          ],
+          "hits_8px": 4,
+          "hits_16px": 4,
+          "complete_8px": true,
+          "complete_16px": true
+        },
+        {
+          "id": "jk-0120",
+          "visible_corners": 4,
+          "seconds": 0.289011082961224,
+          "candidate_goal_points": 4,
+          "errors_px": [
+            4.531650619677188,
+            6.648642300834396,
+            2.28075986663941,
+            6.713502149482945
+          ],
+          "assigned_ids": [
+            "16",
+            "12",
+            "13",
+            "17"
+          ],
+          "hits_8px": 4,
+          "hits_16px": 4,
+          "complete_8px": true,
+          "complete_16px": true
+        },
+        {
+          "id": "platform-curling-04-A",
+          "visible_corners": 4,
+          "seconds": 0.3067374579841271,
+          "candidate_goal_points": 0,
+          "errors_px": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "assigned_ids": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "hits_8px": 0,
+          "hits_16px": 0,
+          "complete_8px": false,
+          "complete_16px": false
+        },
+        {
+          "id": "platform-curling-04-B",
+          "visible_corners": 4,
+          "seconds": 0.2925808329600841,
+          "candidate_goal_points": 0,
+          "errors_px": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "assigned_ids": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "hits_8px": 0,
+          "hits_16px": 0,
+          "complete_8px": false,
+          "complete_16px": false
+        },
+        {
+          "id": "platform-curling-05-A",
+          "visible_corners": 4,
+          "seconds": 0.2959660419728607,
+          "candidate_goal_points": 0,
+          "errors_px": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "assigned_ids": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "hits_8px": 0,
+          "hits_16px": 0,
+          "complete_8px": false,
+          "complete_16px": false
+        },
+        {
+          "id": "platform-curling-05-B",
+          "visible_corners": 4,
+          "seconds": 0.2997395000420511,
+          "candidate_goal_points": 0,
+          "errors_px": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "assigned_ids": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "hits_8px": 0,
+          "hits_16px": 0,
+          "complete_8px": false,
+          "complete_16px": false
+        },
+        {
+          "id": "platform-knuckleball-07-A",
+          "visible_corners": 4,
+          "seconds": 0.2929639999056235,
+          "candidate_goal_points": 0,
+          "errors_px": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "assigned_ids": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "hits_8px": 0,
+          "hits_16px": 0,
+          "complete_8px": false,
+          "complete_16px": false
+        },
+        {
+          "id": "platform-knuckleball-07-B",
+          "visible_corners": 2,
+          "seconds": 0.2921235830290243,
+          "candidate_goal_points": 0,
+          "errors_px": [
+            null,
+            null
+          ],
+          "assigned_ids": [
+            null,
+            null
+          ],
+          "hits_8px": 0,
+          "hits_16px": 0,
+          "complete_8px": false,
+          "complete_16px": false
+        },
+        {
+          "id": "platform-driven-04-A",
+          "visible_corners": 4,
+          "seconds": 0.2920795000391081,
+          "candidate_goal_points": 0,
+          "errors_px": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "assigned_ids": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "hits_8px": 0,
+          "hits_16px": 0,
+          "complete_8px": false,
+          "complete_16px": false
+        },
+        {
+          "id": "platform-driven-04-B",
+          "visible_corners": 4,
+          "seconds": 0.28993866697419435,
+          "candidate_goal_points": 0,
+          "errors_px": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "assigned_ids": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "hits_8px": 0,
+          "hits_16px": 0,
+          "complete_8px": false,
+          "complete_16px": false
+        },
+        {
+          "id": "platform-curling-01-A",
+          "visible_corners": 4,
+          "seconds": 0.2894602089654654,
+          "candidate_goal_points": 0,
+          "errors_px": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "assigned_ids": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "hits_8px": 0,
+          "hits_16px": 0,
+          "complete_8px": false,
+          "complete_16px": false
+        },
+        {
+          "id": "platform-curling-01-B",
+          "visible_corners": 4,
+          "seconds": 0.29068287496920675,
+          "candidate_goal_points": 1,
+          "errors_px": [
+            null,
+            null,
+            25.059928172283335,
+            null
+          ],
+          "assigned_ids": [
+            null,
+            null,
+            "13",
+            null
+          ],
+          "hits_8px": 0,
+          "hits_16px": 0,
+          "complete_8px": false,
+          "complete_16px": false
+        }
+      ]
+    },
+    {
+      "totals": {
+        "model": "pnl",
+        "load_s": 3.2563314579892904,
+        "first_frame_ms": 713.6453749844804,
+        "warm_median_ms": 287.18087496235967,
+        "warm_p95_ms": 290.44881663285196,
+        "hits_8px": 10,
+        "hits_16px": 11,
+        "visible_corner_count": 54,
+        "complete_8px": 0,
+        "complete_16px": 0,
+        "jk": {
+          "frames": 4,
+          "hits8": 8,
+          "hits16": 9,
+          "visible": 16,
+          "complete8": 0,
+          "complete16": 0
+        },
+        "platform": {
+          "frames": 10,
+          "hits8": 2,
+          "hits16": 2,
+          "visible": 38,
+          "complete8": 0,
+          "complete16": 0
+        }
+      },
+      "rows": [
+        {
+          "id": "jk-0030",
+          "visible_corners": 4,
+          "seconds": 0.7136453749844804,
+          "candidate_goal_points": 1,
+          "errors_px": [
+            10.07725712240742,
+            null,
+            null,
+            null
+          ],
+          "assigned_ids": [
+            "15",
+            null,
+            null,
+            null
+          ],
+          "hits_8px": 0,
+          "hits_16px": 1,
+          "complete_8px": false,
+          "complete_16px": false
+        },
+        {
+          "id": "jk-0060",
+          "visible_corners": 4,
+          "seconds": 0.28852012497372925,
+          "candidate_goal_points": 2,
+          "errors_px": [
+            null,
+            1.9961004507795348,
+            null,
+            7.468731342992565
+          ],
+          "assigned_ids": [
+            null,
+            "19",
+            null,
+            "17"
+          ],
+          "hits_8px": 2,
+          "hits_16px": 2,
+          "complete_8px": false,
+          "complete_16px": false
+        },
+        {
+          "id": "jk-0090",
+          "visible_corners": 4,
+          "seconds": 0.2858914160169661,
+          "candidate_goal_points": 3,
+          "errors_px": [
+            5.6603886792339715,
+            6.210544597499528,
+            5.203359682842021,
+            null
+          ],
+          "assigned_ids": [
+            "15",
+            "12",
+            "18",
+            null
+          ],
+          "hits_8px": 3,
+          "hits_16px": 3,
+          "complete_8px": false,
+          "complete_16px": false
+        },
+        {
+          "id": "jk-0120",
+          "visible_corners": 4,
+          "seconds": 0.28443379199597985,
+          "candidate_goal_points": 4,
+          "errors_px": [
+            5.882218444359295,
+            6.648642300834396,
+            2.28075986663941,
+            344.0442014700403
+          ],
+          "assigned_ids": [
+            "15",
+            "12",
+            "17",
+            "19"
+          ],
+          "hits_8px": 3,
+          "hits_16px": 3,
+          "complete_8px": false,
+          "complete_16px": false
+        },
+        {
+          "id": "platform-curling-04-A",
+          "visible_corners": 4,
+          "seconds": 0.28904766705818474,
+          "candidate_goal_points": 0,
+          "errors_px": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "assigned_ids": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "hits_8px": 0,
+          "hits_16px": 0,
+          "complete_8px": false,
+          "complete_16px": false
+        },
+        {
+          "id": "platform-curling-04-B",
+          "visible_corners": 4,
+          "seconds": 0.2875909579452127,
+          "candidate_goal_points": 0,
+          "errors_px": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "assigned_ids": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "hits_8px": 0,
+          "hits_16px": 0,
+          "complete_8px": false,
+          "complete_16px": false
+        },
+        {
+          "id": "platform-curling-05-A",
+          "visible_corners": 4,
+          "seconds": 0.2925505409948528,
+          "candidate_goal_points": 0,
+          "errors_px": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "assigned_ids": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "hits_8px": 0,
+          "hits_16px": 0,
+          "complete_8px": false,
+          "complete_16px": false
+        },
+        {
+          "id": "platform-curling-05-B",
+          "visible_corners": 4,
+          "seconds": 0.2883072500117123,
+          "candidate_goal_points": 1,
+          "errors_px": [
+            null,
+            1.0,
+            null,
+            null
+          ],
+          "assigned_ids": [
+            null,
+            "12",
+            null,
+            null
+          ],
+          "hits_8px": 1,
+          "hits_16px": 1,
+          "complete_8px": false,
+          "complete_16px": false
+        },
+        {
+          "id": "platform-knuckleball-07-A",
+          "visible_corners": 4,
+          "seconds": 0.28501479199621826,
+          "candidate_goal_points": 0,
+          "errors_px": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "assigned_ids": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "hits_8px": 0,
+          "hits_16px": 0,
+          "complete_8px": false,
+          "complete_16px": false
+        },
+        {
+          "id": "platform-knuckleball-07-B",
+          "visible_corners": 2,
+          "seconds": 0.28509258292615414,
+          "candidate_goal_points": 0,
+          "errors_px": [
+            null,
+            null
+          ],
+          "assigned_ids": [
+            null,
+            null
+          ],
+          "hits_8px": 0,
+          "hits_16px": 0,
+          "complete_8px": false,
+          "complete_16px": false
+        },
+        {
+          "id": "platform-driven-04-A",
+          "visible_corners": 4,
+          "seconds": 0.28524804092012346,
+          "candidate_goal_points": 0,
+          "errors_px": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "assigned_ids": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "hits_8px": 0,
+          "hits_16px": 0,
+          "complete_8px": false,
+          "complete_16px": false
+        },
+        {
+          "id": "platform-driven-04-B",
+          "visible_corners": 4,
+          "seconds": 0.28615183394867927,
+          "candidate_goal_points": 1,
+          "errors_px": [
+            null,
+            5.385164807134504,
+            null,
+            null
+          ],
+          "assigned_ids": [
+            null,
+            "12",
+            null,
+            null
+          ],
+          "hits_8px": 1,
+          "hits_16px": 1,
+          "complete_8px": false,
+          "complete_16px": false
+        },
+        {
+          "id": "platform-curling-01-A",
+          "visible_corners": 4,
+          "seconds": 0.28718087496235967,
+          "candidate_goal_points": 0,
+          "errors_px": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "assigned_ids": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "hits_8px": 0,
+          "hits_16px": 0,
+          "complete_8px": false,
+          "complete_16px": false
+        },
+        {
+          "id": "platform-curling-01-B",
+          "visible_corners": 4,
+          "seconds": 0.2880069580860436,
+          "candidate_goal_points": 0,
+          "errors_px": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "assigned_ids": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "hits_8px": 0,
+          "hits_16px": 0,
+          "complete_8px": false,
+          "complete_16px": false
+        }
+      ]
+    },
+    {
+      "totals": {
+        "model": "pnl_wp",
+        "load_s": 3.0939023749670014,
+        "first_frame_ms": 667.2399590024725,
+        "warm_median_ms": 287.91308298241347,
+        "warm_p95_ms": 295.3548672841862,
+        "hits_8px": 0,
+        "hits_16px": 0,
+        "visible_corner_count": 54,
+        "complete_8px": 0,
+        "complete_16px": 0,
+        "jk": {
+          "frames": 4,
+          "hits8": 0,
+          "hits16": 0,
+          "visible": 16,
+          "complete8": 0,
+          "complete16": 0
+        },
+        "platform": {
+          "frames": 10,
+          "hits8": 0,
+          "hits16": 0,
+          "visible": 38,
+          "complete8": 0,
+          "complete16": 0
+        }
+      },
+      "rows": [
+        {
+          "id": "jk-0030",
+          "visible_corners": 4,
+          "seconds": 0.6672399590024725,
+          "candidate_goal_points": 0,
+          "errors_px": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "assigned_ids": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "hits_8px": 0,
+          "hits_16px": 0,
+          "complete_8px": false,
+          "complete_16px": false
+        },
+        {
+          "id": "jk-0060",
+          "visible_corners": 4,
+          "seconds": 0.2897385830292478,
+          "candidate_goal_points": 0,
+          "errors_px": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "assigned_ids": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "hits_8px": 0,
+          "hits_16px": 0,
+          "complete_8px": false,
+          "complete_16px": false
+        },
+        {
+          "id": "jk-0090",
+          "visible_corners": 4,
+          "seconds": 0.28389666706789285,
+          "candidate_goal_points": 0,
+          "errors_px": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "assigned_ids": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "hits_8px": 0,
+          "hits_16px": 0,
+          "complete_8px": false,
+          "complete_16px": false
+        },
+        {
+          "id": "jk-0120",
+          "visible_corners": 4,
+          "seconds": 0.2855952079407871,
+          "candidate_goal_points": 0,
+          "errors_px": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "assigned_ids": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "hits_8px": 0,
+          "hits_16px": 0,
+          "complete_8px": false,
+          "complete_16px": false
+        },
+        {
+          "id": "platform-curling-04-A",
+          "visible_corners": 4,
+          "seconds": 0.2903790830168873,
+          "candidate_goal_points": 0,
+          "errors_px": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "assigned_ids": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "hits_8px": 0,
+          "hits_16px": 0,
+          "complete_8px": false,
+          "complete_16px": false
+        },
+        {
+          "id": "platform-curling-04-B",
+          "visible_corners": 4,
+          "seconds": 0.29301883408334106,
+          "candidate_goal_points": 0,
+          "errors_px": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "assigned_ids": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "hits_8px": 0,
+          "hits_16px": 0,
+          "complete_8px": false,
+          "complete_16px": false
+        },
+        {
+          "id": "platform-curling-05-A",
+          "visible_corners": 4,
+          "seconds": 0.2927894580643624,
+          "candidate_goal_points": 0,
+          "errors_px": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "assigned_ids": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "hits_8px": 0,
+          "hits_16px": 0,
+          "complete_8px": false,
+          "complete_16px": false
+        },
+        {
+          "id": "platform-curling-05-B",
+          "visible_corners": 4,
+          "seconds": 0.28696283407043666,
+          "candidate_goal_points": 0,
+          "errors_px": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "assigned_ids": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "hits_8px": 0,
+          "hits_16px": 0,
+          "complete_8px": false,
+          "complete_16px": false
+        },
+        {
+          "id": "platform-knuckleball-07-A",
+          "visible_corners": 4,
+          "seconds": 0.28791308298241347,
+          "candidate_goal_points": 0,
+          "errors_px": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "assigned_ids": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "hits_8px": 0,
+          "hits_16px": 0,
+          "complete_8px": false,
+          "complete_16px": false
+        },
+        {
+          "id": "platform-knuckleball-07-B",
+          "visible_corners": 2,
+          "seconds": 0.29043945809826255,
+          "candidate_goal_points": 0,
+          "errors_px": [
+            null,
+            null
+          ],
+          "assigned_ids": [
+            null,
+            null
+          ],
+          "hits_8px": 0,
+          "hits_16px": 0,
+          "complete_8px": false,
+          "complete_16px": false
+        },
+        {
+          "id": "platform-driven-04-A",
+          "visible_corners": 4,
+          "seconds": 0.29885891708545387,
+          "candidate_goal_points": 0,
+          "errors_px": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "assigned_ids": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "hits_8px": 0,
+          "hits_16px": 0,
+          "complete_8px": false,
+          "complete_16px": false
+        },
+        {
+          "id": "platform-driven-04-B",
+          "visible_corners": 4,
+          "seconds": 0.28616729099303484,
+          "candidate_goal_points": 0,
+          "errors_px": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "assigned_ids": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "hits_8px": 0,
+          "hits_16px": 0,
+          "complete_8px": false,
+          "complete_16px": false
+        },
+        {
+          "id": "platform-curling-01-A",
+          "visible_corners": 4,
+          "seconds": 0.28642512497026473,
+          "candidate_goal_points": 0,
+          "errors_px": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "assigned_ids": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "hits_8px": 0,
+          "hits_16px": 0,
+          "complete_8px": false,
+          "complete_16px": false
+        },
+        {
+          "id": "platform-curling-01-B",
+          "visible_corners": 4,
+          "seconds": 0.2870830420870334,
+          "candidate_goal_points": 0,
+          "errors_px": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "assigned_ids": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "hits_8px": 0,
+          "hits_16px": 0,
+          "complete_8px": false,
+          "complete_16px": false
+        }
+      ]
+    }
+  ]
+}

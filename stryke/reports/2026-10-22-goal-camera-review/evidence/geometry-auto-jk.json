@@ -1,0 +1,111 @@
+{
+  "frame": "jk-0060",
+  "K": [
+    [
+      1621.2099349239504,
+      0.0,
+      640.0
+    ],
+    [
+      0.0,
+      1621.2099349239504,
+      358.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "R_world_to_camera": [
+    [
+      0.9600444080830124,
+      -0.02787628183030317,
+      0.2784558266940307
+    ],
+    [
+      -0.06499893590085298,
+      -0.9900268550381242,
+      0.12498785795059354
+    ],
+    [
+      0.2721945496153355,
+      -0.13809322653424552,
+      -0.9522816746872041
+    ]
+  ],
+  "camera_m": [
+    -6.494861487922334,
+    1.6776969807578443,
+    34.439835288815374
+  ],
+  "ball_m": [
+    -5.706969172453787,
+    0.11,
+    29.161860272569477
+  ],
+  "ball_camera_distance_m": 5.561966234738173,
+  "focal_px": 1621.2099349239504,
+  "goal_corner_rms_px": 1.50121930768013,
+  "sphere_outline_rms_px": 0.22221581064764243,
+  "goal_projected": [
+    [
+      306.2102281006665,
+      103.96097440089599
+    ],
+    [
+      646.3053210507518,
+      96.48125287390583
+    ],
+    [
+      649.3268481050427,
+      208.36090734045425
+    ],
+    [
+      312.80025831170474,
+      222.36126912146491
+    ]
+  ],
+  "weighted_sum_squared": 2.604805127097663,
+  "parameters": [
+    7.390928022865126,
+    3.241842863707501,
+    -0.07715521036037473,
+    0.4574476018150573,
+    -6.494861487922334,
+    0.517422008160867,
+    34.439835288815374,
+    -5.706969172453787,
+    29.161860272569477
+  ],
+  "optimizer_success": true,
+  "at_bound": false,
+  "extra_lines": [],
+  "assumptions": [
+    "regulation inner goal dimensions 7.32 x 2.44 m",
+    "nominal ball diameter 0.22 m",
+    "stationary ball touches flat ground",
+    "square pixels; centred principal point; zero lens distortion",
+    "automatic front corner candidates and manual ball silhouette; no metric ground truth"
+  ],
+  "goal_corner_input": "No Bells MV raw goal points, sorted image TL/TR/BR/BL, no manual coordinate correction",
+  "ball_input": "manually reviewed stationary silhouette, no automatic ball radius",
+  "input_corners": [
+    [
+      306.66666666666663,
+      103.42222222222222
+    ],
+    [
+      645.3333333333333,
+      98.11851851851853
+    ],
+    [
+      650.6666666666666,
+      206.84444444444443
+    ],
+    [
+      312.0,
+      222.75555555555556
+    ]
+  ]
+}

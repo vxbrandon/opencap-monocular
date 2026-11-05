@@ -1,0 +1,178 @@
+{
+  "date": "2026-10-22",
+  "sources": [
+    {
+      "path": "/Users/tbg/orca/workspaces/stryke/basslet/apps/fe-mobile/assets/practice/jk-curl-private/shot.mp4",
+      "sha256": "16ff548b5e2eec4939a2e4b56ea6f96ee33d92d979a9c7ea61f9943d81b90e8e"
+    },
+    {
+      "path": "/Users/tbg/Downloads/플랫폼 자료.mov",
+      "sha256": "8c89b23a2896dd134f8d6374e63d3d1823d24f07276cc19eb6fd96bf403193af"
+    }
+  ],
+  "scored_frames": [
+    {
+      "id": "jk-0030",
+      "source": "JK curl",
+      "frame": 30,
+      "path": "/Users/tbg/stryke-data/research/2026-10-22-goal-camera/frames/jk-0030.jpg",
+      "source_pts_s": 1.0,
+      "source_frame": 30,
+      "report_input": "frames/jk-0030.jpg",
+      "input_sha256": "a6650d76854fd498d26e043f06214ed3fb4241210d15d4a3464bbd26b3adee52"
+    },
+    {
+      "id": "jk-0060",
+      "source": "JK curl",
+      "frame": 60,
+      "path": "/Users/tbg/stryke-data/research/2026-10-22-goal-camera/frames/jk-0060.jpg",
+      "source_pts_s": 2.0,
+      "source_frame": 60,
+      "report_input": "frames/jk-0060.jpg",
+      "input_sha256": "01cef464e9625f7e0a1a73eee487a446e2fea8d942fbb3df2ef08ca65d660e6e"
+    },
+    {
+      "id": "jk-0090",
+      "source": "JK curl",
+      "frame": 90,
+      "path": "/Users/tbg/stryke-data/research/2026-10-22-goal-camera/frames/jk-0090.jpg",
+      "source_pts_s": 3.0,
+      "source_frame": 90,
+      "report_input": "frames/jk-0090.jpg",
+      "input_sha256": "3185a55e2397adadd55f70d6caa9b01048aa446790c1fca8e3b67182ea0dc722"
+    },
+    {
+      "id": "jk-0120",
+      "source": "JK curl",
+      "frame": 120,
+      "path": "/Users/tbg/stryke-data/research/2026-10-22-goal-camera/frames/jk-0120.jpg",
+      "source_pts_s": 4.0,
+      "source_frame": 120,
+      "report_input": "frames/jk-0120.jpg",
+      "input_sha256": "a1119d518f72c419b42ccfd90216072f212e81ccb6aba600f991daeae0fd2a81"
+    },
+    {
+      "id": "platform-curling-04-A",
+      "source": "플랫폼 자료.mov",
+      "frame": 0,
+      "path": "/Users/tbg/stryke-data/research/2026-10-22-goal-camera/frames/platform-curling-04-A.jpg",
+      "source_pts_s": 21.8218,
+      "source_frame": 1308,
+      "report_input": "frames/platform-curling-04-A.jpg",
+      "input_sha256": "078a9a019171b6254c4221c07f45634d1cc9772af894d91c83cdb51ee38abf87"
+    },
+    {
+      "id": "platform-curling-04-B",
+      "source": "플랫폼 자료.mov",
+      "frame": 0,
+      "path": "/Users/tbg/stryke-data/research/2026-10-22-goal-camera/frames/platform-curling-04-B.jpg",
+      "source_pts_s": 24.7247,
+      "source_frame": 1482,
+      "report_input": "frames/platform-curling-04-B.jpg",
+      "input_sha256": "324fcc544eba9b1901a7dc43fd35bd194eb308cb256298eff9a45ce68e11a9c0"
+    },
+    {
+      "id": "platform-curling-05-A",
+      "source": "플랫폼 자료.mov",
+      "frame": 0,
+      "path": "/Users/tbg/stryke-data/research/2026-10-22-goal-camera/frames/platform-curling-05-A.jpg",
+      "source_pts_s": 27.6276,
+      "source_frame": 1656,
+      "report_input": "frames/platform-curling-05-A.jpg",
+      "input_sha256": "2fe17c3e5c8ec4aae27dd1d339caa34ac2d6b49dfd0e4b8e76a6fd4530e119d7"
+    },
+    {
+      "id": "platform-curling-05-B",
+      "source": "플랫폼 자료.mov",
+      "frame": 0,
+      "path": "/Users/tbg/stryke-data/research/2026-10-22-goal-camera/frames/platform-curling-05-B.jpg",
+      "source_pts_s": 30.563866666666666,
+      "source_frame": 1832,
+      "report_input": "frames/platform-curling-05-B.jpg",
+      "input_sha256": "8f78524f0d217eafe8151b57c3f2dd561237a725bf0e5d959237c1730bf2914f"
+    },
+    {
+      "id": "platform-knuckleball-07-A",
+      "source": "플랫폼 자료.mov",
+      "frame": 0,
+      "path": "/Users/tbg/stryke-data/research/2026-10-22-goal-camera/frames/platform-knuckleball-07-A.jpg",
+      "source_pts_s": 143.49335,
+      "source_frame": 8601,
+      "report_input": "frames/platform-knuckleball-07-A.jpg",
+      "input_sha256": "eec157b648703cada18b05b5e3fe189beec29c352b77e34f105f06987abfb69c"
+    },
+    {
+      "id": "platform-knuckleball-07-B",
+      "source": "플랫폼 자료.mov",
+      "frame": 0,
+      "path": "/Users/tbg/stryke-data/research/2026-10-22-goal-camera/frames/platform-knuckleball-07-B.jpg",
+      "source_pts_s": 147.93111666666667,
+      "source_frame": 8867,
+      "report_input": "frames/platform-knuckleball-07-B.jpg",
+      "input_sha256": "8c005d78232108aaa9e3c7d6c3b7aa6338eaba4e38330afd3e68c18efbfa1c99"
+    },
+    {
+      "id": "platform-driven-04-A",
+      "source": "플랫폼 자료.mov",
+      "frame": 0,
+      "path": "/Users/tbg/stryke-data/research/2026-10-22-goal-camera/frames/platform-driven-04-A.jpg",
+      "source_pts_s": 197.08021666666667,
+      "source_frame": 11813,
+      "report_input": "frames/platform-driven-04-A.jpg",
+      "input_sha256": "521bed95f0b0a5fa98bbf34627cea5a1f0b24ccfb2c32ebdbf57bd76d50e55d1"
+    },
+    {
+      "id": "platform-driven-04-B",
+      "source": "플랫폼 자료.mov",
+      "frame": 0,
+      "path": "/Users/tbg/stryke-data/research/2026-10-22-goal-camera/frames/platform-driven-04-B.jpg",
+      "source_pts_s": 200.83396666666667,
+      "source_frame": 12038,
+      "report_input": "frames/platform-driven-04-B.jpg",
+      "input_sha256": "09f96eac6272fd44610740a986ab7e09052495a2ba047890670ac249ff74b556"
+    },
+    {
+      "id": "platform-curling-01-A",
+      "source": "플랫폼 자료.mov",
+      "frame": 0,
+      "path": "/Users/tbg/stryke-data/research/2026-10-22-goal-camera/frames/platform-curling-01-A.jpg",
+      "source_pts_s": 1.3346666666666667,
+      "source_frame": 80,
+      "report_input": "frames/platform-curling-01-A.jpg",
+      "input_sha256": "24141a8bf227f8558255b333e872951e24df35ce8143035f6f4b988318dddf7f"
+    },
+    {
+      "id": "platform-curling-01-B",
+      "source": "플랫폼 자료.mov",
+      "frame": 0,
+      "path": "/Users/tbg/stryke-data/research/2026-10-22-goal-camera/frames/platform-curling-01-B.jpg",
+      "source_pts_s": 4.05405,
+      "source_frame": 243,
+      "report_input": "frames/platform-curling-01-B.jpg",
+      "input_sha256": "ab4ff88ad0a82ffb7dfa3752e61e4022f7f010b61c9448c1ad699959a1a96d49"
+    }
+  ],
+  "input_note": "Diagnostic frames were extracted at source raster size and saved with OpenCV JPEG default quality (95). Full sweeps use decoded original video / cached original-raster BGR arrays without JPEG reencoding. No frame skipping in sweeps.",
+  "sweep_sources": {
+    "JK": {
+      "frames": 161,
+      "fps": 30
+    },
+    "platform-curling-05": {
+      "A": 176,
+      "B": 176,
+      "fps": 59.94005994005994
+    }
+  },
+  "repositories": {
+    "/Users/tbg/stryke-data/research/2026-10-21-goal-trajectory/no-bells-research": "bd993b31c2917096c23bb8aadf148314d17f8345",
+    "/Users/tbg/stryke-data/research/2026-10-22-goal-camera/PnLCalib": "8c87391d6f4ea40c5e4d65e61529916c7a49ce62"
+  },
+  "model_results": "evidence/{kicky,nbjw,pnl,pnl_wp}-results.json",
+  "research_directory": "/Users/tbg/stryke-data/research/2026-10-22-goal-camera",
+  "local_api_inference_cost_usd": 0,
+  "training_performed": false,
+  "app_model_changed": false,
+  "gpu": "Mac M4 Pro MPS",
+  "python": "3.12.12 (main, Dec 17 2025, 21:07:08) [Clang 21.1.4 ]"
+}

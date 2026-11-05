@@ -1,0 +1,89 @@
+{
+  "boxes_xyxy": {
+    "jk-0030": [
+      62,
+      91,
+      448,
+      226
+    ],
+    "jk-0060": [
+      301,
+      93,
+      654,
+      225
+    ],
+    "jk-0090": [
+      548,
+      135,
+      891,
+      260
+    ],
+    "jk-0120": [
+      545,
+      167,
+      885,
+      292
+    ],
+    "platform-curling-04-A": [
+      884,
+      402,
+      1306,
+      576
+    ],
+    "platform-curling-05-A": [
+      884,
+      399,
+      1306,
+      580
+    ],
+    "platform-knuckleball-07-A": [
+      884,
+      405,
+      1307,
+      586
+    ],
+    "platform-driven-04-A": [
+      884,
+      416,
+      1308,
+      594
+    ],
+    "platform-curling-01-A": [
+      884,
+      395,
+      1308,
+      570
+    ],
+    "platform-curling-04-B": [
+      405,
+      455,
+      829,
+      628
+    ],
+    "platform-curling-05-B": [
+      404,
+      453,
+      829,
+      628
+    ],
+    "platform-knuckleball-07-B": [
+      406,
+      455,
+      829,
+      628
+    ],
+    "platform-driven-04-B": [
+      406,
+      454,
+      832,
+      630
+    ],
+    "platform-curling-01-B": [
+      404,
+      452,
+      832,
+      627
+    ]
+  },
+  "kind": "approximate agent reviewed whole goal + net extent; hidden extents retained for partial occlusion"
+}
